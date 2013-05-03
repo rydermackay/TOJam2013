@@ -11,4 +11,9 @@
 #ifdef __OBJC__
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
+    #import <QuartzCore/QuartzCore.h>
+    #import <GLKit/GLKit.h>
+    #import <GameKit/GameKit.h>
+    #import <OpenGLES/EAGL.h>
+    #import "UIViewController+RGMExtensions.h"
 #endif

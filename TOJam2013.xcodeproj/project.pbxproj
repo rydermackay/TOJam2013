@@ -16,6 +16,13 @@
 		0DFFC72B1733937300A37A1B /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 0DFFC72A1733937300A37A1B /* Default.png */; };
 		0DFFC72D1733937300A37A1B /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0DFFC72C1733937300A37A1B /* Default@2x.png */; };
 		0DFFC72F1733937300A37A1B /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0DFFC72E1733937300A37A1B /* Default-568h@2x.png */; };
+		0DFFC736173393DC00A37A1B /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DFFC735173393DB00A37A1B /* GameKit.framework */; };
+		0DFFC7381733940500A37A1B /* MainStoryboard~iphone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0DFFC7371733940500A37A1B /* MainStoryboard~iphone.storyboard */; };
+		0DFFC73B1733944200A37A1B /* RGMMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DFFC73A1733944200A37A1B /* RGMMainViewController.m */; };
+		0DFFC73E1733946700A37A1B /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DFFC73D1733946600A37A1B /* GLKit.framework */; };
+		0DFFC7401733946B00A37A1B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DFFC73F1733946B00A37A1B /* QuartzCore.framework */; };
+		0DFFC742173394AF00A37A1B /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DFFC741173394AF00A37A1B /* OpenGLES.framework */; };
+		0DFFC74517341E0800A37A1B /* UIViewController+RGMExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DFFC74417341E0800A37A1B /* UIViewController+RGMExtensions.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +39,15 @@
 		0DFFC72A1733937300A37A1B /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		0DFFC72C1733937300A37A1B /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		0DFFC72E1733937300A37A1B /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		0DFFC735173393DB00A37A1B /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
+		0DFFC7371733940500A37A1B /* MainStoryboard~iphone.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "MainStoryboard~iphone.storyboard"; sourceTree = "<group>"; };
+		0DFFC7391733944100A37A1B /* RGMMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RGMMainViewController.h; sourceTree = "<group>"; };
+		0DFFC73A1733944200A37A1B /* RGMMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RGMMainViewController.m; sourceTree = "<group>"; };
+		0DFFC73D1733946600A37A1B /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		0DFFC73F1733946B00A37A1B /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		0DFFC741173394AF00A37A1B /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		0DFFC74317341E0700A37A1B /* UIViewController+RGMExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+RGMExtensions.h"; sourceTree = "<group>"; };
+		0DFFC74417341E0800A37A1B /* UIViewController+RGMExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+RGMExtensions.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -39,6 +55,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0DFFC742173394AF00A37A1B /* OpenGLES.framework in Frameworks */,
+				0DFFC7401733946B00A37A1B /* QuartzCore.framework in Frameworks */,
+				0DFFC73E1733946700A37A1B /* GLKit.framework in Frameworks */,
+				0DFFC736173393DC00A37A1B /* GameKit.framework in Frameworks */,
 				0DFFC7191733937300A37A1B /* UIKit.framework in Frameworks */,
 				0DFFC71B1733937300A37A1B /* Foundation.framework in Frameworks */,
 				0DFFC71D1733937300A37A1B /* CoreGraphics.framework in Frameworks */,
@@ -68,6 +88,10 @@
 		0DFFC7171733937300A37A1B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0DFFC741173394AF00A37A1B /* OpenGLES.framework */,
+				0DFFC73F1733946B00A37A1B /* QuartzCore.framework */,
+				0DFFC73D1733946600A37A1B /* GLKit.framework */,
+				0DFFC735173393DB00A37A1B /* GameKit.framework */,
 				0DFFC7181733937300A37A1B /* UIKit.framework */,
 				0DFFC71A1733937300A37A1B /* Foundation.framework */,
 				0DFFC71C1733937300A37A1B /* CoreGraphics.framework */,
@@ -80,6 +104,8 @@
 			children = (
 				0DFFC7271733937300A37A1B /* RGMAppDelegate.h */,
 				0DFFC7281733937300A37A1B /* RGMAppDelegate.m */,
+				0DFFC7371733940500A37A1B /* MainStoryboard~iphone.storyboard */,
+				0DFFC73C1733945100A37A1B /* View Controllers */,
 				0DFFC71F1733937300A37A1B /* Supporting Files */,
 			);
 			path = TOJam2013;
@@ -97,6 +123,17 @@
 				0DFFC72E1733937300A37A1B /* Default-568h@2x.png */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		0DFFC73C1733945100A37A1B /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				0DFFC7391733944100A37A1B /* RGMMainViewController.h */,
+				0DFFC73A1733944200A37A1B /* RGMMainViewController.m */,
+				0DFFC74317341E0700A37A1B /* UIViewController+RGMExtensions.h */,
+				0DFFC74417341E0800A37A1B /* UIViewController+RGMExtensions.m */,
+			);
+			name = "View Controllers";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -155,6 +192,7 @@
 				0DFFC72B1733937300A37A1B /* Default.png in Resources */,
 				0DFFC72D1733937300A37A1B /* Default@2x.png in Resources */,
 				0DFFC72F1733937300A37A1B /* Default-568h@2x.png in Resources */,
+				0DFFC7381733940500A37A1B /* MainStoryboard~iphone.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -167,6 +205,8 @@
 			files = (
 				0DFFC7251733937300A37A1B /* main.m in Sources */,
 				0DFFC7291733937300A37A1B /* RGMAppDelegate.m in Sources */,
+				0DFFC73B1733944200A37A1B /* RGMMainViewController.m in Sources */,
+				0DFFC74517341E0800A37A1B /* UIViewController+RGMExtensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -283,6 +323,7 @@
 				0DFFC7341733937300A37A1B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
