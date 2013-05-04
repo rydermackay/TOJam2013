@@ -156,7 +156,13 @@ static CGSize kFieldSize = (CGSize){20, 15};
 
 - (void)localPlayerChanged:(NSNotification *)note
 {
-    if (![GKLocalPlayer localPlayer].playerID) {
+    NSString *newID = [GKLocalPlayer localPlayer].playerID;
+    
+    if (!newID) {
+        return;
+    }
+    
+    if ([_entities objectForKey:newID]) {
         return;
     }
     
@@ -164,7 +170,6 @@ static CGSize kFieldSize = (CGSize){20, 15};
     RGMEntity *entity = [self entityForPlayerID:oldID];
     [_entities removeObjectForKey:oldID];
     
-    NSString *newID = [GKLocalPlayer localPlayer].playerID;
     RGMEntity *newEntity = [[RGMEntity alloc] initWithIdentifier:newID];
     newEntity.center = entity.center;
     newEntity.velocity = entity.velocity;
@@ -181,22 +186,27 @@ static CGSize kFieldSize = (CGSize){20, 15};
     }];
 }
 
-- (void)viewDidAppear:(BOOL)animated
+- (void)viewWillAppear:(BOOL)animated
 {
-    [super viewDidAppear:animated];
+    [super viewWillAppear:animated];
     
-    if (!_match) {
-//        [self joinGameTapped:nil];
+    if (_displayLink.isPaused) {
+        _displayLink.paused = NO;
+        return;
     }
     
-    _entities = [NSMutableDictionary new];
-    _entities[[self myID]] = [[RGMEntity alloc] initWithIdentifier:[self myID]];
-    
-    _motionManager = [[CMMotionManager alloc] init];
-    _motionManager.deviceMotionUpdateInterval = 1.0/60.0f;
-    [_motionManager startDeviceMotionUpdates];
-    
     [self startGame];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    _displayLink.paused = YES;
+    
+    if (self.isBeingDismissed || self.isMovingFromParentViewController) {
+        [self stopGame];
+    }
 }
 
 - (NSString *)myID
@@ -223,6 +233,13 @@ static CGSize kFieldSize = (CGSize){20, 15};
  
 - (void)startGame
 {
+    _entities = [NSMutableDictionary new];
+    _entities[[self myID]] = [[RGMEntity alloc] initWithIdentifier:[self myID]];
+    
+    _motionManager = [[CMMotionManager alloc] init];
+    _motionManager.deviceMotionUpdateInterval = 1.0/60.0f;
+    [_motionManager startDeviceMotionUpdates];
+    
     _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(update:)];
     [_displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSRunLoopCommonModes];
 }
@@ -252,7 +269,9 @@ static CGSize kFieldSize = (CGSize){20, 15};
     
     velocity.x *= 0.9;
     if (fabs(motion.gravity.y) > gravityThreshold) {
-        velocity.x = (velocity.x * 0.9) + (maxHorizontalVelocity * motion.gravity.y * 0.1);
+        UIInterfaceOrientation orientation = self.interfaceOrientation;
+        double horizontalGravity = orientation == UIInterfaceOrientationLandscapeLeft ? motion.gravity.y : -motion.gravity.y;
+        velocity.x = (velocity.x * 0.9) + (maxHorizontalVelocity * horizontalGravity * 0.1);
     }
     
     if (velocity.x > maxHorizontalVelocity) {
