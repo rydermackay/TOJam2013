@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+@class GKMatch;
+
 @interface RGMMainViewController : UIViewController
+
+@property (nonatomic, strong) GKMatch *match;
 
 @end

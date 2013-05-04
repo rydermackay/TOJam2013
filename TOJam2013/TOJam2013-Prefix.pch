@@ -17,4 +17,5 @@
     #import <OpenGLES/EAGL.h>
     #import <CoreMotion/CoreMotion.h>
     #import "UIViewController+RGMExtensions.h"
+    #import "RGMDefines.h"
 #endif

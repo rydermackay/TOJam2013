@@ -11,9 +11,11 @@
 
 @implementation RGMObstacle
 
-- (BOOL)hitTestEntity:(RGMEntity *)entity entityRect:(CGRect)entityRect obstacleRect:(CGRect)obstacleRect
+- (BOOL)hitTestEntity:(RGMEntity *)entity obstacleRect:(CGRect)obstacleRect
 {
     RGMObstacleMask mask = self.mask;
+    
+    CGRect entityRect = entity.frame;
     
     if (mask == RGMObstacleMaskNone) {
         return NO;
@@ -25,7 +27,7 @@
             CGRectGetMinY(entityRect) < CGRectGetMaxY(obstacleRect) &&  // collision
             CGRectGetMaxY(entityRect) > CGRectGetMaxY(obstacleRect) && entity.velocity.y < 0) {
             entity.velocity = CGPointMake(entity.velocity.x, 0);
-            entity.center = CGPointMake(entity.center.x, CGRectGetMaxY(obstacleRect) + CGRectGetHeight(entityRect) * 0.5f);
+            entity.y = CGRectGetMaxY(obstacleRect);
             [entity endJump];
             return YES;
         }
@@ -37,7 +39,7 @@
             CGRectGetMinY(entityRect) < CGRectGetMinY(obstacleRect) &&
             CGRectGetMaxY(entityRect) > CGRectGetMinY(obstacleRect) && entity.velocity.y > 0) {  // collision
             entity.velocity = CGPointMake(entity.velocity.x, 0);
-            entity.center = CGPointMake(entity.center.x, CGRectGetMinY(obstacleRect) - CGRectGetHeight(entityRect) * 0.5f);
+            entity.y = CGRectGetMinY(obstacleRect) - entity.size.height;
             entity.canJump = YES;
             return YES;
         }
@@ -49,7 +51,7 @@
             CGRectGetMinY(entityRect) < CGRectGetMaxY(obstacleRect) &&
             CGRectGetMaxY(entityRect) > CGRectGetMinY(obstacleRect) && entity.velocity.x > 0) {
             entity.velocity = CGPointMake(0, entity.velocity.y);
-            entity.center = CGPointMake(CGRectGetMinX(obstacleRect) - CGRectGetWidth(entityRect) * 0.5f, entity.center.y);
+            entity.x = CGRectGetMinX(obstacleRect) - entity.size.width;
             return YES;
         }
     }
@@ -60,7 +62,7 @@
             CGRectGetMinY(entityRect) < CGRectGetMaxY(obstacleRect) &&
             CGRectGetMaxY(entityRect) > CGRectGetMinY(obstacleRect) && entity.velocity.x < 0) {
             entity.velocity = CGPointMake(0, entity.velocity.y);
-            entity.center = CGPointMake(CGRectGetMaxX(obstacleRect) + CGRectGetWidth(entityRect) * 0.5f, entity.center.y);
+            entity.x = CGRectGetMaxX(obstacleRect);
             return YES;
         }
     }

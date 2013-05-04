@@ -8,6 +8,8 @@
 
 #import "RGMEntity.h"
 
+NSTimeInterval invincibilityDuration = 3;
+
 @interface RGMEntity ()
 
 @property (nonatomic, copy, readwrite) NSString *identifier;
@@ -27,9 +29,11 @@
     
     if (self = [super init]) {
         _identifier = [identifier copy];
-        _center = CGPointZero;
+        _x = 0;
+        _y = 0;
         _velocity = CGPointZero;
         _canJump = NO;
+        _size = CGSizeMake(RGMTileSize, RGMTileSize);
     }
     
     return self;
@@ -39,10 +43,8 @@
 {
     return @{
          @"identifier": self.identifier,
-         @"center": @{
-                 @"x": @(self.center.x),
-                 @"y": @(self.center.y)
-                 },
+         @"x": @(self.x),
+         @"y": @(self.y),
          @"velocity": @{
                  @"x": @(self.velocity.x),
                  @"y": @(self.velocity.y)
@@ -53,14 +55,15 @@
 - (void)setValuesWithJSON:(NSDictionary *)JSON
 {
     self.identifier = [JSON valueForKey:@"identifier"];
-    self.center = CGPointMake([[JSON valueForKeyPath:@"center.x"] floatValue], [[JSON valueForKeyPath:@"center.y"] floatValue]);
+    self.x = [JSON[@"x"] integerValue];
+    self.y = [JSON[@"y"] integerValue];
     self.velocity = CGPointMake([[JSON valueForKeyPath:@"velocity.x"] floatValue], [[JSON valueForKeyPath:@"velocity.y"] floatValue]);
 }
 
 - (NSString *)description
 {
     NSMutableString *description = [[super description] mutableCopy];
-    [description appendFormat:@"center: %@, velocity: %@", NSStringFromCGPoint(self.center), NSStringFromCGPoint(self.velocity)];
+    [description appendFormat:@"origin: %@, velocity: %@", NSStringFromCGPoint(CGPointMake(self.x, self.y)), NSStringFromCGPoint(self.velocity)];
     
     return [description copy];
 }
@@ -75,13 +78,8 @@
     velocity.y = MIN(maxDownwardVelocity, velocity.y);
     self.velocity = velocity;
     
-    CGPoint center = self.center;
-    center.x += velocity.x * duration;
-    center.y += velocity.y * duration;
-    
-    self.center = center;
-    
-    self.canJump = NO;
+    self.x += velocity.x * duration;
+    self.y += velocity.y * duration;
 }
 
 - (CGFloat)gravity
@@ -106,6 +104,26 @@
 - (void)endJump
 {
     _isJumping = NO;
+}
+
+- (CGRect)frame
+{
+    return CGRectMake(self.x, self.y, self.size.width, self.size.height);
+}
+
+- (void)setInvincible:(BOOL)invincible
+{
+    if (_invincible == invincible) {
+        return;
+    }
+    
+    _invincible = invincible;
+    [self performSelector:@selector(reset) withObject:nil afterDelay:invincibilityDuration inModes:@[NSRunLoopCommonModes]];
+}
+
+- (void)reset
+{
+    self.invincible = NO;
 }
 
 @end
