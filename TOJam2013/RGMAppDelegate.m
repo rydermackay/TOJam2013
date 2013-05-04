@@ -45,12 +45,14 @@
                 controller = [[GKMatchmakerViewController alloc] initWithInvite:invite];
             } else if (playersToInvite.count > 0) {
                 GKMatchRequest *request = [[GKMatchRequest alloc] init];
+                request.minPlayers = 2;
+                request.defaultNumberOfPlayers = request.minPlayers;
+                request.maxPlayers = 4;
                 request.playersToInvite = playersToInvite;
                 controller = [[GKMatchmakerViewController alloc] initWithMatchRequest:request];
             }
             
             if (controller) {
-                controller.matchmakerDelegate = [self menuViewController];
                 [[self menuViewController] presentMatchmakerViewController:controller];
             }
         }];

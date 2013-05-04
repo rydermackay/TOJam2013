@@ -13,7 +13,7 @@
 static NSString * const kSingleplayerIdentifier = @"single";
 static NSString * const kMultiplayerIdentifier = @"multi";
 
-@interface RGMMenuViewController ()
+@interface RGMMenuViewController () <GKMatchmakerViewControllerDelegate>
 
 - (IBAction)multiplayer:(id)sender;
 
@@ -23,15 +23,7 @@ static NSString * const kMultiplayerIdentifier = @"multi";
 
 @implementation RGMMenuViewController {
     GKMatch *_match;
-}
-
-- (void)presentMatchmakerViewController:(GKMatchmakerViewController *)controller
-{
-    if (self.presentedViewController) {
-        [self.presentedViewController dismissViewControllerAnimated:NO completion:nil];
-    }
-    
-    [self presentViewController:controller animated:YES completion:nil];
+    __weak GKMatchmakerViewController *_matchmakerViewController;
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -44,6 +36,22 @@ static NSString * const kMultiplayerIdentifier = @"multi";
         _match = nil;
     }
 }
+
+- (void)presentMatchmakerViewController:(GKMatchmakerViewController *)controller
+{
+    void (^action)() = ^{
+        controller.matchmakerDelegate = self;
+        _matchmakerViewController = controller;
+        [self presentViewController:controller animated:YES completion:nil];
+    };
+    
+    if (_matchmakerViewController) {
+        [_matchmakerViewController dismissViewControllerAnimated:YES completion:action];
+    } else {
+        action();
+    }
+}
+
 
 - (IBAction)multiplayer:(id)sender
 {
