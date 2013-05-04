@@ -156,6 +156,10 @@ static CGSize kFieldSize = (CGSize){20, 15};
 
 - (void)localPlayerChanged:(NSNotification *)note
 {
+    if (![GKLocalPlayer localPlayer].playerID) {
+        return;
+    }
+    
     NSString *oldID = @"me";
     RGMEntity *entity = [self entityForPlayerID:oldID];
     [_entities removeObjectForKey:oldID];
