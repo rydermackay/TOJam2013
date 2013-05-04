@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0D6B6F0D1734916D00AB8766 /* RGMInputView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D6B6F0C1734916D00AB8766 /* RGMInputView.m */; };
+		0D6B6F101734A1DD00AB8766 /* RGMSprite.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D6B6F0F1734A1DD00AB8766 /* RGMSprite.m */; };
+		0D6B6F141734AD4D00AB8766 /* Map.json in Resources */ = {isa = PBXBuildFile; fileRef = 0D6B6F131734AD4D00AB8766 /* Map.json */; };
 		0DFFC7191733937300A37A1B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DFFC7181733937300A37A1B /* UIKit.framework */; };
 		0DFFC71B1733937300A37A1B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DFFC71A1733937300A37A1B /* Foundation.framework */; };
 		0DFFC71D1733937300A37A1B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DFFC71C1733937300A37A1B /* CoreGraphics.framework */; };
@@ -32,6 +34,9 @@
 /* Begin PBXFileReference section */
 		0D6B6F0B1734916D00AB8766 /* RGMInputView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RGMInputView.h; sourceTree = "<group>"; };
 		0D6B6F0C1734916D00AB8766 /* RGMInputView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RGMInputView.m; sourceTree = "<group>"; };
+		0D6B6F0E1734A1DD00AB8766 /* RGMSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RGMSprite.h; sourceTree = "<group>"; };
+		0D6B6F0F1734A1DD00AB8766 /* RGMSprite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RGMSprite.m; sourceTree = "<group>"; };
+		0D6B6F131734AD4D00AB8766 /* Map.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Map.json; sourceTree = "<group>"; };
 		0DFFC7151733937300A37A1B /* TOJam2013.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TOJam2013.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0DFFC7181733937300A37A1B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		0DFFC71A1733937300A37A1B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -144,6 +149,8 @@
 				0DFFC7481734541200A37A1B /* Game Model */,
 				0DFFC7391733944100A37A1B /* RGMMainViewController.h */,
 				0DFFC73A1733944200A37A1B /* RGMMainViewController.m */,
+				0D6B6F0E1734A1DD00AB8766 /* RGMSprite.h */,
+				0D6B6F0F1734A1DD00AB8766 /* RGMSprite.m */,
 				0D6B6F0B1734916D00AB8766 /* RGMInputView.h */,
 				0D6B6F0C1734916D00AB8766 /* RGMInputView.m */,
 				0DFFC74317341E0700A37A1B /* UIViewController+RGMExtensions.h */,
@@ -159,6 +166,7 @@
 				0DFFC74A1734543A00A37A1B /* RGMEntity.m */,
 				0DFFC74C173454B400A37A1B /* RGMObstacle.h */,
 				0DFFC74D173454B500A37A1B /* RGMObstacle.m */,
+				0D6B6F131734AD4D00AB8766 /* Map.json */,
 			);
 			name = "Game Model";
 			sourceTree = "<group>";
@@ -220,6 +228,7 @@
 				0DFFC72D1733937300A37A1B /* Default@2x.png in Resources */,
 				0DFFC72F1733937300A37A1B /* Default-568h@2x.png in Resources */,
 				0DFFC7381733940500A37A1B /* MainStoryboard~iphone.storyboard in Resources */,
+				0D6B6F141734AD4D00AB8766 /* Map.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -237,6 +246,7 @@
 				0DFFC74B1734543A00A37A1B /* RGMEntity.m in Sources */,
 				0DFFC74E173454B500A37A1B /* RGMObstacle.m in Sources */,
 				0D6B6F0D1734916D00AB8766 /* RGMInputView.m in Sources */,
+				0D6B6F101734A1DD00AB8766 /* RGMSprite.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

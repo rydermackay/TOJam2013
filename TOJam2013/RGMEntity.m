@@ -17,7 +17,6 @@
 
 
 @implementation RGMEntity {
-    BOOL _canJump;
     BOOL _isJumping;
     NSDate *_jumpDate;
 }
@@ -69,8 +68,7 @@
 - (void)updateForDuration:(NSTimeInterval)duration
 {
     const CGFloat gravity = [self gravity];
-    const CGFloat maxDownwardVelocity = 500;
-    const CGFloat ground = 300 - 22;
+    const CGFloat maxDownwardVelocity = MAXFLOAT;
     
     CGPoint velocity = self.velocity;
     velocity.y += gravity * duration;
@@ -80,32 +78,28 @@
     CGPoint center = self.center;
     center.x += velocity.x * duration;
     center.y += velocity.y * duration;
-    if (center.y > ground) {
-        center.y = ground;
-        velocity.y = 0;
-        self.velocity = velocity;
-        _canJump = YES;
-    }
     
     self.center = center;
+    
+    self.canJump = NO;
 }
 
 - (CGFloat)gravity
 {
-    return _isJumping ? 0 : 1000;
+    return _isJumping ? 0 : 3000;
 }
 
 - (void)jump
 {
-    if (!_canJump) {
+    if (!self.canJump) {
         return;
     }
     
-    self.velocity = CGPointMake(self.velocity.x, -200);
-    _canJump = NO;
+    self.velocity = CGPointMake(self.velocity.x, -500);
+    self.canJump = NO;
     _isJumping = YES;
     
-    const NSTimeInterval jumpDuration = 0.3f;
+    const NSTimeInterval jumpDuration = 0.15f;
     [self performSelector:@selector(endJump) withObject:nil afterDelay:jumpDuration inModes:@[NSRunLoopCommonModes]];
 }
 

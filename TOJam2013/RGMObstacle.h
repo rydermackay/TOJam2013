@@ -8,18 +8,23 @@
 
 #import <Foundation/Foundation.h>
 
+@class RGMEntity;
+
 typedef NS_OPTIONS(NSUInteger, RGMObstacleMask) {
-    RGMObstacleMaskNone     = 0,
-    RGMObstacleMaskTop      = 1 << 1,
-    RGMObstacleMaskBottom   = 1 << 2,
-    RGMObstacleMaskLeft     = 1 << 3,
-    RGMObstacleMaskRight    = 1 << 4,
+    RGMObstacleMaskNone         = 0,
+    RGMObstacleMaskSolidTop     = 1 << 1,
+    RGMObstacleMaskSolidBottom  = 1 << 2,
+    RGMObstacleMaskSolidLeft    = 1 << 3,
+    RGMObstacleMaskSolidRight   = 1 << 4,
     
-    RGMObstacleMaskSolid = RGMObstacleMaskBottom | RGMObstacleMaskLeft | RGMObstacleMaskRight | RGMObstacleMaskTop,
+    RGMObstacleMaskSolid = RGMObstacleMaskSolidBottom | RGMObstacleMaskSolidLeft | RGMObstacleMaskSolidRight | RGMObstacleMaskSolidTop,
 };
 
 @interface RGMObstacle : NSObject
 
+@property (nonatomic, assign) RGMObstacleMask mask;
 @property (nonatomic, assign) CGPoint tilePosition;
+
+- (BOOL)hitTestEntity:(RGMEntity *)entity entityRect:(CGRect)entityRect obstacleRect:(CGRect)obstacleRect;
 
 @end

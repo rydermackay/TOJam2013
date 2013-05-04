@@ -22,6 +22,7 @@
 
 - (void)updateForDuration:(NSTimeInterval)interval;
 
+@property (nonatomic, assign) BOOL canJump;
 - (void)jump;
 - (void)endJump;
 

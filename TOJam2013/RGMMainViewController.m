@@ -9,12 +9,15 @@
 #import "RGMMainViewController.h"
 #import "RGMEntity.h"
 #import "RGMInputView.h"
+#import "RGMObstacle.h"
 
-@interface RGMMainViewController () <GKMatchmakerViewControllerDelegate, GKMatchDelegate>
+@interface RGMMainViewController () <GKMatchmakerViewControllerDelegate, GKMatchDelegate, GLKViewDelegate>
 - (IBAction)joinGameTapped:(id)sender;
 
 @end
 
+static CGFloat kTileSize = 32;
+static CGSize kFieldSize = (CGSize){20, 15};
 
 
 @implementation RGMMainViewController {
@@ -22,25 +25,127 @@
     GKVoiceChat *_chat;
     CADisplayLink *_displayLink;
     NSMutableDictionary *_entities;
+    NSMutableArray *_obstacles;
+    NSMutableArray *_obstacleViews;
     NSMutableDictionary *_views;
     NSTimer *_transmissionTimer;
     CMMotionManager *_motionManager;
+    
+    EAGLContext *_context;
+    GLKView *_glkView;
+    GLKBaseEffect *_effect;
+    
+    UIView *_gameScene;
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
+    
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(localPlayerChanged:) name:GKPlayerAuthenticationDidChangeNotificationName object:nil];
     
     RGMInputView *input = (RGMInputView *)self.view;
     [input addTarget:self action:@selector(jump) forControlEvents:UIControlEventTouchDown];
     [input addTarget:self action:@selector(endJump) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside | UIControlEventTouchCancel];
+    
+//    _context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2 sharegroup:nil];
+//    _glkView = [[GLKView alloc] initWithFrame:CGRectZero context:_context];
+//    _glkView.delegate = self;
+//    _glkView.enableSetNeedsDisplay = NO;
+    
+//    _effect = [[GLKBaseEffect alloc] init];
+    
+//    [self.view addSubview:_glkView];
+    
+    _obstacles = [NSMutableArray new];
+    _obstacleViews = [NSMutableArray new];
+    
+    self.view.backgroundColor = [UIColor blackColor];
+    
+    _gameScene = [[UIView alloc] initWithFrame:CGRectZero];
+    _gameScene.translatesAutoresizingMaskIntoConstraints = YES;
+    _gameScene.backgroundColor = [UIColor whiteColor];
+    _gameScene.layer.magnificationFilter = kCAFilterNearest;
+    _gameScene.layer.minificationFilter = kCAFilterTrilinear;
+    _gameScene.userInteractionEnabled = NO;
+    _gameScene.autoresizesSubviews = NO;
+    _gameScene.autoresizingMask = UIViewAutoresizingNone;
+    [self.view addSubview:_gameScene];
+    
+    NSData *mapData = [[NSData alloc] initWithContentsOfURL:[[NSBundle mainBundle] URLForResource:@"Map" withExtension:@"json"]];
+    NSError *error;
+    NSDictionary *map = [NSJSONSerialization JSONObjectWithData:mapData options:0 error:&error];
+    if (!map) {
+        NSLog(@"error loading map: %@", error);
+    }
+    
+    NSArray *obstacles = map[@"obstacles"];
+    for (NSDictionary *dictionary in obstacles) {
+        RGMObstacle *obstacle = [[RGMObstacle alloc] init];
+        if ([[dictionary objectForKey:@"type"] isEqual:@"solid"]) {
+            obstacle.mask = RGMObstacleMaskSolid;
+        } else {
+            obstacle.mask = RGMObstacleMaskSolidTop;
+        }
+        
+        CGPoint start = CGPointMake([[dictionary valueForKeyPath:@"start.x"] floatValue], [[dictionary valueForKeyPath:@"start.y"] floatValue]);
+        CGPoint end = CGPointMake([[dictionary valueForKeyPath:@"end.x"] floatValue], [[dictionary valueForKeyPath:@"end.y"] floatValue]);
+        UIView *obstacleView = [[UIView alloc] initWithFrame:[self frameFromTile:start to:end]];
+        obstacleView.backgroundColor = [UIColor redColor];
+        
+        [_gameScene addSubview:obstacleView];
+        [_obstacleViews addObject:obstacleView];
+        [_obstacles addObject:obstacle];
+    }
+}
+
+- (CGRect)frameFromTile:(CGPoint)from to:(CGPoint)to
+{
+    NSParameterAssert(from.x <= to.x);
+    NSParameterAssert(from.y <= to.y);
+    
+    return CGRectMake(from.x * kTileSize, from.y * kTileSize, (1 + to.x - from.x) * kTileSize, (1 + to.y - from.y) * kTileSize);
+}
+
+- (CGRect)frameForTile:(CGPoint)tile
+{
+    return CGRectMake(tile.x * kTileSize, tile.y * kTileSize, kTileSize, kTileSize);
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    
+//    _glkView.frame = self.view.bounds;
+    
+    CGRect bounds = self.view.bounds;
+    CGFloat scale = MIN((CGRectGetWidth(bounds) / (kFieldSize.width * kTileSize)),
+                        (CGRectGetHeight(bounds) / (kFieldSize.height * kTileSize)));
+    
+    _gameScene.bounds = CGRectMake(0, 0, kFieldSize.width * kTileSize, kFieldSize.height * kTileSize);
+    _gameScene.transform = CGAffineTransformMakeScale(scale, scale);
+    _gameScene.center = CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds));
 }
 
 - (void)jump
 {
-    [[self entityForPlayerID:[self myID]] jump];
+    NSString *playerID = [self myID];
+    RGMEntity *entity = [self entityForPlayerID:playerID];
+    [entity jump];
+    
+    if (_match) {
+        NSError *error;
+        NSData *serializedData = [NSJSONSerialization dataWithJSONObject:@{playerID: [entity serializedCopy]} options:0 error:&error];
+        if (!serializedData) {
+            NSLog(@"error serializing data after jump: %@", error);
+        }
+        
+        if (![_match sendDataToAllPlayers:serializedData withDataMode:GKMatchSendDataReliable error:&error]) {
+            NSLog(@"error sending reliable data: %@", error);
+        }
+    }
 }
 
 - (void)endJump
@@ -80,9 +185,6 @@
 //        [self joinGameTapped:nil];
     }
     
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
-    [self.view addGestureRecognizer:tap];
-    
     _entities = [NSMutableDictionary new];
     _entities[[self myID]] = [[RGMEntity alloc] initWithIdentifier:[self myID]];
     
@@ -101,25 +203,6 @@
     }
     
     return myID;
-}
-
-- (IBAction)tap:(id)sender
-{
-    NSString *playerID = [self myID];
-    RGMEntity *entity = [self entityForPlayerID:playerID];
-    [entity jump];
-    
-    if (_match) {
-        NSError *error;
-        NSData *serializedData = [NSJSONSerialization dataWithJSONObject:@{playerID: [entity serializedCopy]} options:0 error:&error];
-        if (!serializedData) {
-            NSLog(@"error serializing data after jump: %@", error);
-        }
-        
-        if (![_match sendDataToAllPlayers:serializedData withDataMode:GKMatchSendDataReliable error:&error]) {
-            NSLog(@"error sending reliable data: %@", error);
-        }
-    }
 }
 
 - (IBAction)joinGameTapped:(id)sender
@@ -157,13 +240,13 @@
     
     CMDeviceMotion *motion = [_motionManager deviceMotion];
     
-    const double gravityThreshold = 0.1;
+    const double gravityThreshold = 0.2;
     
     RGMEntity *me = [self entityForPlayerID:[self myID]];
     CGPoint velocity = me.velocity;
-    const CGFloat maxHorizontalVelocity = 500;
+    const CGFloat maxHorizontalVelocity = 1000;
     
-    velocity.x *= 0.98;
+    velocity.x *= 0.9;
     if (fabs(motion.gravity.y) > gravityThreshold) {
         velocity.x = (velocity.x * 0.9) + (maxHorizontalVelocity * motion.gravity.y * 0.1);
     }
@@ -178,6 +261,54 @@
     
     [_entities enumerateKeysAndObjectsUsingBlock:^(id key, RGMEntity *entity, BOOL *stop) {
         [entity updateForDuration:duration];
+        
+        CGRect frame = CGRectMake(entity.center.x - kTileSize * 0.5, entity.center.y - kTileSize * 0.5, kTileSize, kTileSize);
+        CGRect bounds = _gameScene.bounds;
+        
+        if (CGRectGetMinX(frame) < CGRectGetMinX(bounds)) {
+            frame.origin.x = CGRectGetMinX(bounds);
+            entity.velocity = CGPointMake(0, entity.velocity.y);
+        }
+        if (CGRectGetMaxX(frame) > CGRectGetMaxX(bounds)) {
+            frame.origin.x = CGRectGetMaxX(bounds) - CGRectGetWidth(frame);
+            entity.velocity = CGPointMake(0, entity.velocity.y);
+        }
+        if (CGRectGetMaxY(frame) > CGRectGetMaxY(bounds)) {
+            frame.origin.y = CGRectGetMaxY(bounds) - CGRectGetHeight(frame);
+            entity.velocity = CGPointMake(entity.velocity.x, 0);
+            entity.canJump = YES;
+        }
+        
+        entity.center = CGPointMake(CGRectGetMidX(frame), CGRectGetMidY(frame));
+    }];
+    
+    [_entities enumerateKeysAndObjectsUsingBlock:^(id key, RGMEntity *entity, BOOL *stop) {
+        [_obstacles enumerateObjectsUsingBlock:^(RGMObstacle *obstacle, NSUInteger idx, BOOL *stop) {
+            UIView *view = _obstacleViews[idx];
+            CGRect frame = CGRectMake(entity.center.x - kTileSize * 0.5, entity.center.y - kTileSize * 0.5, kTileSize, kTileSize);
+            [obstacle hitTestEntity:entity entityRect:frame obstacleRect:view.frame];
+        }];
+        
+        for (NSString *otherKey in _entities) {
+            if ([otherKey isEqualToString:key]) {
+                continue;
+            }
+            
+            RGMEntity *otherEntity = _entities[otherKey];
+            CGRect frame = CGRectMake(entity.center.x - kTileSize * 0.5, entity.center.y - kTileSize * 0.5, kTileSize, kTileSize);
+            CGRect otherFrame = CGRectMake(otherEntity.center.x - kTileSize * 0.5, otherEntity.center.y - kTileSize * 0.5, kTileSize, kTileSize);
+            
+            if (CGRectGetMaxX(frame) > CGRectGetMinX(otherFrame) &&
+                CGRectGetMinX(frame) < CGRectGetMaxX(otherFrame) &&
+                CGRectGetMaxY(frame) > CGRectGetMinY(otherFrame) &&
+                CGRectGetMinY(frame) < CGRectGetMaxY(otherFrame)) {
+                frame.origin.y = CGRectGetMinY(otherFrame) - CGRectGetHeight(frame);
+                entity.velocity = CGPointMake(entity.velocity.x, 0);
+                entity.canJump = YES;
+            }
+            
+            entity.center = CGPointMake(CGRectGetMidX(frame), CGRectGetMidY(frame));
+        }
     }];
     
     [_entities enumerateKeysAndObjectsUsingBlock:^(id key, RGMEntity *entity, BOOL *stop) {
@@ -185,7 +316,26 @@
         view.center = entity.center;
         view.image = entity.image;
     }];
+    
+    [_glkView display];
 }
+
+#pragma mark - GLKViewDelegate
+
+- (void)glkView:(GLKView *)view drawInRect:(CGRect)rect
+{
+    glClearColor(0, 0, 0, 1);
+    glClear(GL_COLOR_BUFFER_BIT);
+    
+//    [_effect prepareToDraw];
+//    _effect.transform.modelviewMatrix;
+//    _effect.transform.projectionMatrix;
+//    
+//    glBindVertexArrayOES(<#GLuint array#>)
+//    glDrawArrays(GL_TRIANGLES, 0, 3);
+}
+
+#pragma mark - stuff
 
 - (UIImageView *)viewForPlayerID:(NSString *)playerID
 {
@@ -197,8 +347,8 @@
     if (view == nil) {
         view = [[UIImageView alloc] initWithImage:nil];
         view.backgroundColor = [UIColor redColor];
-        [self.view addSubview:view];
-        view.frame = CGRectMake(0, 0, 44, 44);
+        [_gameScene addSubview:view];
+        view.frame = CGRectMake(0, 0, kTileSize, kTileSize);
         _views[playerID] = view;
     }
     
