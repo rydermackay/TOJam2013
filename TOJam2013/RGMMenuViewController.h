@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface RGMMenuViewController : UIViewController
+@interface RGMMenuViewController : UIViewController <GKMatchmakerViewControllerDelegate>
+
+- (void)presentMatchmakerViewController:(GKMatchmakerViewController *)controller;
 
 @end

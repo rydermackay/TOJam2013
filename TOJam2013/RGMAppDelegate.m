@@ -7,8 +7,16 @@
 //
 
 #import "RGMAppDelegate.h"
+#import "RGMMenuViewController.h"
 
 @implementation RGMAppDelegate
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationChanged:) name:GKPlayerAuthenticationDidChangeNotificationName object:nil];
+    
+    return YES;
+}
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
@@ -19,6 +27,34 @@
             [[[UIAlertView alloc] initWithTitle:error.localizedDescription message:error.localizedFailureReason delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
         }
     }];
+}
+
+- (RGMMenuViewController *)menuViewController
+{
+    return (RGMMenuViewController *)self.window.rootViewController;
+}
+
+- (void)authenticationChanged:(NSNotification *)note
+{
+    if ([[GKLocalPlayer localPlayer] isAuthenticated]) {
+        [[GKMatchmaker sharedMatchmaker] setInviteHandler:^(GKInvite *invite, NSArray *playersToInvite) {
+            
+            GKMatchmakerViewController *controller;
+            
+            if (invite) {
+                controller = [[GKMatchmakerViewController alloc] initWithInvite:invite];
+            } else if (playersToInvite.count > 0) {
+                GKMatchRequest *request = [[GKMatchRequest alloc] init];
+                request.playersToInvite = playersToInvite;
+                controller = [[GKMatchmakerViewController alloc] initWithMatchRequest:request];
+            }
+            
+            if (controller) {
+                controller.matchmakerDelegate = [self menuViewController];
+                [[self menuViewController] presentMatchmakerViewController:controller];
+            }
+        }];
+    }
 }
 
 @end
