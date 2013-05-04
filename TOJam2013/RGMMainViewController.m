@@ -7,6 +7,8 @@
 //
 
 #import "RGMMainViewController.h"
+#import "RGMEntity.h"
+#import "RGMInputView.h"
 
 @interface RGMMainViewController () <GKMatchmakerViewControllerDelegate, GKMatchDelegate>
 - (IBAction)joinGameTapped:(id)sender;
@@ -19,9 +21,55 @@
     GKMatch *_match;
     GKVoiceChat *_chat;
     CADisplayLink *_displayLink;
-    NSMutableDictionary *_boxes;
+    NSMutableDictionary *_entities;
     NSMutableDictionary *_views;
     NSTimer *_transmissionTimer;
+    CMMotionManager *_motionManager;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(localPlayerChanged:) name:GKPlayerAuthenticationDidChangeNotificationName object:nil];
+    
+    RGMInputView *input = (RGMInputView *)self.view;
+    [input addTarget:self action:@selector(jump) forControlEvents:UIControlEventTouchDown];
+    [input addTarget:self action:@selector(endJump) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside | UIControlEventTouchCancel];
+}
+
+- (void)jump
+{
+    [[self entityForPlayerID:[self myID]] jump];
+}
+
+- (void)endJump
+{
+    [[self entityForPlayerID:[self myID]] endJump];
+}
+
+
+- (void)localPlayerChanged:(NSNotification *)note
+{
+    NSString *oldID = @"me";
+    RGMEntity *entity = [self entityForPlayerID:oldID];
+    [_entities removeObjectForKey:oldID];
+    
+    NSString *newID = [GKLocalPlayer localPlayer].playerID;
+    RGMEntity *newEntity = [[RGMEntity alloc] initWithIdentifier:newID];
+    newEntity.center = entity.center;
+    newEntity.velocity = entity.velocity;
+    _views[newID] = _views[oldID];
+    [_views removeObjectForKey:oldID];
+    _entities[newID] = newEntity;
+    
+    [[GKLocalPlayer localPlayer] loadPhotoForSize:GKPhotoSizeNormal withCompletionHandler:^(UIImage *photo, NSError *error) {
+        if (photo) {
+            newEntity.image = photo;
+        } else {
+            NSLog(@"error loading photo: %@", error);
+        }
+    }];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -29,7 +77,48 @@
     [super viewDidAppear:animated];
     
     if (!_match) {
-        [self joinGameTapped:nil];
+//        [self joinGameTapped:nil];
+    }
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
+    [self.view addGestureRecognizer:tap];
+    
+    _entities = [NSMutableDictionary new];
+    _entities[[self myID]] = [[RGMEntity alloc] initWithIdentifier:[self myID]];
+    
+    _motionManager = [[CMMotionManager alloc] init];
+    _motionManager.deviceMotionUpdateInterval = 1.0/60.0f;
+    [_motionManager startDeviceMotionUpdates];
+    
+    [self startGame];
+}
+
+- (NSString *)myID
+{
+    NSString *myID = [GKLocalPlayer localPlayer].playerID;
+    if (!myID) {
+        myID = @"me";
+    }
+    
+    return myID;
+}
+
+- (IBAction)tap:(id)sender
+{
+    NSString *playerID = [self myID];
+    RGMEntity *entity = [self entityForPlayerID:playerID];
+    [entity jump];
+    
+    if (_match) {
+        NSError *error;
+        NSData *serializedData = [NSJSONSerialization dataWithJSONObject:@{playerID: [entity serializedCopy]} options:0 error:&error];
+        if (!serializedData) {
+            NSLog(@"error serializing data after jump: %@", error);
+        }
+        
+        if (![_match sendDataToAllPlayers:serializedData withDataMode:GKMatchSendDataReliable error:&error]) {
+            NSLog(@"error sending reliable data: %@", error);
+        }
     }
 }
 
@@ -44,14 +133,11 @@
     controller.matchmakerDelegate = self;
     [self presentViewController:controller animated:YES completion:nil];
 }
-
+ 
 - (void)startGame
 {
     _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(update:)];
     [_displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSRunLoopCommonModes];
-    const NSTimeInterval transmissionRate = 1.0f / 60.f * 5.0f;
-    _transmissionTimer = [[NSTimer alloc] initWithFireDate:nil interval:transmissionRate target:self selector:@selector(transmitData:) userInfo:nil repeats:YES];
-    [[NSRunLoop mainRunLoop] addTimer:_transmissionTimer forMode:NSRunLoopCommonModes];
 }
 
 - (void)stopGame
@@ -61,41 +147,47 @@
     _transmissionTimer = nil;
     [_displayLink invalidate];
     _displayLink = nil;
+    [_motionManager stopDeviceMotionUpdates];
+    _motionManager = nil;
 }
 
 - (void)update:(CADisplayLink *)sender
 {
     NSTimeInterval duration = sender.duration;
     
-    const CGFloat gravity = 20;
-    const CGFloat maxDownwardVelocity = 500;
-    const CGFloat ground = 500;
+    CMDeviceMotion *motion = [_motionManager deviceMotion];
     
-    for (NSString *playerID in [_match.playerIDs arrayByAddingObject:[GKLocalPlayer localPlayer].playerID]) {
-        NSMutableDictionary *data = [self dataForPlayerID:playerID];
-        CGPoint velocity = [data[@"velocity"] CGPointValue];
-        velocity.y += gravity * duration;
-        velocity.y = MIN(maxDownwardVelocity, velocity.y);
-        data[@"velocity"] = [NSValue valueWithCGPoint:velocity];
-        
-        CGPoint position = [data[@"position"] CGPointValue];
-        position.x += velocity.x * duration;
-        position.y += velocity.y * duration;
-        if (position.y > ground) {
-            position.y = ground;
-            velocity.y = velocity.y * -0.9;
-            data[@"velocity"] = [NSValue valueWithCGPoint:velocity];
-        }
-        data[@"position"] = [NSValue valueWithCGPoint:position];
+    const double gravityThreshold = 0.1;
+    
+    RGMEntity *me = [self entityForPlayerID:[self myID]];
+    CGPoint velocity = me.velocity;
+    const CGFloat maxHorizontalVelocity = 500;
+    
+    velocity.x *= 0.98;
+    if (fabs(motion.gravity.y) > gravityThreshold) {
+        velocity.x = (velocity.x * 0.9) + (maxHorizontalVelocity * motion.gravity.y * 0.1);
     }
     
-    [_boxes enumerateKeysAndObjectsUsingBlock:^(id key, id data, BOOL *stop) {
-        UIView *view = [self viewForPlayerID:key];
-        view.center = [data[@"position"] CGPointValue];
+    if (velocity.x > maxHorizontalVelocity) {
+        velocity.x = maxHorizontalVelocity;
+    } else if (velocity.x < -maxHorizontalVelocity) {
+        velocity.x = -maxHorizontalVelocity;
+    }
+    
+    me.velocity = velocity;
+    
+    [_entities enumerateKeysAndObjectsUsingBlock:^(id key, RGMEntity *entity, BOOL *stop) {
+        [entity updateForDuration:duration];
+    }];
+    
+    [_entities enumerateKeysAndObjectsUsingBlock:^(id key, RGMEntity *entity, BOOL *stop) {
+        UIImageView *view = [self viewForPlayerID:key];
+        view.center = entity.center;
+        view.image = entity.image;
     }];
 }
 
-- (UIView *)viewForPlayerID:(NSString *)playerID
+- (UIImageView *)viewForPlayerID:(NSString *)playerID
 {
     if (_views == nil) {
         _views = [NSMutableDictionary new];
@@ -113,19 +205,23 @@
     return view;
 }
 
-- (void)transmitData:(id)sender
+- (void)transmitData
 {
-    NSString *playerID = [[GKLocalPlayer localPlayer] playerID];
-    NSDictionary *boxData = @{playerID: [self dataForPlayerID:playerID]};
+    [self transmitDataWithMode:GKMatchSendDataUnreliable];
+}
+
+- (void)transmitDataWithMode:(GKMatchSendDataMode)mode
+{
+    NSString *playerID = [self myID];
+    NSDictionary *entity = @{playerID: [[self entityForPlayerID:playerID] serializedCopy]};
+    
     NSError *error;
+    NSData *data = [NSJSONSerialization dataWithJSONObject:entity options:0 error:&error];
+    if (!data) {
+        NSLog(@"error encoding JSON object: %@", error);
+    }
     
-    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:boxData];
-//    NSData *data = [NSJSONSerialization dataWithJSONObject:boxData options:0 error:&error];
-//    if (!data) {
-//        NSLog(@"error serializing game data: %@", error);
-//    }
-    
-    if (![_match sendDataToAllPlayers:data withDataMode:GKMatchSendDataUnreliable error:&error]){
+    if (![_match sendDataToAllPlayers:data withDataMode:mode error:&error]){
         NSLog(@"error transmitting data: %@", error);
     }
 }
@@ -145,64 +241,50 @@
 
 - (void)matchmakerViewController:(GKMatchmakerViewController *)viewController didFindMatch:(GKMatch *)match
 {
-    NSLog(@"found match: %@", match);
     [self dismissViewControllerAnimated:YES completion:nil];
     
     _match = match;
     _match.delegate = self;
-    _boxes = [NSMutableDictionary new];
-    
-    for (NSString *playerID in _match.playerIDs) {
-        _boxes[playerID] = [NSMutableDictionary new];
-    }
     
     _chat = [_match voiceChatWithName:@"Chat"];
     [_chat start];
     [_chat setActive:YES];
     
-//    [self greetPlayers];
-    
-    [GKPlayer loadPlayersForIdentifiers:[_match.playerIDs arrayByAddingObject:[GKLocalPlayer localPlayer].playerID]
+    [GKPlayer loadPlayersForIdentifiers:[_match.playerIDs arrayByAddingObject:[self myID]]
                   withCompletionHandler:^(NSArray *players, NSError *error) {
-                      for (GKPlayer *player in players) {
-                          [player loadPhotoForSize:GKPhotoSizeNormal
-                             withCompletionHandler:^(UIImage *photo, NSError *error) {
-                                 dispatch_async(dispatch_get_main_queue(), ^{
-                                     [(UIImageView *)[self viewForPlayerID:player.playerID] setImage:photo];
-                                 });
-                             }];
+                      if (players) {
+                          for (GKPlayer *player in players) {
+                              [player loadPhotoForSize:GKPhotoSizeNormal
+                                 withCompletionHandler:^(UIImage *photo, NSError *error) {
+                                     dispatch_async(dispatch_get_main_queue(), ^{
+                                         if (photo) {
+                                             [self entityForPlayerID:player.playerID].image = photo;
+                                         } else {
+                                             NSLog(@"error loading photo: %@", error);
+                                         }
+                                     });
+                                 }];
+                          }
+                      } else {
+                          NSLog(@"error loading players: %@", error);
                       }
                   }];
     
-    [self startGame];
+    const NSTimeInterval transmissionRate = 1.0f / 60.f * 3.0f;
+    _transmissionTimer = [[NSTimer alloc] initWithFireDate:nil interval:transmissionRate target:self selector:@selector(transmitData) userInfo:nil repeats:YES];
+    [[NSRunLoop mainRunLoop] addTimer:_transmissionTimer forMode:NSRunLoopCommonModes];
 }
 
-- (void)setData:(NSDictionary *)data forPlayerID:(NSString *)playerID
+- (RGMEntity *)entityForPlayerID:(NSString *)playerID
 {
-    NSParameterAssert(data && playerID.length > 0);
-    _boxes[playerID] = [data mutableCopy];
-}
-
-- (id)dataForPlayerID:(NSString *)playerID
-{
-    NSMutableDictionary *data = _boxes[playerID];
-    if (data == nil) {
-        data = [NSMutableDictionary new];
-        data[@"position"] = [NSValue valueWithCGPoint:CGPointMake(25 + arc4random_uniform(200), 25 + arc4random_uniform(50))];
-        data[@"velocity"] = [NSValue valueWithCGPoint:CGPointZero];
-        _boxes[playerID] = data;
+    RGMEntity *entity = _entities[playerID];
+    if (entity == nil) {
+        entity = [[RGMEntity alloc] initWithIdentifier:playerID];
+        entity.center = CGPointMake(25.0 + (CGFloat)arc4random_uniform(50), 25.0 + (CGFloat)arc4random_uniform(50));
+        _entities[playerID] = entity;
     }
     
-    return data;
-}
-
-- (void)greetPlayers
-{
-    NSString *message = [NSString stringWithFormat:@"Hi! I’m %@.", [[GKLocalPlayer localPlayer] alias]];
-    NSError *error;
-    if (![_match sendDataToAllPlayers:[message dataUsingEncoding:NSUTF8StringEncoding] withDataMode:GKMatchSendDataReliable error:&error]) {
-        [self rgm_presentError:error];
-    };
+    return entity;
 }
 
 - (void)matchmakerViewController:(GKMatchmakerViewController *)viewController didFindPlayers:(NSArray *)playerIDs
@@ -231,20 +313,36 @@
 
 - (void)match:(GKMatch *)match didReceiveData:(NSData *)data fromPlayer:(NSString *)playerID
 {
-    NSDictionary *boxData = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    NSError *error;
+    NSDictionary *boxData = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+    if (!boxData) {
+        NSLog(@"error reading JSON data: %@", error);
+    }
     NSParameterAssert(boxData.allKeys.count == 1);
     NSParameterAssert(![boxData.allKeys[0] isEqual:[[GKLocalPlayer localPlayer] playerID]]);
-    [boxData enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-        [self setData:obj forPlayerID:key];
+    [boxData enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSDictionary *JSON, BOOL *stop) {
+        [[self entityForPlayerID:key] setValuesWithJSON:JSON];
     }];
-    
-//    NSString *message = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-//    [[[UIAlertView alloc] initWithTitle:@"Message Received!" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
 }
 
 - (void)match:(GKMatch *)match player:(NSString *)playerID didChangeState:(GKPlayerConnectionState)state
 {
     NSLog(@"player: %@ changed state: %d", playerID, state);
+    
+    switch (state) {
+        case GKPlayerStateConnected:
+            NSLog(@"a challenger appears!!!!");
+            break;
+        case GKPlayerStateDisconnected:
+            NSLog(@"BYE!");
+            [_entities removeObjectForKey:playerID];
+            [[_views objectForKey:playerID] removeFromSuperview];
+            [_views removeObjectForKey:playerID];
+            break;
+        case GKPlayerStateUnknown:
+        default:
+            break;
+    }
 }
 
 - (BOOL)match:(GKMatch *)match shouldReinvitePlayer:(NSString *)playerID

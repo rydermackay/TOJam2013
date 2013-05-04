@@ -10,11 +10,6 @@
 
 @implementation RGMAppDelegate
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
-    return YES;
-}
-
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     [[GKLocalPlayer localPlayer] setAuthenticateHandler:^(UIViewController *controller, NSError *error) {

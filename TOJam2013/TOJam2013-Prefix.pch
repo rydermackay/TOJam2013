@@ -15,5 +15,6 @@
     #import <GLKit/GLKit.h>
     #import <GameKit/GameKit.h>
     #import <OpenGLES/EAGL.h>
+    #import <CoreMotion/CoreMotion.h>
     #import "UIViewController+RGMExtensions.h"
 #endif
