@@ -17,4 +17,7 @@
 @property (nonatomic, strong) NSMutableDictionary *inputs;
 @property (nonatomic, strong) RGMEntity *localPlayer;
 
+- (void)willUpdate;
+- (void)didUpdate;
+
 @end

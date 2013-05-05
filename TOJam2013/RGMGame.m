@@ -48,8 +48,18 @@
     return self.entities.allKeys;
 }
 
+- (void)willUpdate
+{
+    
+}
+
 - (void)updateWithTimestamp:(NSTimeInterval)timestamp duration:(NSTimeInterval)duration
 {
+    [self willUpdate];
+    
+    // test fixed rate
+    duration = 1.0/60.0;
+    
     // apply input
     [self.inputs enumerateKeysAndObjectsUsingBlock:^(NSString *key, id <RGMInput> input, BOOL *stop) {
         RGMEntity *entity = [self entityForIdentifier:key];
@@ -131,7 +141,7 @@
         entity.frameBeforeStepping = CGRectZero;
     }];
     
-    // hit test with other entities
+    [self didUpdate];
 }
 
 - (void)hitTestEntity:(RGMEntity *)entity
@@ -167,6 +177,11 @@
         
         [entity hitTestWithEntity:obj];
     }];
+}
+
+- (void)didUpdate
+{
+    
 }
 
 - (void)addInput:(id)input toEntity:(RGMEntity *)entity

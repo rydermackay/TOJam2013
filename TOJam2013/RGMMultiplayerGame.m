@@ -18,6 +18,13 @@
 @property (nonatomic, strong) GKVoiceChat *chat;
 @property (nonatomic, strong) NSTimer *transmissionTimer;
 @property (nonatomic, strong) NSMutableDictionary *lastEventByPlayerID;
+@property (nonatomic, strong) NSMutableArray *eventProcessingQueue;
+@property (nonatomic, strong) NSMutableArray *eventSendingQueue;
+
+- (void)enqueueEventForProcessing:(RGMEvent *)event;
+- (void)enqueueEventForSending:(RGMEvent *)event;
+- (void)processEvents;
+- (void)sendEvents;
 
 @end
 
@@ -32,6 +39,8 @@
         _match = match;
         _match.delegate = self;
         _lastEventByPlayerID = [NSMutableDictionary new];
+        _eventProcessingQueue = [NSMutableArray new];
+        _eventSendingQueue = [NSMutableArray new];
     }
     
     return self;
@@ -45,7 +54,7 @@
     
     [self loadImagesForPlayers:_match.playerIDs];
     
-    const NSTimeInterval transmissionRate = 1.0f / 60.f * 3.0f;
+    const NSTimeInterval transmissionRate = 1.0f / 60.f * 2.0f;
     _transmissionTimer = [[NSTimer alloc] initWithFireDate:nil interval:transmissionRate target:self selector:@selector(transmitData) userInfo:nil repeats:YES];
     [[NSRunLoop mainRunLoop] addTimer:_transmissionTimer forMode:NSRunLoopCommonModes];
     
@@ -88,7 +97,7 @@
     void (^action)(NSString *, RGMEntity *) = ^(NSString *identifier, RGMEntity *entity){
         NSDictionary *userInfo = @{RGMEventIdentifierKey : identifier, RGMEventAttributesKey : entity};
         RGMEvent *event = [RGMEvent eventWithType:RGMEventTypeUpdate userInfo:userInfo];
-        [self sendEvent:event];
+        [self enqueueEventForSending:event];
     };
     
     if ([self isHostPlayer]) {
@@ -103,6 +112,84 @@
         }
         action(identifier, entity);
     }
+}
+
+- (NSString *)hostPlayer
+{
+    NSArray *IDs = [self.match.playerIDs arrayByAddingObject:[GKLocalPlayer localPlayer].playerID];
+    return [IDs sortedArrayUsingSelector:@selector(compare:)][0];
+}
+
+- (BOOL)isHostPlayer
+{
+    return [[GKLocalPlayer localPlayer].playerID isEqual:[self hostPlayer]];
+}
+
+- (void)end
+{
+    [super end];
+    
+    [_transmissionTimer invalidate];
+    [_match disconnect];
+}
+
+#pragma mark - Overrides
+
+- (RGMEntity *)createEntity:(Class)entityClass identifier:(NSString *)identifier
+{
+    [super createEntity:entityClass identifier:identifier];
+
+    RGMEntity *entity = self.entities[identifier];
+    
+    if ([identifier isEqual:[GKLocalPlayer localPlayer].playerID]) {
+        self.localPlayer = entity;
+    }
+    
+    RGMEvent *event = [RGMEvent eventWithType:RGMEventTypeCreate userInfo:@{ RGMEventIdentifierKey : identifier, RGMEventAttributesKey : entity }];
+    [self enqueueEventForSending:event];
+    
+    return entity;
+}
+
+- (void)updateEntity:(RGMEntity *)entity attributes:(RGMEntity *)attributes
+{
+    entity.x = attributes.x;
+    entity.y = attributes.y;
+    entity.velocity = attributes.velocity;
+    entity.size = attributes.size;
+}
+
+- (void)destroyEntity:(NSString *)identifier
+{
+    [super destroyEntity:identifier];
+    
+    [self enqueueEventForSending:[RGMEvent eventWithType:RGMEventTypeDestroy userInfo:@{RGMEventIdentifierKey: identifier}]];
+}
+
+- (void)willUpdate
+{
+    [self processEvents];
+}
+
+- (void)didUpdate
+{
+    [self sendEvents];
+}
+
+#pragma mark - Event handling
+
+- (void)enqueueEventForSending:(RGMEvent *)event
+{
+    [self.eventSendingQueue addObject:event];
+}
+
+- (void)sendEvents
+{
+    for (RGMEvent *event in self.eventSendingQueue) {
+        [self sendEvent:event];
+    }
+    
+    [self.eventSendingQueue removeAllObjects];
 }
 
 - (void)sendEvent:(RGMEvent *)event
@@ -133,88 +220,26 @@
             NSLog(@"error queueing event: %@", error);
         }
     }
-    
-    
 }
 
-- (NSString *)hostPlayer
+- (void)enqueueEventForProcessing:(RGMEvent *)event
 {
-    NSArray *IDs = [self.match.playerIDs arrayByAddingObject:[GKLocalPlayer localPlayer].playerID];
-    return [IDs sortedArrayUsingSelector:@selector(compare:)][0];
+    [self.eventProcessingQueue addObject:event];
 }
 
-- (BOOL)isHostPlayer
+- (void)processEvents
 {
-    return [[GKLocalPlayer localPlayer].playerID isEqual:[self hostPlayer]];
-}
-
-- (void)end
-{
-    [super end];
-    
-    [_transmissionTimer invalidate];
-    [_match disconnect];
-}
-
-#pragma mark - Overrides
-
-- (RGMEntity *)createEntity:(Class)entityClass identifier:(NSString *)identifier
-{
-    [super createEntity:entityClass identifier:identifier];
-
-    RGMEntity *entity = self.entities[identifier];
-    NSDictionary *userInfo = @{
-                           RGMEventIdentifierKey : identifier,
-                           RGMEventAttributesKey : entity,
-                       };
-    
-    [self sendEvent:[RGMEvent eventWithType:RGMEventTypeCreate userInfo:userInfo]];
-    
-    if ([identifier isEqual:[GKLocalPlayer localPlayer].playerID]) {
-        self.localPlayer = entity;
+    for (RGMEvent *event in self.eventProcessingQueue) {
+        [self processEvent:event];
     }
     
-    return entity;
+    [self.eventProcessingQueue removeAllObjects];
 }
 
-- (void)updateEntity:(RGMEntity *)entity attributes:(RGMEntity *)attributes
+- (void)processEvent:(RGMEvent *)event
 {
-    entity.x = attributes.x;
-    entity.y = attributes.y;
-    entity.velocity = attributes.velocity;
-    entity.size = attributes.size;
-}
-
-- (void)destroyEntity:(NSString *)identifier
-{
-    [super destroyEntity:identifier];
-    [self sendEvent:[RGMEvent eventWithType:RGMEventTypeDestroy userInfo:@{RGMEventIdentifierKey: identifier}]];
-}
-
-#pragma mark - GKMatchDelegate
-
-- (void)match:(GKMatch *)match didFailWithError:(NSError *)error
-{
-    [[[[UIApplication sharedApplication] keyWindow] rootViewController] rgm_presentError:error];
-    [match disconnect];
-}
-
-- (void)match:(GKMatch *)match didReceiveData:(NSData *)data fromPlayer:(NSString *)playerID
-{
-    RGMEvent *event = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-    if (!event) {
-        NSLog(@"error unarchiving data from player: %@", playerID);
-        [match disconnect];
-        return;
-    }
-    
-    RGMEvent *lastEvent = [self.lastEventByPlayerID objectForKey:playerID];
-    if (lastEvent && [lastEvent.date compare:event.date] == NSOrderedDescending) {
-        return; // ignore late events
-    }
-    
     NSDictionary *userInfo = event.userInfo;
-
+    
     switch (event.type) {
         case RGMEventTypeCreate:
             self.entities[userInfo[RGMEventIdentifierKey]] = userInfo[RGMEventAttributesKey];
@@ -244,8 +269,33 @@
         default:
             break;
     }
+}
+
+#pragma mark - GKMatchDelegate
+
+- (void)match:(GKMatch *)match didFailWithError:(NSError *)error
+{
+    [[[[UIApplication sharedApplication] keyWindow] rootViewController] rgm_presentError:error];
+    [match disconnect];
+}
+
+- (void)match:(GKMatch *)match didReceiveData:(NSData *)data fromPlayer:(NSString *)playerID
+{
+    RGMEvent *event = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    if (!event) {
+        NSLog(@"error unarchiving data from player: %@", playerID);
+        [match disconnect];
+        return;
+    }
+    
+    RGMEvent *lastEvent = [self.lastEventByPlayerID objectForKey:playerID];
+    if (lastEvent && [lastEvent.date compare:event.date] == NSOrderedDescending) {
+        return; // ignore late events
+    }
     
     self.lastEventByPlayerID[playerID] = event;
+    
+    [self enqueueEventForProcessing:event];
 }
 
 - (void)match:(GKMatch *)match player:(NSString *)playerID didChangeState:(GKPlayerConnectionState)state
