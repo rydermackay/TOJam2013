@@ -24,7 +24,7 @@
     if (self = [super init]) {
         NSData *mapData = [[NSData alloc] initWithContentsOfURL:[[NSBundle mainBundle] URLForResource:name withExtension:@"json"]];
         NSError *error;
-        NSDictionary *map = [NSJSONSerialization JSONObjectWithData:mapData options:0 error:&error];
+        NSArray *map = [NSJSONSerialization JSONObjectWithData:mapData options:0 error:&error];
         if (!map) {
             NSLog(@"error loading map: %@", error);
             return nil;
@@ -32,20 +32,18 @@
         
         NSMutableArray *obstacles = [NSMutableArray new];
         
-        for (NSDictionary *dictionary in map[@"obstacles"]) {
-            RGMObstacle *obstacle = [[RGMObstacle alloc] init];
-            
-            CGPoint start = CGPointMake([[dictionary valueForKeyPath:@"start.x"] floatValue], [[dictionary valueForKeyPath:@"start.y"] floatValue]);
-            CGPoint end = CGPointMake([[dictionary valueForKeyPath:@"end.x"] floatValue], [[dictionary valueForKeyPath:@"end.y"] floatValue]);
-            obstacle.frame = RGMFrameFromTile(start, end);
-            
-            if ([[dictionary objectForKey:@"type"] isEqual:@"solid"]) {
-                obstacle.mask = RGMObstacleMaskSolid;
-            } else {
-                obstacle.mask = RGMObstacleMaskSolidTop;
+        for (int y = 0; y < map.count; y++) {
+            for (int x = 0; x < [map[y] count]; x++) {
+                RGMObstacleMask mask = [map[y][x] unsignedIntegerValue];
+                if (mask == RGMObstacleMaskNone) {
+                    continue;
+                }
+                
+                RGMObstacle *obstacle = [[RGMObstacle alloc] init];
+                obstacle.frame = RGMFrameForTile(CGPointMake(x, y));
+                obstacle.mask = mask;
+                [obstacles addObject:obstacle];
             }
-            
-            [obstacles addObject:obstacle];
         }
         
         _obstacles = [obstacles copy];
