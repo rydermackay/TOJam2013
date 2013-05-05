@@ -9,6 +9,7 @@
 #import "RGMMenuViewController.h"
 #import "RGMMainViewController.h"
 #import <GameKit/GameKit.h>
+#import "RGMMultiplayerGame.h"
 
 static NSString * const kSingleplayerIdentifier = @"single";
 static NSString * const kMultiplayerIdentifier = @"multi";
@@ -31,10 +32,18 @@ static NSString * const kMultiplayerIdentifier = @"multi";
     RGMMainViewController *controller = segue.destinationViewController;
     NSParameterAssert([controller isKindOfClass:[RGMMainViewController class]]);
     
+    RGMGame *game;
+    
+    NSString *mapName = @"Map";
+    
     if ([segue.identifier isEqualToString:kMultiplayerIdentifier]) {
-        controller.match = _match;
+        game = [[RGMMultiplayerGame alloc] initWithMapName:mapName match:_match];
         _match = nil;
+    } else {
+        game = [[RGMGame alloc] initWithMapName:mapName];
     }
+    
+    controller.game = game;
 }
 
 - (void)presentMatchmakerViewController:(GKMatchmakerViewController *)controller

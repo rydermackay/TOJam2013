@@ -20,6 +20,10 @@
 		0D6B6F2D1735954800AB8766 /* tile-left.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D6B6F2A1735954800AB8766 /* tile-left.png */; };
 		0D6B6F2E1735954800AB8766 /* tile-right.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D6B6F2B1735954800AB8766 /* tile-right.png */; };
 		0D6B6F311735BE6500AB8766 /* RGMMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D6B6F301735BE6400AB8766 /* RGMMenuViewController.m */; };
+		0D6B6F341735ECE700AB8766 /* RGMEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D6B6F331735ECE600AB8766 /* RGMEvent.m */; };
+		0D6B6F371735F01E00AB8766 /* RGMGame.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D6B6F361735F01D00AB8766 /* RGMGame.m */; };
+		0D6B6F3A1735F02F00AB8766 /* RGMMultiplayerGame.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D6B6F391735F02E00AB8766 /* RGMMultiplayerGame.m */; };
+		0DE2196B1736180400C6BC3B /* RGMTileMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DE2196A1736180400C6BC3B /* RGMTileMap.m */; };
 		0DFFC7191733937300A37A1B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DFFC7181733937300A37A1B /* UIKit.framework */; };
 		0DFFC71B1733937300A37A1B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DFFC71A1733937300A37A1B /* Foundation.framework */; };
 		0DFFC71D1733937300A37A1B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DFFC71C1733937300A37A1B /* CoreGraphics.framework */; };
@@ -61,6 +65,16 @@
 		0D6B6F2B1735954800AB8766 /* tile-right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tile-right.png"; sourceTree = "<group>"; };
 		0D6B6F2F1735BE6300AB8766 /* RGMMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RGMMenuViewController.h; sourceTree = "<group>"; };
 		0D6B6F301735BE6400AB8766 /* RGMMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RGMMenuViewController.m; sourceTree = "<group>"; };
+		0D6B6F321735ECE600AB8766 /* RGMEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RGMEvent.h; sourceTree = "<group>"; };
+		0D6B6F331735ECE600AB8766 /* RGMEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RGMEvent.m; sourceTree = "<group>"; };
+		0D6B6F351735F01C00AB8766 /* RGMGame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RGMGame.h; sourceTree = "<group>"; };
+		0D6B6F361735F01D00AB8766 /* RGMGame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RGMGame.m; sourceTree = "<group>"; };
+		0D6B6F381735F02E00AB8766 /* RGMMultiplayerGame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RGMMultiplayerGame.h; sourceTree = "<group>"; };
+		0D6B6F391735F02E00AB8766 /* RGMMultiplayerGame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RGMMultiplayerGame.m; sourceTree = "<group>"; };
+		0D6B6F3B1735F96500AB8766 /* RGMGame_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RGMGame_Private.h; sourceTree = "<group>"; };
+		0D6B6F3F1736039E00AB8766 /* RGMInput.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RGMInput.h; sourceTree = "<group>"; };
+		0DE219691736180400C6BC3B /* RGMTileMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RGMTileMap.h; sourceTree = "<group>"; };
+		0DE2196A1736180400C6BC3B /* RGMTileMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RGMTileMap.m; sourceTree = "<group>"; };
 		0DFFC7151733937300A37A1B /* TOJam2013.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TOJam2013.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0DFFC7181733937300A37A1B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		0DFFC71A1733937300A37A1B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -204,6 +218,16 @@
 		0DFFC7481734541200A37A1B /* Game Model */ = {
 			isa = PBXGroup;
 			children = (
+				0D6B6F3F1736039E00AB8766 /* RGMInput.h */,
+				0DE219691736180400C6BC3B /* RGMTileMap.h */,
+				0DE2196A1736180400C6BC3B /* RGMTileMap.m */,
+				0D6B6F351735F01C00AB8766 /* RGMGame.h */,
+				0D6B6F361735F01D00AB8766 /* RGMGame.m */,
+				0D6B6F3B1735F96500AB8766 /* RGMGame_Private.h */,
+				0D6B6F381735F02E00AB8766 /* RGMMultiplayerGame.h */,
+				0D6B6F391735F02E00AB8766 /* RGMMultiplayerGame.m */,
+				0D6B6F321735ECE600AB8766 /* RGMEvent.h */,
+				0D6B6F331735ECE600AB8766 /* RGMEvent.m */,
 				0DFFC7491734543A00A37A1B /* RGMEntity.h */,
 				0DFFC74A1734543A00A37A1B /* RGMEntity.m */,
 				0D6B6F151735831400AB8766 /* RGMPredator.h */,
@@ -303,6 +327,10 @@
 				0D6B6F1A17358BC900AB8766 /* RGMDefines.m in Sources */,
 				0D6B6F1D17358CD100AB8766 /* RGMPrey.m in Sources */,
 				0D6B6F311735BE6500AB8766 /* RGMMenuViewController.m in Sources */,
+				0D6B6F341735ECE700AB8766 /* RGMEvent.m in Sources */,
+				0D6B6F371735F01E00AB8766 /* RGMGame.m in Sources */,
+				0D6B6F3A1735F02F00AB8766 /* RGMMultiplayerGame.m in Sources */,
+				0DE2196B1736180400C6BC3B /* RGMTileMap.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

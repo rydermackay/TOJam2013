@@ -10,22 +10,20 @@
 
 extern NSTimeInterval invincibilityDuration;
 
-@interface RGMEntity : NSObject
+@interface RGMEntity : NSObject <NSCoding>
 
 - (id)initWithIdentifier:(NSString *)identifier;
 
 @property (nonatomic, copy, readonly) NSString *identifier;
 @property (nonatomic, assign) NSInteger x;
 @property (nonatomic, assign) NSInteger y;
+@property (nonatomic, assign) CGRect frameBeforeStepping;
 @property (nonatomic, assign) CGSize size;
 - (CGRect)frame;
 
 @property (nonatomic, assign) CGPoint velocity;
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, strong) UIColor *color;
-
-- (NSDictionary *)serializedCopy;
-- (void)setValuesWithJSON:(NSDictionary *)JSON;
 
 - (void)updateForDuration:(NSTimeInterval)interval;
 

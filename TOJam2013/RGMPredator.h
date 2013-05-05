@@ -13,5 +13,6 @@
 @interface RGMPredator : RGMEntity
 
 - (void)capturePrey:(RGMPrey *)prey;
+- (void)dropPrey;
 
 @end

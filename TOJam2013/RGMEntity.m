@@ -23,6 +23,30 @@ NSTimeInterval invincibilityDuration = 3;
     NSDate *_jumpDate;
 }
 
+#pragma mark - NSCoding
+
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    if (self = [super init]) {
+        _identifier = [aDecoder decodeObjectForKey:@"identifier"];
+        _x = [aDecoder decodeIntegerForKey:@"x"];
+        _y = [aDecoder decodeIntegerForKey:@"y"];
+        _velocity = [aDecoder decodeCGPointForKey:@"velocity"];
+        _size = [aDecoder decodeCGSizeForKey:@"size"];
+    }
+    
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [aCoder encodeObject:self.identifier forKey:@"identifier"];
+    [aCoder encodeInteger:self.x forKey:@"x"];
+    [aCoder encodeInteger:self.y forKey:@"y"];
+    [aCoder encodeCGPoint:self.velocity forKey:@"velocity"];
+    [aCoder encodeCGSize:self.size forKey:@"size"];
+}
+
 - (id)initWithIdentifier:(NSString *)identifier
 {
     NSParameterAssert(identifier.length > 0);
@@ -39,31 +63,10 @@ NSTimeInterval invincibilityDuration = 3;
     return self;
 }
 
-- (NSDictionary *)serializedCopy
-{
-    return @{
-         @"identifier": self.identifier,
-         @"x": @(self.x),
-         @"y": @(self.y),
-         @"velocity": @{
-                 @"x": @(self.velocity.x),
-                 @"y": @(self.velocity.y)
-                 },
-     }; 
-}
-
-- (void)setValuesWithJSON:(NSDictionary *)JSON
-{
-    self.identifier = [JSON valueForKey:@"identifier"];
-    self.x = [JSON[@"x"] integerValue];
-    self.y = [JSON[@"y"] integerValue];
-    self.velocity = CGPointMake([[JSON valueForKeyPath:@"velocity.x"] floatValue], [[JSON valueForKeyPath:@"velocity.y"] floatValue]);
-}
-
 - (NSString *)description
 {
     NSMutableString *description = [[super description] mutableCopy];
-    [description appendFormat:@"origin: %@, velocity: %@", NSStringFromCGPoint(CGPointMake(self.x, self.y)), NSStringFromCGPoint(self.velocity)];
+    [description appendFormat:@"frame: %@, velocity: %@", NSStringFromCGRect([self frame]), NSStringFromCGPoint(self.velocity)];
     
     return [description copy];
 }
@@ -77,9 +80,7 @@ NSTimeInterval invincibilityDuration = 3;
     velocity.y += gravity * duration;
     velocity.y = MIN(maxDownwardVelocity, velocity.y);
     self.velocity = velocity;
-    
-    self.x += velocity.x * duration;
-    self.y += velocity.y * duration;
+    self.canJump = NO;
 }
 
 - (CGFloat)gravity

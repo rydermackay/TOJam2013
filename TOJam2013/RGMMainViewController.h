@@ -8,10 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@class GKMatch;
+@class RGMGame;
 
 @interface RGMMainViewController : UIViewController
 
-@property (nonatomic, strong) GKMatch *match;
+@property (nonatomic, strong) RGMGame *game;
 
 @end

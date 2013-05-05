@@ -23,8 +23,8 @@ typedef NS_OPTIONS(NSUInteger, RGMObstacleMask) {
 @interface RGMObstacle : NSObject
 
 @property (nonatomic, assign) RGMObstacleMask mask;
-@property (nonatomic, assign) CGPoint tilePosition;
+@property (nonatomic, assign) CGRect frame;
 
-- (BOOL)hitTestEntity:(RGMEntity *)entity obstacleRect:(CGRect)obstacleRect;
+- (BOOL)hitTestEntity:(RGMEntity *)entity;
 
 @end
