@@ -7,6 +7,7 @@
 //
 
 #import "RGMPrey.h"
+#import "RGMPredator.h"
 
 @implementation RGMPrey {
     BOOL _invincible;
@@ -15,6 +16,18 @@
 - (CGSize)size
 {
     return CGSizeMake(RGMTileSize * 0.5, RGMTileSize * 0.5);
+}
+
+- (void)jump
+{
+    if (self.isCaptured) {
+        // roll to escape
+        if (!arc4random_uniform(10)){
+            [self.predator dropPrey];
+        }
+    } else {
+        [super jump];
+    }
 }
 
 - (void)updateForDuration:(NSTimeInterval)interval

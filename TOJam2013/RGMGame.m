@@ -193,8 +193,9 @@
 - (RGMEntity *)createEntity:(Class)entityClass identifier:(NSString *)identifier
 {
     NSParameterAssert(entityClass != NULL && identifier.length > 0);
-    id entity = [[entityClass alloc] initWithIdentifier:identifier];
+    RGMEntity *entity = [[entityClass alloc] initWithIdentifier:identifier];
     [self.entities setObject:entity forKey:identifier];
+    entity.game = self;
     
     return entity;
 }

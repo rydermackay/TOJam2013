@@ -241,12 +241,15 @@
     NSDictionary *userInfo = event.userInfo;
     
     switch (event.type) {
-        case RGMEventTypeCreate:
-            self.entities[userInfo[RGMEventIdentifierKey]] = userInfo[RGMEventAttributesKey];
+        case RGMEventTypeCreate: {
+            RGMEntity *entity = userInfo[RGMEventAttributesKey];
+            entity.game = self;
+            self.entities[userInfo[RGMEventIdentifierKey]] = entity;
             if ([userInfo[RGMEventIdentifierKey] isEqual:[GKLocalPlayer localPlayer].playerID]) {
                 self.localPlayer = userInfo[RGMEventAttributesKey];
             }
             break;
+        }
         case RGMEventTypeUpdate:
             if ([userInfo[RGMEventIdentifierKey] isEqual:[GKLocalPlayer localPlayer].playerID]) {
                 return; // TODO: need drift correction event if client gets out of sync

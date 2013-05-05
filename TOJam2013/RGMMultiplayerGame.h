@@ -17,6 +17,6 @@
 
 @property (nonatomic, strong, readonly) GKMatch *match;
 
-- (void)sendEvent:(RGMEvent *)event;
+- (void)enqueueEventForSending:(RGMEvent *)event;
 
 @end

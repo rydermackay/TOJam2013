@@ -8,8 +8,11 @@
 
 #import "RGMEntity.h"
 
+@class RGMPredator;
+
 @interface RGMPrey : RGMEntity
 
 @property (nonatomic, assign, getter = isCaptured) BOOL captured;
+@property (nonatomic, weak) RGMPredator *predator;
 
 @end

@@ -10,6 +10,8 @@
 
 extern NSTimeInterval invincibilityDuration;
 
+@class RGMGame;
+
 @interface RGMEntity : NSObject <NSCoding>
 
 - (id)initWithIdentifier:(NSString *)identifier;
@@ -36,5 +38,7 @@ extern NSTimeInterval invincibilityDuration;
 
 
 - (BOOL)hitTestWithEntity:(RGMEntity *)entity;
+
+@property (nonatomic, weak) RGMGame *game;
 
 @end
