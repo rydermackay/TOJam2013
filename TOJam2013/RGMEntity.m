@@ -127,4 +127,9 @@ NSTimeInterval invincibilityDuration = 3;
     self.invincible = NO;
 }
 
+- (BOOL)hitTestWithEntity:(RGMEntity *)entity
+{
+    return NO;
+}
+
 @end

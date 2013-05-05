@@ -279,65 +279,6 @@
     
     [self.game updateWithTimestamp:sender.timestamp duration:sender.duration];
     
-//    [_entities enumerateKeysAndObjectsUsingBlock:^(id key, RGMEntity *entity, BOOL *stop) {
-//        [entity updateForDuration:duration];
-//        
-//        CGRect frame = entity.frame;
-//        CGRect bounds = _gameScene.bounds;
-//        
-//        if (CGRectGetMinX(frame) < CGRectGetMinX(bounds)) {
-//            entity.x = CGRectGetMinX(bounds);
-//            entity.velocity = CGPointMake(0, entity.velocity.y);
-//        }
-//        if (CGRectGetMaxX(frame) > CGRectGetMaxX(bounds)) {
-//            entity.x = CGRectGetMaxX(bounds) - CGRectGetWidth(frame);
-//            entity.velocity = CGPointMake(0, entity.velocity.y);
-//        }
-//        if (CGRectGetMaxY(frame) > CGRectGetMaxY(bounds)) {
-//            entity.y = CGRectGetMaxY(bounds) - CGRectGetHeight(frame);
-//            entity.velocity = CGPointMake(entity.velocity.x, 0);
-//            entity.canJump = YES;
-//        }
-//    }];
-//    
-//    [_entities enumerateKeysAndObjectsUsingBlock:^(id key, RGMEntity *entity, BOOL *stop) {
-//        [_obstacles enumerateObjectsUsingBlock:^(RGMObstacle *obstacle, NSUInteger idx, BOOL *stop) {
-//            UIView *view = _obstacleViews[idx];
-//            [obstacle hitTestEntity:entity obstacleRect:view.frame];
-//        }];
-//        
-//        for (NSString *otherKey in _entities) {
-//            if ([otherKey isEqualToString:key]) {
-//                continue;
-//            }
-//            
-//            RGMEntity *otherEntity = _entities[otherKey];
-//            CGRect frame = entity.frame;
-//            CGRect otherFrame = otherEntity.frame;
-//            
-//            if ([entity isKindOfClass:[RGMPredator class]] && [otherEntity isKindOfClass:[RGMPrey class]]) {
-//                if (CGRectIntersectsRect(frame, otherFrame)) {
-//                    [(RGMPredator *)entity capturePrey:(RGMPrey *)otherEntity];
-//                }
-//            } else if ([otherEntity isKindOfClass:[RGMPredator class]] && [entity isKindOfClass:[RGMPrey class]]) {
-//                if (CGRectIntersectsRect(frame, otherFrame)) {
-//                    [(RGMPredator *)otherEntity capturePrey:(RGMPrey *)entity];
-//                }
-//            }
-//            
-//            return;
-//            
-//            if (CGRectGetMaxX(frame) > CGRectGetMinX(otherFrame) &&
-//                CGRectGetMinX(frame) < CGRectGetMaxX(otherFrame) &&
-//                CGRectGetMaxY(frame) > CGRectGetMinY(otherFrame) &&
-//                CGRectGetMinY(frame) < CGRectGetMaxY(otherFrame)) {
-//                entity.y = CGRectGetMinY(otherFrame) - CGRectGetHeight(frame);
-//                entity.velocity = CGPointMake(entity.velocity.x, 0);
-//                entity.canJump = YES;
-//            }
-//        }
-//    }];
-//
     for (NSString *identifier in self.game.identifiers) {
         RGMEntity *entity = [self.game entityForIdentifier:identifier];
         UIImageView *view = [_entityViews objectForKey:identifier];

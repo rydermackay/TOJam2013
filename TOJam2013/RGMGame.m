@@ -82,6 +82,9 @@
     [self.entities enumerateKeysAndObjectsUsingBlock:^(NSString *key, RGMEntity *entity, BOOL *stop) {
         
         [entity updateForDuration:duration];
+        if ([entity isKindOfClass:[RGMPrey class]] && [(RGMPrey *)entity isCaptured]) {
+            return;
+        }
         
         entity.frameBeforeStepping = entity.frame;
         
@@ -151,6 +154,19 @@
         entity.velocity = CGPointMake(entity.velocity.x, 0);
         entity.canJump = YES;
     }
+    
+    [self hitTestAgainstOtherEntities:entity];
+}
+
+- (void)hitTestAgainstOtherEntities:(RGMEntity *)entity
+{
+    [self.entities enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        if ([entity.identifier isEqual:key]) {
+            return;
+        }
+        
+        [entity hitTestWithEntity:obj];
+    }];
 }
 
 - (void)addInput:(id)input toEntity:(RGMEntity *)entity

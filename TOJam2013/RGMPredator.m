@@ -57,4 +57,16 @@ static NSTimeInterval captivePreyDuration = 5;
     _captivePrey.x = self.x + (self.size.width - _captivePrey.size.width) * 0.5f;
 }
 
+- (BOOL)hitTestWithEntity:(RGMEntity *)entity
+{
+    if ([entity isKindOfClass:[RGMPrey class]]) {
+        if (CGRectIntersectsRect(self.frame, entity.frame)) {
+            [self capturePrey:(RGMPrey *)entity];
+            return YES;
+        }
+    }
+    
+    return NO;
+}
+
 @end
