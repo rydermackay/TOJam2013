@@ -88,27 +88,10 @@
         NSInteger dx = entity.velocity.x * duration;
         NSInteger dy = entity.velocity.y * duration;
         
-        CGRect frame = entity.frame;
-        CGRect bounds = RGMFrameFromTile(CGPointMake(0, 0), CGPointMake(RGMFieldSize.width, RGMFieldSize.height));
-
-        if (CGRectGetMinX(frame) < CGRectGetMinX(bounds)) {
-            entity.x = CGRectGetMinX(bounds);
-            entity.velocity = CGPointMake(0, entity.velocity.y);
-        }
-        if (CGRectGetMaxX(frame) > CGRectGetMaxX(bounds)) {
-            entity.x = CGRectGetMaxX(bounds) - CGRectGetWidth(frame);
-            entity.velocity = CGPointMake(0, entity.velocity.y);
-        }
-        if (CGRectGetMaxY(frame) > CGRectGetMaxY(bounds)) {
-            entity.y = CGRectGetMaxY(bounds) - CGRectGetHeight(frame);
-            entity.velocity = CGPointMake(entity.velocity.x, 0);
-            entity.canJump = YES;
-        }
-        
-        
         if (dx > 0) {
             for (NSInteger i = 0; i < dx; i++) {
                 entity.x++;
+                [self hitTestEntity:entity];
                 for (RGMObstacle *obstacle in self.tileMap.obstacles) {
                     [obstacle hitTestEntity:entity];
                 }
@@ -116,6 +99,7 @@
         } else if (dx < 0) {
             for (NSInteger i = 0; i > dx; i--) {
                 entity.x--;
+                [self hitTestEntity:entity];
                 for (RGMObstacle *obstacle in self.tileMap.obstacles) {
                     [obstacle hitTestEntity:entity];
                 }
@@ -126,6 +110,7 @@
         if (dy > 0) {
             for (NSInteger i = 0; i < dy; i++) {
                 entity.y++;
+                [self hitTestEntity:entity];
                 for (RGMObstacle *obstacle in self.tileMap.obstacles) {
                     [obstacle hitTestEntity:entity];
                 }
@@ -133,6 +118,7 @@
         } else if (dy < 0) {
             for (NSInteger i = 0; i > dy; i--) {
                 entity.y--;
+                [self hitTestEntity:entity];
                 for (RGMObstacle *obstacle in self.tileMap.obstacles) {
                     [obstacle hitTestEntity:entity];
                 }
@@ -142,7 +128,29 @@
         entity.frameBeforeStepping = CGRectZero;
     }];
     
-    // hit test entities
+    // hit test with other entities
+}
+
+- (void)hitTestEntity:(RGMEntity *)entity
+{
+    CGRect frame = entity.frame;
+    CGRect bounds = RGMFrameFromTile(CGPointMake(0, 0), CGPointMake(RGMFieldSize.width - 1, RGMFieldSize.height - 1));
+    
+    if (CGRectGetMinX(frame) < CGRectGetMinX(bounds)) {
+        entity.x = CGRectGetMinX(bounds);
+        entity.velocity = CGPointMake(0, entity.velocity.y);
+    }
+    
+    if (CGRectGetMaxX(frame) > CGRectGetMaxX(bounds)) {
+        entity.x = CGRectGetMaxX(bounds) - CGRectGetWidth(frame);
+        entity.velocity = CGPointMake(0, entity.velocity.y);
+    }
+    
+    if (CGRectGetMaxY(frame) > CGRectGetMaxY(bounds)) {
+        entity.y = CGRectGetMaxY(bounds) - CGRectGetHeight(frame);
+        entity.velocity = CGPointMake(entity.velocity.x, 0);
+        entity.canJump = YES;
+    }
 }
 
 - (void)addInput:(id)input toEntity:(RGMEntity *)entity
