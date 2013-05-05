@@ -28,5 +28,6 @@ extern NSString * const RGMEventAttributesKey;  // attributes
 
 @property (nonatomic, assign, readonly) RGMEventType type;
 @property (nonatomic, copy, readonly) NSDictionary *userInfo;
+@property (nonatomic, strong, readonly) NSDate *date;
 
 @end

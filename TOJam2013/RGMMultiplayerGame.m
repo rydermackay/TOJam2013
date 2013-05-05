@@ -17,6 +17,7 @@
 @property (nonatomic, copy) NSString *hostPlayer;
 @property (nonatomic, strong) GKVoiceChat *chat;
 @property (nonatomic, strong) NSTimer *transmissionTimer;
+@property (nonatomic, strong) NSMutableDictionary *lastEventByPlayerID;
 
 @end
 
@@ -30,6 +31,7 @@
     if (self = [super initWithMapName:mapName]) {
         _match = match;
         _match.delegate = self;
+        _lastEventByPlayerID = [NSMutableDictionary new];
     }
     
     return self;
@@ -206,6 +208,11 @@
         return;
     }
     
+    RGMEvent *lastEvent = [self.lastEventByPlayerID objectForKey:playerID];
+    if (lastEvent && [lastEvent.date compare:event.date] == NSOrderedDescending) {
+        return; // ignore late events
+    }
+    
     NSDictionary *userInfo = event.userInfo;
 
     switch (event.type) {
@@ -216,6 +223,9 @@
             }
             break;
         case RGMEventTypeUpdate:
+            if ([userInfo[RGMEventIdentifierKey] isEqual:[GKLocalPlayer localPlayer].playerID]) {
+                return; // TODO: need drift correction event if client gets out of sync
+            }
             [self updateEntity:self.entities[userInfo[RGMEventIdentifierKey]] attributes:userInfo[RGMEventAttributesKey]];
             break;
         case RGMEventTypeCapture:{
@@ -234,6 +244,8 @@
         default:
             break;
     }
+    
+    self.lastEventByPlayerID[playerID] = event;
 }
 
 - (void)match:(GKMatch *)match player:(NSString *)playerID didChangeState:(GKPlayerConnectionState)state

@@ -17,6 +17,7 @@ NSString * const RGMEventAttributesKey  = @"attributes";
 
 @property (nonatomic, assign, readwrite) RGMEventType type;
 @property (nonatomic, copy, readwrite) NSDictionary *userInfo;
+@property (nonatomic, strong, readwrite) NSDate *date;
 
 @end
 
@@ -50,6 +51,7 @@ NSString * const RGMEventAttributesKey  = @"attributes";
         }
         
         _userInfo = [userInfo copy];
+        _date = [NSDate date];
     }
     
     return self;
@@ -60,6 +62,7 @@ NSString * const RGMEventAttributesKey  = @"attributes";
     if (self = [super init]) {
         _type = [aDecoder decodeIntegerForKey:@"type"];
         _userInfo = [aDecoder decodeObjectForKey:@"userInfo"];
+        _date = [aDecoder decodeObjectForKey:@"date"];
     }
     
     return self;
@@ -69,6 +72,7 @@ NSString * const RGMEventAttributesKey  = @"attributes";
 {
     [aCoder encodeInteger:self.type forKey:@"type"];
     [aCoder encodeObject:self.userInfo forKey:@"userInfo"];
+    [aCoder encodeObject:self.date forKey:@"date"];
 }
 
 @end
