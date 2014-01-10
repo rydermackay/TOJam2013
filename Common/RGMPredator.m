@@ -66,7 +66,7 @@ static NSTimeInterval captivePreyDuration = 5;
 - (void)setY:(NSInteger)y
 {
     [super setY:y];
-    _captivePrey.y = CGRectGetMinY(self.frame) - _captivePrey.size.height;
+    _captivePrey.y = CGRectGetMaxY(self.frame);
 }
 
 - (void)setX:(NSInteger)x

@@ -25,10 +25,10 @@
     if (mask & RGMObstacleMaskSolidBottom) {
         if (CGRectGetMinX(entityRect) < CGRectGetMaxX(obstacleRect) &&
             CGRectGetMaxX(entityRect) > CGRectGetMinX(obstacleRect) &&
-            CGRectGetMinY(entityRect) < CGRectGetMaxY(obstacleRect) &&  // collision
-            CGRectGetMinY(entity.frameBeforeStepping) >= CGRectGetMaxY(obstacleRect)) {
+            CGRectGetMaxY(entityRect) > CGRectGetMinY(obstacleRect) &&
+            CGRectGetMaxY(entity.frameBeforeStepping) <= CGRectGetMinY(obstacleRect)) {  // collision
             entity.velocity = CGPointMake(entity.velocity.x, 0);
-            entity.y = CGRectGetMaxY(obstacleRect);
+            entity.y = CGRectGetMinY(obstacleRect) - entity.size.height;
             [entity endJump];
             return YES;
         }
@@ -37,10 +37,10 @@
     if (mask & RGMObstacleMaskSolidTop) {
         if (CGRectGetMinX(entityRect) < CGRectGetMaxX(obstacleRect) &&
             CGRectGetMaxX(entityRect) > CGRectGetMinX(obstacleRect) &&
-            CGRectGetMaxY(entityRect) > CGRectGetMinY(obstacleRect) &&
-            CGRectGetMaxY(entity.frameBeforeStepping) <= CGRectGetMinY(obstacleRect)) {  // collision
+            CGRectGetMinY(entityRect) < CGRectGetMaxY(obstacleRect) &&  // collision
+            CGRectGetMinY(entity.frameBeforeStepping) >= CGRectGetMaxY(obstacleRect)) {
             entity.velocity = CGPointMake(entity.velocity.x, 0);
-            entity.y = CGRectGetMinY(obstacleRect) - entity.size.height;
+            entity.y = CGRectGetMaxY(obstacleRect);
             entity.canJump = YES;
             return YES;
         }

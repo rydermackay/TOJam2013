@@ -36,8 +36,9 @@
     
     [self.game.tileMap.obstacles enumerateObjectsUsingBlock:^(RGMObstacle *obstacle, NSUInteger idx, BOOL *stop) {
         SKSpriteNode *node = [SKSpriteNode node];
-        node.position = obstacle.frame.origin;
         node.size = obstacle.frame.size;
+        node.position = CGPointMake(CGRectGetMinX(obstacle.frame) + floorf(CGRectGetWidth(node.frame) * 0.5),
+                                    CGRectGetMinY(obstacle.frame) + floorf(CGRectGetHeight(node.frame) * 0.5));
         
         if (obstacle.mask == RGMObstacleMaskSolid) {
             node.texture = [SKTexture textureWithImageNamed:@"tile-solid"];
@@ -70,7 +71,8 @@
         }
         node.hidden = NO;
         node.size = entity.frame.size;
-        node.position = entity.frame.origin;
+        node.position = CGPointMake(entity.x + floorf(CGRectGetWidth(node.frame) * 0.5),
+                                    entity.y + floorf(CGRectGetHeight(node.frame) * 0.5));
 //        node.texture = entity.image ? [SKTexture textureWithCGImage:entity.image.CGImage] : nil;
         node.color = [entity color] ?: [SKColor yellowColor];
         if (entity.isInvincible && ((NSInteger)((currentTime) * 5) % 2 == 0)) {
