@@ -14,6 +14,10 @@
 #import "RGMObstacle.h"
 #import "RGMEntity.h"
 
+#if !TARGET_OS_IPHONE
+#import <Carbon/Carbon.h>
+#endif
+
 @implementation RGMScene {
     SKSpriteNode *_sprite;
     RGMInputMask _inputMask;
@@ -82,47 +86,32 @@
 }
 
 #if !TARGET_OS_IPHONE
-- (void)keyDown:(NSEvent *)theEvent {
-    switch ([theEvent keyCode]) {
-        case 49:    // Space
-            _inputMask |= RGMInputMaskJump;
-            break;
-        case 123:    // Left arrow
-            _inputMask |= RGMInputMaskLeft;
-            break;
-        case 124:    // Right arrow
-            _inputMask |= RGMInputMaskRight;
-            break;
-        case 125:    // Down arrow
-            _inputMask |= RGMInputMaskDown;
-            break;
-        case 126:    // Up arrow
-            _inputMask |= RGMInputMaskUp;
-            break;
+
+// http://boredzo.org/blog/archives/2007-05-22/virtual-key-codes
+
+static inline RGMInputMask RGMInputMaskFromKeyCode(unsigned short keyCode) {
+    switch (keyCode) {
+        case kVK_Space:
+            return RGMInputMaskJump;
+        case kVK_LeftArrow:
+            return RGMInputMaskLeft;
+        case kVK_RightArrow:
+            return RGMInputMaskRight;
+        case kVK_DownArrow:
+            return RGMInputMaskDown;
+        case kVK_UpArrow:
+            return RGMInputMaskUp;
         default:
-            break;
+            return 0;
     }
 }
 
+- (void)keyDown:(NSEvent *)theEvent {
+    _inputMask |= RGMInputMaskFromKeyCode([theEvent keyCode]);
+}
+
 - (void)keyUp:(NSEvent *)theEvent {
-    switch ([theEvent keyCode]) {
-        case 49:    // Space
-            _inputMask &= ~RGMInputMaskJump;
-        case 123:    // Left arrow
-            _inputMask &= ~RGMInputMaskLeft;
-            break;
-        case 124:    // Right arrow
-            _inputMask &= ~RGMInputMaskRight;
-            break;
-        case 125:    // Down arrow
-            _inputMask &= ~RGMInputMaskDown;
-            break;
-        case 126:    // Up arrow
-            _inputMask &= ~RGMInputMaskUp;
-            break;
-        default:
-            break;
-    }
+    _inputMask &= ~RGMInputMaskFromKeyCode([theEvent keyCode]);
 }
 
 - (RGMInputMask)inputMask
