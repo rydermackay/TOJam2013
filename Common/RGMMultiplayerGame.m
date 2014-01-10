@@ -76,7 +76,7 @@
                       if (players) {
                           for (GKPlayer *player in players) {
                               [player loadPhotoForSize:GKPhotoSizeNormal
-                                 withCompletionHandler:^(UIImage *photo, NSError *error) {
+                                 withCompletionHandler:^(id photo, NSError *error) {
                                      dispatch_async(dispatch_get_main_queue(), ^{
                                          if (photo) {
                                              [self entityForIdentifier:player.playerID].image = photo;
@@ -278,7 +278,11 @@
 
 - (void)match:(GKMatch *)match didFailWithError:(NSError *)error
 {
+#if TARGET_OS_IPHONE
     [[[[UIApplication sharedApplication] keyWindow] rootViewController] rgm_presentError:error];
+#else
+    [NSApp presentError:error];
+#endif
     [match disconnect];
 }
 
@@ -303,8 +307,6 @@
 
 - (void)match:(GKMatch *)match player:(NSString *)playerID didChangeState:(GKPlayerConnectionState)state
 {
-    NSLog(@"player %@ didChangeState: %d", playerID, state);
-    
     switch (state) {
         case GKPlayerStateConnected:
             if ([self isHostPlayer]) {

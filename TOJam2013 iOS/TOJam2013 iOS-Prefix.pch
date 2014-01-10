@@ -12,9 +12,8 @@
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
     #import <QuartzCore/QuartzCore.h>
-    #import <GLKit/GLKit.h>
+    #import <SpriteKit/SpriteKit.h>
     #import <GameKit/GameKit.h>
-    #import <OpenGLES/EAGL.h>
     #import <CoreMotion/CoreMotion.h>
     #import "UIViewController+RGMExtensions.h"
     #import "RGMDefines.h"

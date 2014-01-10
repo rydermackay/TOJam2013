@@ -12,7 +12,7 @@
 @implementation RGMAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
+{    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationChanged:) name:GKPlayerAuthenticationDidChangeNotificationName object:nil];
     
     return YES;

@@ -34,13 +34,14 @@
         
         for (int y = 0; y < map.count; y++) {
             for (int x = 0; x < [map[y] count]; x++) {
+                const CGPoint tile = CGPointMake(x, map.count - 1 - y);
                 RGMObstacleMask mask = [map[y][x] unsignedIntegerValue];
                 if (mask == RGMObstacleMaskNone) {
                     continue;
                 }
                 
                 RGMObstacle *obstacle = [[RGMObstacle alloc] init];
-                obstacle.frame = RGMFrameForTile(CGPointMake(x, y));
+                obstacle.frame = RGMFrameForTile(tile);
                 obstacle.mask = mask;
                 [obstacles addObject:obstacle];
             }

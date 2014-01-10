@@ -20,7 +20,7 @@
 - (void)start;
 - (void)end;
 
-- (void)updateWithTimestamp:(NSTimeInterval)timestamp duration:(NSTimeInterval)duration;
+- (void)update:(CFTimeInterval)currentTime;
 
 - (RGMEntity *)createEntity:(Class)entityClass identifier:(NSString *)identifier;
 - (void)destroyEntity:(NSString *)identifier;

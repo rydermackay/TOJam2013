@@ -6,7 +6,8 @@
 //  Copyright (c) 2013 Ryder Mackay. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+@import Foundation;
+@import SpriteKit;
 
 extern NSTimeInterval invincibilityDuration;
 
@@ -24,8 +25,14 @@ extern NSTimeInterval invincibilityDuration;
 - (CGRect)frame;
 
 @property (nonatomic, assign) CGPoint velocity;
+
+#if TARGET_OS_IPHONE
 @property (nonatomic, strong) UIImage *image;
-@property (nonatomic, strong) UIColor *color;
+#else
+@property (nonatomic, strong) NSImage *image;
+#endif
+
+@property (nonatomic, strong) SKColor *color;
 
 - (void)updateForDuration:(NSTimeInterval)interval;
 

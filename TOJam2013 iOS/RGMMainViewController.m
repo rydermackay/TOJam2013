@@ -14,8 +14,10 @@
 #import "RGMPrey.h"
 #import "RGMGame.h"
 #import "RGMInput.h"
+#import "RGMScene.h"
+@import SpriteKit;
 
-@interface RGMMainViewController () <GLKViewDelegate, RGMInput>
+@interface RGMMainViewController () <RGMInput>
 
 @property (strong, nonatomic) IBOutlet UIView *overlay;
 @property (strong, nonatomic) IBOutlet UIButton *toggleOverlayButton;
@@ -28,13 +30,10 @@
 
 
 @implementation RGMMainViewController {
-    CADisplayLink *_displayLink;
     CMMotionManager *_motionManager;
-    UIView *_gameScene;
     RGMInputMask _inputMask;
-
-    NSMutableDictionary *_entityViews;
-    NSMutableArray *_obstacleViews;
+    SKView *_sceneView;
+    RGMScene *_scene;
 }
 
 - (IBAction)quit:(id)sender
@@ -79,46 +78,23 @@
     [input addTarget:self action:@selector(jump) forControlEvents:UIControlEventTouchDown];
     [input addTarget:self action:@selector(endJump) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside | UIControlEventTouchCancel];
     
-//    _context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2 sharegroup:nil];
-//    _glkView = [[GLKView alloc] initWithFrame:CGRectZero context:_context];
-//    _glkView.delegate = self;
-//    _glkView.enableSetNeedsDisplay = NO;
-    
-//    _effect = [[GLKBaseEffect alloc] init];
-    
-//    [self.view addSubview:_glkView];
-    
-    _entityViews = [NSMutableDictionary new];
-    _obstacleViews = [NSMutableArray new];
-    
-    self.view.backgroundColor = [UIColor blackColor];
-    
-    _gameScene = [[UIView alloc] initWithFrame:CGRectZero];
-    _gameScene.translatesAutoresizingMaskIntoConstraints = YES;
-    _gameScene.backgroundColor = [UIColor whiteColor];
-    _gameScene.layer.magnificationFilter = kCAFilterNearest;
-    _gameScene.layer.minificationFilter = kCAFilterTrilinear;
-    _gameScene.userInteractionEnabled = NO;
-    _gameScene.autoresizesSubviews = NO;
-    _gameScene.autoresizingMask = UIViewAutoresizingNone;
-    _gameScene.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"tile-clear"]];
-    [self.view insertSubview:_gameScene atIndex:0];
-    
-    [self.game.tileMap.obstacles enumerateObjectsUsingBlock:^(RGMObstacle *obstacle, NSUInteger idx, BOOL *stop) {
-        UIView *view = [[UIView alloc] initWithFrame:obstacle.frame];
-        view.layer.magnificationFilter = kCAFilterNearest;
-        
-        if (obstacle.mask == RGMObstacleMaskSolid) {
-            view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"tile-solid"]];
-        } else if (obstacle.mask == RGMObstacleMaskSolidTop) {
-            view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"tile-top"]];
-        }
-        
-        [_obstacleViews addObject:view];
-        [_gameScene addSubview:view];
-    }];
+    _sceneView = [[SKView alloc] initWithFrame:self.view.bounds];
+    _sceneView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    _sceneView.autoresizesSubviews = NO;
+    _sceneView.translatesAutoresizingMaskIntoConstraints = YES;
+    _sceneView.backgroundColor = [UIColor whiteColor];
+    _sceneView.layer.magnificationFilter = kCAFilterNearest;
+    _sceneView.layer.minificationFilter = kCAFilterTrilinear;
+    _sceneView.userInteractionEnabled = NO;
+    _sceneView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"tile-clear"]];
+    [self.view insertSubview:_sceneView atIndex:0];
+    _scene = [[RGMScene alloc] initWithSize:CGSizeMake(640, 480)];
+    _scene.scaleMode = SKSceneScaleModeAspectFit;
+    [_sceneView presentScene:_scene];
     
     [self.game addObserver:self forKeyPath:@"localPlayer" options:NSKeyValueObservingOptionNew context:NULL];
+    
+    _scene.game = self.game;
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -130,21 +106,6 @@
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
-}
-
-- (void)viewDidLayoutSubviews
-{
-    [super viewDidLayoutSubviews];
-    
-//    _glkView.frame = self.view.bounds;
-    
-    CGRect bounds = self.view.bounds;
-    CGFloat scale = MIN((CGRectGetWidth(bounds) / (RGMFieldSize.width * RGMTileSize)),
-                        (CGRectGetHeight(bounds) / (RGMFieldSize.height * RGMTileSize)));
-    
-    _gameScene.bounds = CGRectMake(0, 0, RGMFieldSize.width * RGMTileSize, RGMFieldSize.height * RGMTileSize);
-    _gameScene.transform = CGAffineTransformMakeScale(scale, scale);
-    _gameScene.center = CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds));
 }
 
 - (void)jump
@@ -195,8 +156,8 @@
 {
     [super viewWillAppear:animated];
     
-    if (_displayLink.isPaused) {
-        _displayLink.paused = NO;
+    if (_sceneView.isPaused) {
+        _scene.paused = NO;
         return;
     }
     
@@ -207,7 +168,7 @@
 {
     [super viewWillDisappear:animated];
     
-    _displayLink.paused = YES;
+    _scene.paused = YES;
     
     if (self.isBeingDismissed || self.isMovingFromParentViewController) {
         [self stopGame];
@@ -239,26 +200,22 @@
     
     _motionManager = [[CMMotionManager alloc] init];
     _motionManager.deviceMotionUpdateInterval = 1.0/60.0f;
-    [_motionManager startDeviceMotionUpdates];
-    
-    _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(update:)];
-    [_displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSRunLoopCommonModes];
+    [_motionManager startDeviceMotionUpdatesToQueue:[NSOperationQueue mainQueue]
+                                        withHandler:^(CMDeviceMotion *motion, NSError *error) {
+                                            [self update];
+                                        }];
 }
 
 - (void)stopGame
 {
     [self.game end];
     
-    [_displayLink invalidate];
-    _displayLink = nil;
     [_motionManager stopDeviceMotionUpdates];
     _motionManager = nil;
 }
 
-- (void)update:(CADisplayLink *)sender
+- (void)update
 {
-    NSTimeInterval duration = sender.duration;
-    
     CMDeviceMotion *motion = [_motionManager deviceMotion];
     
     _inputMask &= ~RGMInputMaskLeft;
@@ -276,63 +233,7 @@
     }
     
     NSParameterAssert(_inputMask != (RGMInputMaskLeft | RGMInputMaskRight));
-    
-    [self.game updateWithTimestamp:sender.timestamp duration:sender.duration];
-    
-    for (NSString *identifier in self.game.identifiers) {
-        RGMEntity *entity = [self.game entityForIdentifier:identifier];
-        UIImageView *view = [_entityViews objectForKey:identifier];
-        if (view == nil) {
-            view = [[UIImageView alloc] initWithFrame:entity.frame];
-            _entityViews[identifier] = view;
-            [_gameScene addSubview:view];
-        }
-        view.hidden = NO;
-        view.frame = entity.frame;
-        view.image = entity.image;
-        view.backgroundColor = [entity color] ?: [UIColor yellowColor];
-        if (entity.isInvincible && ((NSInteger)((sender.timestamp + duration) * 5) % 2 == 0)) {
-            view.hidden = YES;
-        }
-    }
-//
-//    [_glkView display];
 }
-
-#pragma mark - GLKViewDelegate
-
-- (void)glkView:(GLKView *)view drawInRect:(CGRect)rect
-{
-    glClearColor(0, 0, 0, 1);
-    glClear(GL_COLOR_BUFFER_BIT);
-    
-//    [_effect prepareToDraw];
-//    _effect.transform.modelviewMatrix;
-//    _effect.transform.projectionMatrix;
-//    
-//    glBindVertexArrayOES(<#GLuint array#>)
-//    glDrawArrays(GL_TRIANGLES, 0, 3);
-}
-
-#pragma mark - stuff
-
-//- (UIImageView *)viewForPlayerID:(NSString *)playerID
-//{
-//    if (_views == nil) {
-//        _views = [NSMutableDictionary new];
-//    }
-//    
-//    UIImageView *view = [_views objectForKey:playerID];
-//    if (view == nil) {
-//        view = [[UIImageView alloc] initWithImage:nil];
-//        view.backgroundColor = [UIColor redColor];
-//        [_gameScene addSubview:view];
-//        view.frame = CGRectMake(0, 0, RGMTileSize, RGMTileSize);
-//        _views[playerID] = view;
-//    }
-//    
-//    return view;
-//}
 
 - (void)dealloc
 {

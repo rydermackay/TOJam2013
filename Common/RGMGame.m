@@ -53,12 +53,12 @@
     
 }
 
-- (void)updateWithTimestamp:(NSTimeInterval)timestamp duration:(NSTimeInterval)duration
+- (void)update:(CFTimeInterval)currentTime
 {
     [self willUpdate];
     
     // test fixed rate
-    duration = 1.0/60.0;
+    CFTimeInterval duration = 1.0/60.0;
     
     // apply input
     [self.inputs enumerateKeysAndObjectsUsingBlock:^(NSString *key, id <RGMInput> input, BOOL *stop) {
@@ -159,8 +159,8 @@
         entity.velocity = CGPointMake(0, entity.velocity.y);
     }
     
-    if (CGRectGetMaxY(frame) > CGRectGetMaxY(bounds)) {
-        entity.y = CGRectGetMaxY(bounds) - CGRectGetHeight(frame);
+    if (CGRectGetMinY(frame) < CGRectGetMinY(bounds)) {
+        entity.y = CGRectGetMinY(bounds);
         entity.velocity = CGPointMake(entity.velocity.x, 0);
         entity.canJump = YES;
     }
