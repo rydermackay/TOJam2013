@@ -37,13 +37,14 @@ typedef NS_OPTIONS(NSUInteger, RGMObstacleMask) {
     RGMObstacleMaskSolidBottom      = 1 << 2,
     RGMObstacleMaskSolidLeft        = 1 << 3,
     RGMObstacleMaskSolidRight       = 1 << 4,
-    RGMObstacleMaskSolidSlopeLeft   = 1 << 5,
-    RGMObstacleMaskSolidSlopeRight  = 1 << 6,
+    
+    RGMObstacleMaskSolidSlopeLeft   = 1 << 5 & RGMObstacleMaskSolidRight,
+    RGMObstacleMaskSolidSlopeRight  = 1 << 6 & RGMObstacleMaskSolidLeft,
     
     RGMObstacleMaskSolid = RGMObstacleMaskSolidBottom | RGMObstacleMaskSolidLeft | RGMObstacleMaskSolidRight | RGMObstacleMaskSolidTop,
 };
 
-@interface RGMObstacle : NSObject
+@interface RGMTile : NSObject
 
 - (instancetype)initWithTileType:(RGMTileType)type;
 

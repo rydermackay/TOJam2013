@@ -13,7 +13,7 @@
 #import "RGMPrey.h"
 #import "RGMInput.h"
 #import "RGMTileMap.h"
-#import "RGMObstacle.h"
+#import "RGMTile.h"
 
 @implementation RGMGame
 
@@ -105,7 +105,7 @@
             for (NSInteger i = 0; i < dx; i++) {
                 entity.x++;
                 [self hitTestEntity:entity];
-                for (RGMObstacle *obstacle in self.tileMap.obstacles) {
+                for (RGMTile *obstacle in self.tileMap.obstacles) {
                     [obstacle hitTestEntity:entity];
                 }
             }
@@ -113,7 +113,7 @@
             for (NSInteger i = 0; i > dx; i--) {
                 entity.x--;
                 [self hitTestEntity:entity];
-                for (RGMObstacle *obstacle in self.tileMap.obstacles) {
+                for (RGMTile *obstacle in self.tileMap.obstacles) {
                     [obstacle hitTestEntity:entity];
                 }
             }
@@ -124,7 +124,7 @@
             for (NSInteger i = 0; i < dy; i++) {
                 entity.y++;
                 [self hitTestEntity:entity];
-                for (RGMObstacle *obstacle in self.tileMap.obstacles) {
+                for (RGMTile *obstacle in self.tileMap.obstacles) {
                     [obstacle hitTestEntity:entity];
                 }
             }
@@ -132,7 +132,7 @@
             for (NSInteger i = 0; i > dy; i--) {
                 entity.y--;
                 [self hitTestEntity:entity];
-                for (RGMObstacle *obstacle in self.tileMap.obstacles) {
+                for (RGMTile *obstacle in self.tileMap.obstacles) {
                     [obstacle hitTestEntity:entity];
                 }
             }

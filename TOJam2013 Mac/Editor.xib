@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5053" systemVersion="13C1021" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5053"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="RGMEditorController">
+            <connections>
+                <outlet property="window" destination="QvC-M9-y7g" id="ZQT-vJ-1mR"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application"/>
+        <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" animationBehavior="default" id="QvC-M9-y7g">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="367" y="240" width="890" height="480"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="900"/>
+            <view key="contentView" id="EiT-Mj-1SZ">
+                <rect key="frame" x="0.0" y="0.0" width="890" height="480"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <splitView dividerStyle="paneSplitter" vertical="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jSg-Sz-VCI">
+                        <rect key="frame" x="0.0" y="0.0" width="890" height="480"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <subviews>
+                            <customView misplaced="YES" id="hPS-XP-z3K">
+                                <rect key="frame" x="0.0" y="0.0" width="663" height="480"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="480" id="T49-J5-gmJ"/>
+                                    <constraint firstAttribute="width" constant="640" id="hNU-2Q-5TD"/>
+                                </constraints>
+                            </customView>
+                            <customView misplaced="YES" id="oeD-xm-Ov7">
+                                <rect key="frame" x="673" y="0.0" width="217" height="480"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="240" id="Rb9-9T-77m"/>
+                                </constraints>
+                            </customView>
+                        </subviews>
+                        <holdingPriorities>
+                            <real value="250"/>
+                            <real value="250"/>
+                        </holdingPriorities>
+                    </splitView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="jSg-Sz-VCI" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" id="7MD-rg-VSP"/>
+                    <constraint firstAttribute="trailing" secondItem="jSg-Sz-VCI" secondAttribute="trailing" id="J2h-Q1-whK"/>
+                    <constraint firstAttribute="bottom" secondItem="jSg-Sz-VCI" secondAttribute="bottom" id="WMk-QW-ct1"/>
+                    <constraint firstItem="jSg-Sz-VCI" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" id="yWt-gp-Rby"/>
+                </constraints>
+            </view>
+            <connections>
+                <outlet property="delegate" destination="-2" id="FFj-c4-ZVr"/>
+            </connections>
+        </window>
+    </objects>
+</document>

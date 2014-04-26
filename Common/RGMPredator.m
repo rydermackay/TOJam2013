@@ -19,7 +19,7 @@ static NSTimeInterval captivePreyDuration = 5;
 
 - (CGSize)size
 {
-    return CGSizeMake(RGMTileSize * 1.5, RGMTileSize * 1.5);
+    return CGSizeMake(RGMTileSize, RGMTileSize * 1.5);
 }
 
 - (void)capturePrey:(RGMPrey *)prey

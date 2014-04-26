@@ -6,10 +6,10 @@
 //  Copyright (c) 2013 Ryder Mackay. All rights reserved.
 //
 
-#import "RGMObstacle.h"
+#import "RGMTile.h"
 #import "RGMEntity.h"
 
-@implementation RGMObstacle
+@implementation RGMTile
 
 - (instancetype)initWithTileType:(RGMTileType)type {
     if (self = [super init]) {
@@ -85,22 +85,21 @@ static inline NSString *RGMTextureNameForTileType(RGMTileType type) {
     }
 }
 
-- (BOOL)hitTestEntity:(RGMEntity *)entity
-{
+- (BOOL)hitTestEntity:(RGMEntity *)entity {
     RGMObstacleMask mask = self.mask;
-    
-    CGRect obstacleRect = self.frame;
-    CGRect entityRect = entity.frame;
-    
     if (mask == RGMObstacleMaskNone) {
         return NO;
     }
     
+    CGRect obstacleRect = self.frame;
+    CGRect entityRect = entity.frame;
+    if (!CGRectIntersectsRect(obstacleRect, entityRect)) {
+        return NO;
+    }
+    
     if (mask & RGMObstacleMaskSolidBottom) {
-        if (CGRectGetMinX(entityRect) < CGRectGetMaxX(obstacleRect) &&
-            CGRectGetMaxX(entityRect) > CGRectGetMinX(obstacleRect) &&
-            CGRectGetMaxY(entityRect) > CGRectGetMinY(obstacleRect) &&
-            CGRectGetMaxY(entity.frameBeforeStepping) <= CGRectGetMinY(obstacleRect)) {  // collision
+        if (CGRectGetMaxY(entity.frameBeforeStepping) <= CGRectGetMinY(obstacleRect) &&
+            CGRectGetMaxY(entityRect) > CGRectGetMinY(obstacleRect)) {
             entity.velocity = CGPointMake(entity.velocity.x, 0);
             entity.y = CGRectGetMinY(obstacleRect) - entity.size.height;
             [entity endJump];
@@ -109,10 +108,8 @@ static inline NSString *RGMTextureNameForTileType(RGMTileType type) {
     }
     
     if (mask & RGMObstacleMaskSolidTop) {
-        if (CGRectGetMinX(entityRect) < CGRectGetMaxX(obstacleRect) &&
-            CGRectGetMaxX(entityRect) > CGRectGetMinX(obstacleRect) &&
-            CGRectGetMinY(entityRect) < CGRectGetMaxY(obstacleRect) &&  // collision
-            CGRectGetMinY(entity.frameBeforeStepping) >= CGRectGetMaxY(obstacleRect)) {
+        if (CGRectGetMinY(entity.frameBeforeStepping) >= CGRectGetMaxY(obstacleRect) &&
+            CGRectGetMinY(entityRect) < CGRectGetMaxY(obstacleRect)) {
             entity.velocity = CGPointMake(entity.velocity.x, 0);
             entity.y = CGRectGetMaxY(obstacleRect);
             entity.canJump = YES;
@@ -122,9 +119,7 @@ static inline NSString *RGMTextureNameForTileType(RGMTileType type) {
     
     if (mask & RGMObstacleMaskSolidLeft) {
         if (CGRectGetMaxX(entity.frameBeforeStepping) <= CGRectGetMinX(obstacleRect) &&
-            CGRectGetMaxX(entityRect) > CGRectGetMinX(obstacleRect) &&  // collision
-            CGRectGetMinY(entityRect) < CGRectGetMaxY(obstacleRect) &&
-            CGRectGetMaxY(entityRect) > CGRectGetMinY(obstacleRect)) {
+            CGRectGetMaxX(entityRect) > CGRectGetMinX(obstacleRect)) {
             entity.velocity = CGPointMake(0, entity.velocity.y);
             entity.x = CGRectGetMinX(obstacleRect) - entity.size.width;
             return YES;
@@ -132,10 +127,8 @@ static inline NSString *RGMTextureNameForTileType(RGMTileType type) {
     }
     
     if (mask & RGMObstacleMaskSolidRight) {
-        if (CGRectGetMinX(entityRect) < CGRectGetMaxX(obstacleRect) &&  // collision
-            CGRectGetMinX(entity.frameBeforeStepping) >= CGRectGetMaxX(obstacleRect) &&
-            CGRectGetMinY(entityRect) < CGRectGetMaxY(obstacleRect) &&
-            CGRectGetMaxY(entityRect) > CGRectGetMinY(obstacleRect)) {
+        if (CGRectGetMinX(entity.frameBeforeStepping) >= CGRectGetMaxX(obstacleRect) &&
+            CGRectGetMinX(entityRect) < CGRectGetMaxX(obstacleRect)) {
             entity.velocity = CGPointMake(0, entity.velocity.y);
             entity.x = CGRectGetMaxX(obstacleRect);
             return YES;

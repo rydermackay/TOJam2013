@@ -7,7 +7,7 @@
 //
 
 #import "RGMTileMap.h"
-#import "RGMObstacle.h"
+#import "RGMTile.h"
 
 @interface RGMTileMap ()
 
@@ -37,7 +37,7 @@
                 const CGPoint tile = CGPointMake(x, map.count - 1 - y);
                 RGMTileType tileType = [map[y][x] unsignedIntegerValue];
                 
-                RGMObstacle *obstacle = [[RGMObstacle alloc] initWithTileType:tileType];
+                RGMTile *obstacle = [[RGMTile alloc] initWithTileType:tileType];
                 obstacle.frame = RGMFrameForTile(tile);
                 [obstacles addObject:obstacle];
             }

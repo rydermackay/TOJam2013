@@ -9,7 +9,7 @@
 #import "RGMMainViewController.h"
 #import "RGMEntity.h"
 #import "RGMInputView.h"
-#import "RGMObstacle.h"
+#import "RGMTile.h"
 #import "RGMPredator.h"
 #import "RGMPrey.h"
 #import "RGMGame.h"

@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		0D62B4F21895FB6F00708704 /* Textures.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 0D62B4F11895FB6F00708704 /* Textures.atlas */; };
 		0D62B4F31895FB6F00708704 /* Textures.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 0D62B4F11895FB6F00708704 /* Textures.atlas */; };
+		0D8A6370190C3FF900B3C74C /* Editor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0D8A636F190C3FF900B3C74C /* Editor.xib */; };
+		0D8A6373190C40B700B3C74C /* RGMTileView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8A6372190C40B700B3C74C /* RGMTileView.m */; };
+		0D8A6377190C419D00B3C74C /* RGMEditorController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8A6376190C419D00B3C74C /* RGMEditorController.m */; };
 		0D93EA0F187F940800D24D6B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0D93EA0D187F940800D24D6B /* InfoPlist.strings */; };
 		0D93EA11187F940800D24D6B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D93EA10187F940800D24D6B /* main.m */; };
 		0D93EA15187F940800D24D6B /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 0D93EA13187F940800D24D6B /* Credits.rtf */; };
@@ -38,8 +41,8 @@
 		0D93EAAB187FBB2100D24D6B /* RGMGame.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D93EA82187FBB2100D24D6B /* RGMGame.m */; };
 		0D93EAAC187FBB2100D24D6B /* RGMMultiplayerGame.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D93EA86187FBB2100D24D6B /* RGMMultiplayerGame.m */; };
 		0D93EAAD187FBB2100D24D6B /* RGMMultiplayerGame.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D93EA86187FBB2100D24D6B /* RGMMultiplayerGame.m */; };
-		0D93EAAE187FBB2100D24D6B /* RGMObstacle.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D93EA88187FBB2100D24D6B /* RGMObstacle.m */; };
-		0D93EAAF187FBB2100D24D6B /* RGMObstacle.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D93EA88187FBB2100D24D6B /* RGMObstacle.m */; };
+		0D93EAAE187FBB2100D24D6B /* RGMTile.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D93EA88187FBB2100D24D6B /* RGMTile.m */; };
+		0D93EAAF187FBB2100D24D6B /* RGMTile.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D93EA88187FBB2100D24D6B /* RGMTile.m */; };
 		0D93EAB0187FBB2100D24D6B /* RGMPredator.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D93EA8A187FBB2100D24D6B /* RGMPredator.m */; };
 		0D93EAB1187FBB2100D24D6B /* RGMPredator.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D93EA8A187FBB2100D24D6B /* RGMPredator.m */; };
 		0D93EAB2187FBB2100D24D6B /* RGMPrey.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D93EA8C187FBB2100D24D6B /* RGMPrey.m */; };
@@ -63,6 +66,11 @@
 
 /* Begin PBXFileReference section */
 		0D62B4F11895FB6F00708704 /* Textures.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = Textures.atlas; sourceTree = "<group>"; };
+		0D8A636F190C3FF900B3C74C /* Editor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Editor.xib; sourceTree = "<group>"; };
+		0D8A6371190C40B700B3C74C /* RGMTileView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RGMTileView.h; sourceTree = "<group>"; };
+		0D8A6372190C40B700B3C74C /* RGMTileView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RGMTileView.m; sourceTree = "<group>"; };
+		0D8A6375190C419D00B3C74C /* RGMEditorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RGMEditorController.h; sourceTree = "<group>"; };
+		0D8A6376190C419D00B3C74C /* RGMEditorController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RGMEditorController.m; sourceTree = "<group>"; };
 		0D93EA01187F940800D24D6B /* TOJam2013 Mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TOJam2013 Mac.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0D93EA02187F940800D24D6B /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
 		0D93EA04187F940800D24D6B /* SpriteKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SpriteKit.framework; path = Library/Frameworks/SpriteKit.framework; sourceTree = DEVELOPER_DIR; };
@@ -110,8 +118,8 @@
 		0D93EA84187FBB2100D24D6B /* RGMInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RGMInput.h; sourceTree = "<group>"; };
 		0D93EA85187FBB2100D24D6B /* RGMMultiplayerGame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RGMMultiplayerGame.h; sourceTree = "<group>"; };
 		0D93EA86187FBB2100D24D6B /* RGMMultiplayerGame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RGMMultiplayerGame.m; sourceTree = "<group>"; };
-		0D93EA87187FBB2100D24D6B /* RGMObstacle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RGMObstacle.h; sourceTree = "<group>"; };
-		0D93EA88187FBB2100D24D6B /* RGMObstacle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RGMObstacle.m; sourceTree = "<group>"; };
+		0D93EA87187FBB2100D24D6B /* RGMTile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RGMTile.h; sourceTree = "<group>"; };
+		0D93EA88187FBB2100D24D6B /* RGMTile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RGMTile.m; sourceTree = "<group>"; };
 		0D93EA89187FBB2100D24D6B /* RGMPredator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RGMPredator.h; sourceTree = "<group>"; };
 		0D93EA8A187FBB2100D24D6B /* RGMPredator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RGMPredator.m; sourceTree = "<group>"; };
 		0D93EA8B187FBB2100D24D6B /* RGMPrey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RGMPrey.h; sourceTree = "<group>"; };
@@ -163,6 +171,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0D8A6374190C415200B3C74C /* Editor */ = {
+			isa = PBXGroup;
+			children = (
+				0D8A6375190C419D00B3C74C /* RGMEditorController.h */,
+				0D8A6376190C419D00B3C74C /* RGMEditorController.m */,
+				0D8A6371190C40B700B3C74C /* RGMTileView.h */,
+				0D8A6372190C40B700B3C74C /* RGMTileView.m */,
+			);
+			name = Editor;
+			sourceTree = "<group>";
+		};
 		0D93EA06187F940800D24D6B /* Other Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -178,6 +197,7 @@
 			children = (
 				0D93EA1D187F940800D24D6B /* RGMAppDelegate.h */,
 				0D93EA1B187F940800D24D6B /* RGMAppDelegate.m */,
+				0D8A6374190C415200B3C74C /* Editor */,
 				0D93EA0B187F940800D24D6B /* Supporting Files */,
 			);
 			path = "TOJam2013 Mac";
@@ -187,6 +207,7 @@
 			isa = PBXGroup;
 			children = (
 				0D93EA16187F940800D24D6B /* MainMenu.xib */,
+				0D8A636F190C3FF900B3C74C /* Editor.xib */,
 				0D93EA0C187F940800D24D6B /* TOJam2013 Mac-Info.plist */,
 				0D93EA0D187F940800D24D6B /* InfoPlist.strings */,
 				0D93EA10187F940800D24D6B /* main.m */,
@@ -230,8 +251,8 @@
 				0D93EA84187FBB2100D24D6B /* RGMInput.h */,
 				0D93EA85187FBB2100D24D6B /* RGMMultiplayerGame.h */,
 				0D93EA86187FBB2100D24D6B /* RGMMultiplayerGame.m */,
-				0D93EA87187FBB2100D24D6B /* RGMObstacle.h */,
-				0D93EA88187FBB2100D24D6B /* RGMObstacle.m */,
+				0D93EA87187FBB2100D24D6B /* RGMTile.h */,
+				0D93EA88187FBB2100D24D6B /* RGMTile.m */,
 				0D93EA89187FBB2100D24D6B /* RGMPredator.h */,
 				0D93EA8A187FBB2100D24D6B /* RGMPredator.m */,
 				0D93EA8B187FBB2100D24D6B /* RGMPrey.h */,
@@ -382,6 +403,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0D8A6370190C3FF900B3C74C /* Editor.xib in Resources */,
 				0D93EA0F187F940800D24D6B /* InfoPlist.strings in Resources */,
 				0D62B4F31895FB6F00708704 /* Textures.atlas in Resources */,
 				0D93EA15187F940800D24D6B /* Credits.rtf in Resources */,
@@ -414,17 +436,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				0D93EAB3187FBB2100D24D6B /* RGMPrey.m in Sources */,
+				0D8A6377190C419D00B3C74C /* RGMEditorController.m in Sources */,
 				0D93EAAB187FBB2100D24D6B /* RGMGame.m in Sources */,
 				0D93EA11187F940800D24D6B /* main.m in Sources */,
 				0D93EAB5187FBB2100D24D6B /* RGMScene.m in Sources */,
 				0D93EAB9187FBB2100D24D6B /* RGMTileMap.m in Sources */,
 				0D93EAA9187FBB2100D24D6B /* RGMEvent.m in Sources */,
-				0D93EAAF187FBB2100D24D6B /* RGMObstacle.m in Sources */,
+				0D93EAAF187FBB2100D24D6B /* RGMTile.m in Sources */,
 				0D93EAB1187FBB2100D24D6B /* RGMPredator.m in Sources */,
 				0D93EAA7187FBB2100D24D6B /* RGMEntity.m in Sources */,
 				0D93EAAD187FBB2100D24D6B /* RGMMultiplayerGame.m in Sources */,
 				0D93EAA5187FBB2100D24D6B /* RGMDefines.m in Sources */,
 				0D93EA1C187F940800D24D6B /* RGMAppDelegate.m in Sources */,
+				0D8A6373190C40B700B3C74C /* RGMTileView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -446,7 +470,7 @@
 				0D93EAAC187FBB2100D24D6B /* RGMMultiplayerGame.m in Sources */,
 				0D93EA70187FBB1400D24D6B /* UIViewController+RGMExtensions.m in Sources */,
 				0D93EA6B187FBB1400D24D6B /* RGMAppDelegate.m in Sources */,
-				0D93EAAE187FBB2100D24D6B /* RGMObstacle.m in Sources */,
+				0D93EAAE187FBB2100D24D6B /* RGMTile.m in Sources */,
 				0D93EAB0187FBB2100D24D6B /* RGMPredator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

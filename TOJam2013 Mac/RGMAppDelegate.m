@@ -30,8 +30,10 @@
 
     self.skView.showsFPS = YES;
     self.skView.showsNodeCount = YES;
+    self.skView.showsDrawCount = YES;
     [self.window setContentSize:scene.size];
     self.window.contentAspectRatio = scene.size;
+    [self zoomWindowByFactor:2 animate:NO];
 }
 
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender {
@@ -39,11 +41,11 @@
 }
 
 - (IBAction)increaseSize:(id)sender {
-    [self zoomWindowByFactor:2];
+    [self zoomWindowByFactor:2 animate:YES];
 }
 
 - (IBAction)decreaseSize:(id)sender {
-    [self zoomWindowByFactor:0.5];
+    [self zoomWindowByFactor:0.5 animate:YES];
 }
 
 - (NSRect)windowFrameWithZoomFactor:(CGFloat)zoomFactor {
@@ -76,9 +78,9 @@ static inline NSRect NSRectFittingRect(NSRect bounds, NSRect frame) {
     return frame;
 }
 
-- (void)zoomWindowByFactor:(CGFloat)zoomFactor {
+- (void)zoomWindowByFactor:(CGFloat)zoomFactor animate:(BOOL)animate {
     NSRect frame = [self windowFrameWithZoomFactor:zoomFactor];
-    [self.window setFrame:frame display:YES animate:YES];
+    [self.window setFrame:frame display:YES animate:animate];
 }
 
 - (BOOL)canResizeWindowWithFrame:(NSRect)frame {

@@ -11,7 +11,7 @@
 #import <TargetConditionals.h>
 #import "RGMGame.h"
 #import "RGMTileMap.h"
-#import "RGMObstacle.h"
+#import "RGMTile.h"
 #import "RGMEntity.h"
 
 #if !TARGET_OS_IPHONE
@@ -39,11 +39,11 @@
     _obstacleNodes = [NSMutableArray new];
     SKTextureAtlas *atlas = [SKTextureAtlas atlasNamed:@"Textures"];
     [atlas preloadWithCompletionHandler:^{}];
-    [self.game.tileMap.obstacles enumerateObjectsUsingBlock:^(RGMObstacle *obstacle, NSUInteger idx, BOOL *stop) {
+    [self.game.tileMap.obstacles enumerateObjectsUsingBlock:^(RGMTile *obstacle, NSUInteger idx, BOOL *stop) {
         SKSpriteNode *node = [SKSpriteNode node];
         node.size = obstacle.frame.size;
-        node.position = CGPointMake(CGRectGetMinX(obstacle.frame) + floorf(CGRectGetWidth(node.frame) * 0.5),
-                                    CGRectGetMinY(obstacle.frame) + floorf(CGRectGetHeight(node.frame) * 0.5));
+        node.anchorPoint = CGPointZero;
+        node.position = CGPointMake(CGRectGetMinX(obstacle.frame), CGRectGetMinY(obstacle.frame));
         node.texture = [SKTexture textureWithImageNamed:[obstacle textureName]];
         node.texture.filteringMode = SKTextureFilteringNearest;
         
@@ -103,16 +103,23 @@ static inline RGMInputMask RGMInputMaskFromKeyCode(unsigned short keyCode) {
     }
 }
 
-- (void)keyDown:(NSEvent *)theEvent {
-    _inputMask |= RGMInputMaskFromKeyCode([theEvent keyCode]);
+- (void)keyDown:(NSEvent *)event {
+    [self handleKeyEvent:event keyDown:YES];
 }
 
-- (void)keyUp:(NSEvent *)theEvent {
-    _inputMask &= ~RGMInputMaskFromKeyCode([theEvent keyCode]);
+- (void)keyUp:(NSEvent *)event {
+    [self handleKeyEvent:event keyDown:NO];
 }
 
-- (RGMInputMask)inputMask
-{
+- (void)handleKeyEvent:(NSEvent *)event keyDown:(BOOL)keyDown {
+    if (keyDown) {
+        _inputMask |= RGMInputMaskFromKeyCode([event keyCode]);
+    } else {
+        _inputMask &= ~RGMInputMaskFromKeyCode([event keyCode]);
+    }
+}
+
+- (RGMInputMask)inputMask {
     return _inputMask;
 }
 
