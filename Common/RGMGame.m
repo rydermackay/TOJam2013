@@ -105,33 +105,31 @@
 
 - (void)stepEntity:(RGMEntity *)entity axis:(RGMAxis)axis amount:(NSInteger)amount {
     entity.frameBeforeStepping = entity.frame;
-    for (NSInteger i = 0; i < fabsf(amount); i++) {
-        CGRectEdge edge;
-        if (axis == RGMAxisHorizontal) {
-            edge = amount > 0 ? CGRectMaxXEdge : CGRectMinXEdge;
-            entity.x += amount > 0 ? 1 : -1;
-        } else {
-            edge = amount > 0 ? CGRectMaxYEdge : CGRectMinYEdge;
-            entity.y += amount > 0 ? 1 : -1;
+    CGRectEdge edge;
+    if (axis == RGMAxisHorizontal) {
+        edge = amount > 0 ? CGRectMaxXEdge : CGRectMinXEdge;
+        entity.x += amount;
+    } else {
+        edge = amount > 0 ? CGRectMaxYEdge : CGRectMinYEdge;
+        entity.y += amount;
+    }
+    [self hitTestEntity:entity];
+    
+    NSArray *tiles = [self tilesIntersectingEntityRect:entity.frame edge:edge];
+    RGMTile *hitTestTile;
+    for (RGMTile *tile in tiles) {
+        if (tile.mask & (RGMObstacleMaskSlopeLeft | RGMObstacleMaskSlopeRight) &&
+            CGRectGetMidX(entity.frame) <= CGRectGetMaxX(tile.frame) &&
+            CGRectGetMidX(entity.frame) > CGRectGetMinX(tile.frame)) {
+            hitTestTile = tile;
+            break;
         }
-        [self hitTestEntity:entity];
-        
-        NSArray *tiles = [self tilesIntersectingEntityRect:entity.frame edge:edge];
-        RGMTile *hitTestTile;
+    }
+    if (hitTestTile) {
+        [hitTestTile hitTestEntity:entity];
+    } else {
         for (RGMTile *tile in tiles) {
-            if (tile.mask & (RGMObstacleMaskSlopeLeft | RGMObstacleMaskSlopeRight) &&
-                CGRectGetMidX(entity.frame) <= CGRectGetMaxX(tile.frame) &&
-                CGRectGetMidX(entity.frame) > CGRectGetMinX(tile.frame)) {
-                hitTestTile = tile;
-                break;
-            }
-        }
-        if (hitTestTile) {
-            [hitTestTile hitTestEntity:entity];
-        } else {
-            for (RGMTile *tile in tiles) {
-                [tile hitTestEntity:entity];
-            }
+            [tile hitTestEntity:entity];
         }
     }
 }
