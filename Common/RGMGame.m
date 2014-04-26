@@ -101,43 +101,8 @@
         NSInteger dx = entity.velocity.x * duration;
         NSInteger dy = entity.velocity.y * duration;
         
-        if (dx > 0) {
-            for (NSInteger i = 0; i < dx; i++) {
-                entity.x++;
-                [self hitTestEntity:entity];
-                for (RGMTile *obstacle in self.tileMap.obstacles) {
-                    [obstacle hitTestEntity:entity];
-                }
-            }
-        } else if (dx < 0) {
-            for (NSInteger i = 0; i > dx; i--) {
-                entity.x--;
-                [self hitTestEntity:entity];
-                for (RGMTile *obstacle in self.tileMap.obstacles) {
-                    [obstacle hitTestEntity:entity];
-                }
-            }
-        }
-        
-        entity.frameBeforeStepping = entity.frame;
-        
-        if (dy > 0) {
-            for (NSInteger i = 0; i < dy; i++) {
-                entity.y++;
-                [self hitTestEntity:entity];
-                for (RGMTile *obstacle in self.tileMap.obstacles) {
-                    [obstacle hitTestEntity:entity];
-                }
-            }
-        } else if (dy < 0) {
-            for (NSInteger i = 0; i > dy; i--) {
-                entity.y--;
-                [self hitTestEntity:entity];
-                for (RGMTile *obstacle in self.tileMap.obstacles) {
-                    [obstacle hitTestEntity:entity];
-                }
-            }
-        }
+        [self stepEntity:entity axis:RGMAxisHorizontal amount:dx];
+        [self stepEntity:entity axis:RGMAxisVertical amount:dy];
         
         entity.climbingUpRight = NO;
         entity.climbingUpLeft = NO;
@@ -145,6 +110,44 @@
     }];
     
     [self didUpdate];
+}
+
+- (void)stepEntity:(RGMEntity *)entity axis:(RGMAxis)axis amount:(CGFloat)amount {
+    entity.frameBeforeStepping = entity.frame;
+    for (NSInteger i = 0; i < fabsf(amount); i++) {
+        CGRectEdge edge;
+        if (axis == RGMAxisHorizontal) {
+            edge = amount > 0 ? CGRectMaxXEdge : CGRectMinXEdge;
+            entity.x += amount > 0 ? 1 : -1;
+        } else {
+            edge = amount > 0 ? CGRectMaxYEdge : CGRectMinYEdge;
+            entity.y += amount > 0 ? 1 : -1;
+        }
+        [self hitTestEntity:entity];
+        NSArray *tiles = [self tilesIntersectingEntityRect:entity.frame edge:edge];
+        for (RGMTile *tile in tiles) {
+            [tile hitTestEntity:entity];
+        }
+    }
+}
+
+- (NSArray *)tilesIntersectingEntityRect:(CGRect)entityRect edge:(CGRectEdge)edge {
+    return [self.tileMap.obstacles objectsAtIndexes:[self.tileMap.obstacles indexesOfObjectsPassingTest:^BOOL(RGMTile *tile, NSUInteger idx, BOOL *stop) {
+        CGRect tileRect = tile.frame;
+        if (CGRectIntersectsRect(tile.frame, entityRect)) {
+            switch (edge) {
+                case CGRectMinXEdge:
+                    return CGRectGetMinX(entityRect) < CGRectGetMaxX(tileRect);
+                case CGRectMaxXEdge:
+                    return CGRectGetMaxX(entityRect) >= CGRectGetMinX(tileRect);
+                case CGRectMinYEdge:
+                    return CGRectGetMinY(entityRect) < CGRectGetMaxY(tileRect);
+                case CGRectMaxYEdge:
+                    return CGRectGetMaxY(entityRect) >= CGRectGetMinY(tileRect);
+            }
+        }
+        return NO;
+    }]];
 }
 
 - (void)hitTestEntity:(RGMEntity *)entity

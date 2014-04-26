@@ -114,9 +114,7 @@ static inline NSString *RGMTextureNameForTileType(RGMTileType type) {
         }
     }
     if (mask & RGMObstacleMaskSolidTop) {
-        if (CGRectGetMidX(entityRect) >= CGRectGetMinX(obstacleRect) &&
-            CGRectGetMidX(entityRect) <= CGRectGetMaxX(obstacleRect) &&
-            CGRectGetMinY(entity.frameBeforeStepping) >= CGRectGetMaxY(obstacleRect) &&
+        if (CGRectGetMinY(entity.frameBeforeStepping) >= CGRectGetMaxY(obstacleRect) &&
             CGRectGetMinY(entityRect) < CGRectGetMaxY(obstacleRect)) {
             entity.velocity = CGPointMake(entity.velocity.x, 0);
             entity.y = CGRectGetMaxY(obstacleRect);

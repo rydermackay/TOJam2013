@@ -13,3 +13,8 @@ extern CGSize   RGMFieldSize;
 
 extern CGRect RGMFrameFromTile(CGPoint from, CGPoint to);
 extern CGRect RGMFrameForTile(CGPoint tile);
+
+typedef NS_ENUM(NSUInteger, RGMAxis) {
+    RGMAxisHorizontal,
+    RGMAxisVertical,
+};
