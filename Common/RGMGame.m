@@ -196,6 +196,8 @@
     RGMEntity *entity = [[entityClass alloc] initWithIdentifier:identifier];
     [self.entities setObject:entity forKey:identifier];
     entity.game = self;
+    entity.x = RGMTileSize * 2;
+    entity.y = RGMTileSize * 2;
     
     return entity;
 }

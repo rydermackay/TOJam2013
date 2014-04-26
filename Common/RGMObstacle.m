@@ -11,6 +11,74 @@
 
 @implementation RGMObstacle
 
+- (instancetype)initWithTileType:(RGMTileType)type {
+    if (self = [super init]) {
+        _type = type;
+        _mask = RGMObstacleMaskForTileType(type);
+    }
+    return self;
+}
+
+static inline RGMObstacleMask RGMObstacleMaskForTileType(RGMTileType type) {
+    switch (type) {
+        case RGMTileSolid:
+        case RGMTileSolidTop:
+        case RGMTileSolidRight:
+        case RGMTileSolidBottom:
+        case RGMTileSolidLeft:
+            return RGMObstacleMaskSolid;
+        case RGMTileSolidTopRight:
+        case RGMTileSolidBottomRight:
+        case RGMTileSolidBottomLeft:
+        case RGMTileSolidTopLeft:
+            return RGMObstacleMaskSolidSlopeRight;
+        case RGMTilePlatformLeft:
+        case RGMTilePlatformMiddle:
+        case RGMTilePlatformRight:
+            return RGMObstacleMaskSolidTop;
+        case RGMTileClear:
+        default:
+            return RGMObstacleMaskNone;
+    }
+}
+
+- (NSString *)textureName {
+    return RGMTextureNameForTileType(self.type);
+}
+
+static inline NSString *RGMTextureNameForTileType(RGMTileType type) {
+    switch (type) {
+        case RGMTileClear:
+            return @"clear";
+        case RGMTileSolid:
+            return @"solid";
+        case RGMTileSolidTop:
+            return @"solid-top";
+        case RGMTileSolidTopRight:
+            return @"solid-top";
+        case RGMTileSolidRight:
+            return @"solid-right";
+        case RGMTileSolidBottomRight:
+            return @"solid-bottom-right";
+        case RGMTileSolidBottom:
+            return @"solid-bottom";
+        case RGMTileSolidBottomLeft:
+            return @"solid-bottom-left";
+        case RGMTileSolidLeft:
+            return @"solid-left";
+        case RGMTileSolidTopLeft:
+            return @"solid-top-left";
+        case RGMTilePlatformLeft:
+            return @"platform-left";
+        case RGMTilePlatformMiddle:
+            return @"platform-middle";
+        case RGMTilePlatformRight:
+            return @"platform-right";
+        default:
+            return @"unknown";
+    }
+}
+
 - (BOOL)hitTestEntity:(RGMEntity *)entity
 {
     RGMObstacleMask mask = self.mask;

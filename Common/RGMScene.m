@@ -44,11 +44,7 @@
         node.size = obstacle.frame.size;
         node.position = CGPointMake(CGRectGetMinX(obstacle.frame) + floorf(CGRectGetWidth(node.frame) * 0.5),
                                     CGRectGetMinY(obstacle.frame) + floorf(CGRectGetHeight(node.frame) * 0.5));
-        if (obstacle.mask == RGMObstacleMaskSolid) {
-            node.texture = [SKTexture textureWithImageNamed:@"tile-solid"];
-        } else if (obstacle.mask == RGMObstacleMaskSolidTop) {
-            node.texture = [SKTexture textureWithImageNamed:@"tile-top"];
-        }
+        node.texture = [SKTexture textureWithImageNamed:[obstacle textureName]];
         node.texture.filteringMode = SKTextureFilteringNearest;
         
         [_obstacleNodes addObject:node];
