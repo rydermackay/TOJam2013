@@ -8,7 +8,7 @@
 
 #import "RGMDefines.h"
 
-CGFloat  RGMTileSize     = 32;
+CGFloat  RGMTileSize     = 16;
 CGSize   RGMFieldSize    = (CGSize){20, 15};
 
 CGRect RGMFrameForTile(CGPoint tile) {

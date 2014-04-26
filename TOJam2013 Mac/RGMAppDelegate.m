@@ -21,7 +21,7 @@
     self.game = [[RGMGame alloc] initWithMapName:@"Map"];
     [self.game start];
     
-    RGMScene *scene = [RGMScene sceneWithSize:CGSizeMake(640, 480)];
+    RGMScene *scene = [RGMScene sceneWithSize:CGSizeMake(RGMTileSize * RGMFieldSize.width, RGMTileSize * RGMFieldSize.height)];
     scene.game = self.game;
     [self.game addInput:(id<RGMInput>)scene toEntity:[_game entityForIdentifier:@"me"]];
     scene.scaleMode = SKSceneScaleModeAspectFit;

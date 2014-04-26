@@ -95,7 +95,7 @@ NSTimeInterval invincibilityDuration = 3;
 
 - (CGFloat)gravity
 {
-    return _isJumping ? 0 : -3000;
+    return _isJumping ? 0 : -1500;
 }
 
 - (void)jump
@@ -104,7 +104,7 @@ NSTimeInterval invincibilityDuration = 3;
         return;
     }
     
-    self.velocity = CGPointMake(self.velocity.x, 500);
+    self.velocity = CGPointMake(self.velocity.x, 250);
     self.canJump = NO;
     _isJumping = YES;
     

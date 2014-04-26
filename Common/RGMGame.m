@@ -70,7 +70,7 @@
             [entity endJump];
         }
         
-        const CGFloat maxHorizontalVelocity = 500;
+        const CGFloat maxHorizontalVelocity = 250;
         CGPoint velocity = entity.velocity;
         CGFloat xComponent = 0;
         

@@ -50,7 +50,7 @@
     self.velocity = CGPointZero;
     
     if (!_captured) {
-        self.velocity = CGPointMake((CGFloat)arc4random_uniform(100) - 50.0, 0);
+        self.velocity = CGPointMake((CGFloat)arc4random_uniform(50) - 25.0, 0);
         self.canJump = YES;
         [self jump];
         self.invincible = YES;
