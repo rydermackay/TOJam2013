@@ -11,30 +11,89 @@
 #import "RGMGame.h"
 #import "RGMInput.h"
 
-@implementation RGMAppDelegate {
-    RGMGame *_game;
-}
+@interface RGMAppDelegate () <NSWindowDelegate>
+@property (nonatomic) RGMGame *game;
+@end
 
-@synthesize window = _window;
+@implementation RGMAppDelegate
 
-- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
-{
-    _game = [[RGMGame alloc] initWithMapName:@"Map"];;
-    [_game start];
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+    self.game = [[RGMGame alloc] initWithMapName:@"Map"];
+    [self.game start];
     
     RGMScene *scene = [RGMScene sceneWithSize:CGSizeMake(640, 480)];
-    scene.game = _game;
-    [_game addInput:(id<RGMInput>)scene toEntity:[_game entityForIdentifier:@"me"]];
+    scene.game = self.game;
+    [self.game addInput:(id<RGMInput>)scene toEntity:[_game entityForIdentifier:@"me"]];
     scene.scaleMode = SKSceneScaleModeAspectFit;
 
     [self.skView presentScene:scene];
 
     self.skView.showsFPS = YES;
     self.skView.showsNodeCount = YES;
+    [self.window setContentSize:scene.size];
+    self.window.contentAspectRatio = scene.size;
 }
 
-- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender
-{
+- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender {
+    return YES;
+}
+
+- (IBAction)increaseSize:(id)sender {
+    [self zoomWindowByFactor:2];
+}
+
+- (IBAction)decreaseSize:(id)sender {
+    [self zoomWindowByFactor:0.5];
+}
+
+- (NSRect)windowFrameWithZoomFactor:(CGFloat)zoomFactor {
+    NSRect frame = self.window.frame;
+    NSSize contentSize = [self.window.contentView bounds].size;
+    frame.size.width += (zoomFactor - 1) * contentSize.width;
+    frame.size.height += (zoomFactor - 1) * contentSize.height;
+    frame.origin.y += NSHeight(self.window.frame) - NSHeight(frame);
+    frame = NSRectFittingRect(self.window.screen.frame, frame);
+    
+    return frame;
+}
+
+static inline NSRect NSRectFittingRect(NSRect bounds, NSRect frame) {
+    if (NSContainsRect(bounds, frame) && !NSIntersectsRect(bounds, frame)) {
+        return frame;
+    }
+    if (NSMinX(frame) < NSMinX(bounds)) {
+        frame.origin.x += NSMinX(bounds) - NSMinX(frame);
+    }
+    if (NSMaxX(frame) > NSMaxX(bounds)) {
+        frame.origin.x -= NSMaxX(frame) - NSMaxX(bounds);
+    }
+    if (NSMinY(frame) < NSMinY(bounds)) {
+        frame.origin.y += NSMinY(bounds) - NSMinY(frame);
+    }
+    if (NSMaxY(frame) > NSMaxY(bounds)) {
+        frame.origin.y -= NSMaxY(frame) - NSMaxY(bounds);
+    }
+    return frame;
+}
+
+- (void)zoomWindowByFactor:(CGFloat)zoomFactor {
+    NSRect frame = [self windowFrameWithZoomFactor:zoomFactor];
+    [self.window setFrame:frame display:YES animate:YES];
+}
+
+- (BOOL)canResizeWindowWithFrame:(NSRect)frame {
+    NSRect screenFrame = self.window.screen.frame;
+    return  NSWidth(frame) <= NSWidth(screenFrame) && NSHeight(frame) <= NSHeight(screenFrame);
+}
+
+#pragma mark - Validation
+
+- (BOOL)validateMenuItem:(NSMenuItem *)menuItem {
+    if (menuItem.action == @selector(increaseSize:)) {
+        return [self canResizeWindowWithFrame:[self windowFrameWithZoomFactor:2]];
+    } else if (menuItem.action == @selector(decreaseSize:)) {
+        return [self canResizeWindowWithFrame:[self windowFrameWithZoomFactor:0.5]];
+    }
     return YES;
 }
 
