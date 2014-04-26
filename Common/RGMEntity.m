@@ -95,7 +95,7 @@ NSTimeInterval invincibilityDuration = 3;
 
 - (CGFloat)gravity
 {
-    return _isJumping ? 0 : -1500;
+    return _isJumping ? 0 : -2000;
 }
 
 - (void)jump

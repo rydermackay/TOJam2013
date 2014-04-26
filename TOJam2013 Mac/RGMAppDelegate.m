@@ -27,10 +27,6 @@
     scene.scaleMode = SKSceneScaleModeAspectFit;
 
     [self.skView presentScene:scene];
-
-    self.skView.showsFPS = YES;
-    self.skView.showsNodeCount = YES;
-    self.skView.showsDrawCount = YES;
     [self.window setContentSize:scene.size];
     self.window.contentAspectRatio = scene.size;
     [self zoomWindowByFactor:2 animate:NO];

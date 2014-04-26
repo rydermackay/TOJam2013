@@ -31,9 +31,10 @@ static inline RGMObstacleMask RGMObstacleMaskForTileType(RGMTileType type) {
             return RGMObstacleMaskSolid;
         case RGMTileSolidTopRight:
         case RGMTileSolidBottomRight:
+            return RGMObstacleMaskSlopeRight | RGMObstacleMaskSolidLeft;
         case RGMTileSolidBottomLeft:
         case RGMTileSolidTopLeft:
-            return RGMObstacleMaskSolidSlopeRight;
+            return RGMObstacleMaskSlopeLeft | RGMObstacleMaskSolidRight;
         case RGMTilePlatformLeft:
         case RGMTilePlatformMiddle:
         case RGMTilePlatformRight:
@@ -57,7 +58,7 @@ static inline NSString *RGMTextureNameForTileType(RGMTileType type) {
         case RGMTileSolidTop:
             return @"solid-top";
         case RGMTileSolidTopRight:
-            return @"solid-top";
+            return @"solid-top-right";
         case RGMTileWedgeTopRight:
             return @"wedge-top-right";
         case RGMTileSolidRight:
@@ -97,6 +98,12 @@ static inline NSString *RGMTextureNameForTileType(RGMTileType type) {
         return NO;
     }
     
+    if (!(mask & RGMObstacleMaskSlopeRight || mask & RGMObstacleMaskSlopeLeft)) {
+        if (mask & RGMObstacleMaskSolid && (entity.climbingUpLeft || entity.climbingUpRight)) {
+            return NO;
+        }
+    }
+
     if (mask & RGMObstacleMaskSolidBottom) {
         if (CGRectGetMaxY(entity.frameBeforeStepping) <= CGRectGetMinY(obstacleRect) &&
             CGRectGetMaxY(entityRect) > CGRectGetMinY(obstacleRect)) {
@@ -106,7 +113,6 @@ static inline NSString *RGMTextureNameForTileType(RGMTileType type) {
             return YES;
         }
     }
-    
     if (mask & RGMObstacleMaskSolidTop) {
         if (CGRectGetMinY(entity.frameBeforeStepping) >= CGRectGetMaxY(obstacleRect) &&
             CGRectGetMinY(entityRect) < CGRectGetMaxY(obstacleRect)) {
@@ -116,7 +122,38 @@ static inline NSString *RGMTextureNameForTileType(RGMTileType type) {
             return YES;
         }
     }
-    
+    if (mask & RGMObstacleMaskSlopeLeft) {
+        CGFloat yForMinX = 1;
+        CGFloat yForMaxX = RGMTileSize;
+        CGFloat slope = (yForMaxX - yForMinX) / CGRectGetWidth(obstacleRect);
+        CGFloat x = CGRectGetMidX(entityRect) - CGRectGetMinX(obstacleRect);
+        CGFloat height = floorf(x * slope);
+        CGFloat maxY = MIN(CGRectGetMinY(obstacleRect) + height, CGRectGetMaxY(obstacleRect));
+        if (CGRectGetMinY(entityRect) < maxY) {
+            entity.velocity = CGPointMake(entity.velocity.x, 0);
+            entity.y = maxY;
+            entity.canJump = YES;
+            entity.climbingUpRight = YES;
+            return YES;
+        }
+    }
+    if (mask & RGMObstacleMaskSlopeRight) {
+        CGFloat yForMinX = RGMTileSize;
+        CGFloat yForMaxX = 1;
+        CGFloat slope = (yForMaxX - yForMinX) / CGRectGetWidth(obstacleRect);
+        //y = mx + b
+        //m = y2 - y1 / x2 - x1
+        CGFloat x = CGRectGetMidX(entityRect) - CGRectGetMinX(obstacleRect);
+        CGFloat height = floorf(x * slope + yForMinX);
+        CGFloat maxY = MIN(CGRectGetMinY(obstacleRect) + height, CGRectGetMaxY(obstacleRect));
+        if (CGRectGetMinY(entityRect) < maxY) {
+            entity.velocity = CGPointMake(entity.velocity.x, 0);
+            entity.y = maxY;
+            entity.canJump = YES;
+            entity.climbingUpLeft = YES;
+            return YES;
+        }
+    }
     if (mask & RGMObstacleMaskSolidLeft) {
         if (CGRectGetMaxX(entity.frameBeforeStepping) <= CGRectGetMinX(obstacleRect) &&
             CGRectGetMaxX(entityRect) > CGRectGetMinX(obstacleRect)) {
@@ -125,7 +162,6 @@ static inline NSString *RGMTextureNameForTileType(RGMTileType type) {
             return YES;
         }
     }
-    
     if (mask & RGMObstacleMaskSolidRight) {
         if (CGRectGetMinX(entity.frameBeforeStepping) >= CGRectGetMaxX(obstacleRect) &&
             CGRectGetMinX(entityRect) < CGRectGetMaxX(obstacleRect)) {

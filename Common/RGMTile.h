@@ -38,10 +38,10 @@ typedef NS_OPTIONS(NSUInteger, RGMObstacleMask) {
     RGMObstacleMaskSolidLeft        = 1 << 3,
     RGMObstacleMaskSolidRight       = 1 << 4,
     
-    RGMObstacleMaskSolidSlopeLeft   = 1 << 5 & RGMObstacleMaskSolidRight,
-    RGMObstacleMaskSolidSlopeRight  = 1 << 6 & RGMObstacleMaskSolidLeft,
-    
     RGMObstacleMaskSolid = RGMObstacleMaskSolidBottom | RGMObstacleMaskSolidLeft | RGMObstacleMaskSolidRight | RGMObstacleMaskSolidTop,
+    
+    RGMObstacleMaskSlopeLeft   = 1 << 5,
+    RGMObstacleMaskSlopeRight  = 1 << 6,
 };
 
 @interface RGMTile : NSObject

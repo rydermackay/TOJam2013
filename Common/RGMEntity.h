@@ -21,6 +21,8 @@ extern NSTimeInterval invincibilityDuration;
 @property (nonatomic, assign) NSInteger x;
 @property (nonatomic, assign) NSInteger y;
 @property (nonatomic, assign) CGRect frameBeforeStepping;
+@property (nonatomic, assign) BOOL climbingUpRight;
+@property (nonatomic, assign) BOOL climbingUpLeft;
 @property (nonatomic, assign) CGSize size;
 - (CGRect)frame;
 

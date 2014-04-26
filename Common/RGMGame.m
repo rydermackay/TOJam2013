@@ -70,7 +70,7 @@
             [entity endJump];
         }
         
-        const CGFloat maxHorizontalVelocity = 250;
+        const CGFloat maxHorizontalVelocity = 200;
         CGPoint velocity = entity.velocity;
         CGFloat xComponent = 0;
         
@@ -119,7 +119,6 @@
             }
         }
         
-        // step y, check collisions
         if (dy > 0) {
             for (NSInteger i = 0; i < dy; i++) {
                 entity.y++;
@@ -138,6 +137,8 @@
             }
         }
         
+        entity.climbingUpRight = NO;
+        entity.climbingUpLeft = NO;
         entity.frameBeforeStepping = CGRectZero;
     }];
     
