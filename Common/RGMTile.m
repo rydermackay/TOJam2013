@@ -98,12 +98,6 @@ static inline NSString *RGMTextureNameForTileType(RGMTileType type) {
         return NO;
     }
     
-    if (!(mask & RGMObstacleMaskSlopeRight || mask & RGMObstacleMaskSlopeLeft)) {
-        if (mask & RGMObstacleMaskSolid && (entity.climbingUpLeft || entity.climbingUpRight)) {
-            return NO;
-        }
-    }
-
     if (mask & RGMObstacleMaskSolidBottom) {
         if (CGRectGetMaxY(entity.frameBeforeStepping) <= CGRectGetMinY(obstacleRect) &&
             CGRectGetMaxY(entityRect) > CGRectGetMinY(obstacleRect)) {
@@ -133,7 +127,6 @@ static inline NSString *RGMTextureNameForTileType(RGMTileType type) {
             entity.velocity = CGPointMake(entity.velocity.x, 0);
             entity.y = maxY;
             entity.canJump = YES;
-            entity.climbingUpRight = YES;
             return YES;
         }
     }
@@ -150,7 +143,6 @@ static inline NSString *RGMTextureNameForTileType(RGMTileType type) {
             entity.velocity = CGPointMake(entity.velocity.x, 0);
             entity.y = maxY;
             entity.canJump = YES;
-            entity.climbingUpLeft = YES;
             return YES;
         }
     }

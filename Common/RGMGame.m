@@ -88,29 +88,22 @@
         entity.velocity = velocity;
     }];
     
-    // update forces
+    
     [self.entities enumerateKeysAndObjectsUsingBlock:^(NSString *key, RGMEntity *entity, BOOL *stop) {
-        
         [entity updateForDuration:duration];
         if ([entity isKindOfClass:[RGMPrey class]] && [(RGMPrey *)entity isCaptured]) {
             return;
         }
-        
         NSInteger dx = entity.velocity.x * duration;
         NSInteger dy = entity.velocity.y * duration;
-        
         [self stepEntity:entity axis:RGMAxisHorizontal amount:dx];
         [self stepEntity:entity axis:RGMAxisVertical amount:dy];
-        
-        entity.climbingUpRight = NO;
-        entity.climbingUpLeft = NO;
-        entity.frameBeforeStepping = CGRectZero;
     }];
     
     [self didUpdate];
 }
 
-- (void)stepEntity:(RGMEntity *)entity axis:(RGMAxis)axis amount:(CGFloat)amount {
+- (void)stepEntity:(RGMEntity *)entity axis:(RGMAxis)axis amount:(NSInteger)amount {
     entity.frameBeforeStepping = entity.frame;
     for (NSInteger i = 0; i < fabsf(amount); i++) {
         CGRectEdge edge;
