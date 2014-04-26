@@ -96,8 +96,6 @@
             return;
         }
         
-        entity.frameBeforeStepping = entity.frame;
-        
         NSInteger dx = entity.velocity.x * duration;
         NSInteger dy = entity.velocity.y * duration;
         
@@ -124,9 +122,23 @@
             entity.y += amount > 0 ? 1 : -1;
         }
         [self hitTestEntity:entity];
+        
         NSArray *tiles = [self tilesIntersectingEntityRect:entity.frame edge:edge];
+        RGMTile *hitTestTile;
         for (RGMTile *tile in tiles) {
-            [tile hitTestEntity:entity];
+            if (tile.mask & (RGMObstacleMaskSlopeLeft | RGMObstacleMaskSlopeRight) &&
+                CGRectGetMidX(entity.frame) <= CGRectGetMaxX(tile.frame) &&
+                CGRectGetMidX(entity.frame) > CGRectGetMinX(tile.frame)) {
+                hitTestTile = tile;
+                break;
+            }
+        }
+        if (hitTestTile) {
+            [hitTestTile hitTestEntity:entity];
+        } else {
+            for (RGMTile *tile in tiles) {
+                [tile hitTestEntity:entity];
+            }
         }
     }
 }
@@ -137,11 +149,11 @@
         if (CGRectIntersectsRect(tile.frame, entityRect)) {
             switch (edge) {
                 case CGRectMinXEdge:
-                    return CGRectGetMinX(entityRect) < CGRectGetMaxX(tileRect);
+                    return CGRectGetMinX(entityRect) <= CGRectGetMaxX(tileRect);
                 case CGRectMaxXEdge:
                     return CGRectGetMaxX(entityRect) >= CGRectGetMinX(tileRect);
                 case CGRectMinYEdge:
-                    return CGRectGetMinY(entityRect) < CGRectGetMaxY(tileRect);
+                    return CGRectGetMinY(entityRect) <= CGRectGetMaxY(tileRect);
                 case CGRectMaxYEdge:
                     return CGRectGetMaxY(entityRect) >= CGRectGetMinY(tileRect);
             }
