@@ -26,6 +26,8 @@ static inline RGMObstacleMask RGMObstacleMaskForTileType(RGMTileType type) {
         case RGMTileSolidRight:
         case RGMTileSolidBottom:
         case RGMTileSolidLeft:
+        case RGMTileWedgeTopLeft:
+        case RGMTileWedgeTopRight:
             return RGMObstacleMaskSolid;
         case RGMTileSolidTopRight:
         case RGMTileSolidBottomRight:
@@ -56,6 +58,8 @@ static inline NSString *RGMTextureNameForTileType(RGMTileType type) {
             return @"solid-top";
         case RGMTileSolidTopRight:
             return @"solid-top";
+        case RGMTileWedgeTopRight:
+            return @"wedge-top-right";
         case RGMTileSolidRight:
             return @"solid-right";
         case RGMTileSolidBottomRight:
@@ -68,6 +72,8 @@ static inline NSString *RGMTextureNameForTileType(RGMTileType type) {
             return @"solid-left";
         case RGMTileSolidTopLeft:
             return @"solid-top-left";
+        case RGMTileWedgeTopLeft:
+            return @"wedge-top-left";
         case RGMTilePlatformLeft:
             return @"platform-left";
         case RGMTilePlatformMiddle:

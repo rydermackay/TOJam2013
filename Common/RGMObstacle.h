@@ -15,17 +15,20 @@ typedef NS_ENUM(NSUInteger, RGMTileType) {
     RGMTileClear            = 0,
     RGMTileSolid            = 1,
     RGMTileSolidTop         = 2,
-    RGMTileSolidTopRight    = 3,
-    RGMTileSolidRight       = 4,
-    RGMTileSolidBottomRight = 5,
-    RGMTileSolidBottom      = 6,
-    RGMTileSolidBottomLeft  = 7,
-    RGMTileSolidLeft        = 8,
-    RGMTileSolidTopLeft     = 9,
+    RGMTileSolidRight       = 3,
+    RGMTileSolidBottom      = 4,
+    RGMTileSolidLeft        = 5,
     
     RGMTilePlatformLeft = 10,
     RGMTilePlatformMiddle,
     RGMTilePlatformRight,
+    
+    RGMTileSolidTopLeft     = 20,
+    RGMTileWedgeTopLeft     = 21,
+    RGMTileSolidTopRight    = 22,
+    RGMTileWedgeTopRight    = 23,
+    RGMTileSolidBottomLeft  = 24,
+    RGMTileSolidBottomRight = 25,
 };
 
 typedef NS_OPTIONS(NSUInteger, RGMObstacleMask) {
