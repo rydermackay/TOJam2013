@@ -119,6 +119,8 @@
             }
         }
         
+        entity.frameBeforeStepping = entity.frame;
+        
         if (dy > 0) {
             for (NSInteger i = 0; i < dy; i++) {
                 entity.y++;
