@@ -29,6 +29,9 @@
 - (id)initWithSize:(CGSize)size {
     if (self = [super initWithSize:size]) {
         _entityNodes = [NSMutableDictionary new];
+        _world = [SKNode node];
+        _world.name = @"world";
+        [self insertChild:_world atIndex:0];
     }
     
     return self;
@@ -48,7 +51,7 @@
         node.texture.filteringMode = SKTextureFilteringNearest;
         
         [_obstacleNodes addObject:node];
-        [self insertChild:node atIndex:0];
+        [_world insertChild:node atIndex:0];
     }];
 }
 
@@ -68,7 +71,7 @@
         if (node == nil) {
             node = [SKSpriteNode new];
             _entityNodes[identifier] = node;
-            [self addChild:node];
+            [self.world addChild:node];
         }
         node.hidden = NO;
         node.size = entity.frame.size;
@@ -80,6 +83,24 @@
             node.hidden = YES;
         }
     }
+    
+    SKSpriteNode *node = _entityNodes[@"me"];
+    const CGFloat minDistance = RGMTileSize * 8;
+    CGPoint playerPosition = [self convertPoint:node.position fromNode:self.world];
+    CGPoint worldPosition = self.world.position;
+    if (playerPosition.x < minDistance) {
+        worldPosition.x += minDistance - playerPosition.x;
+        if (worldPosition.x > 0) {
+            worldPosition.x = 0;
+        }
+    } else if (playerPosition.x >= CGRectGetWidth(self.frame) - minDistance) {
+        worldPosition.x += CGRectGetWidth(self.frame) - playerPosition.x - minDistance;
+        CGRect worldFrame = self.world.calculateAccumulatedFrame;
+        if (worldPosition.x < CGRectGetWidth(self.frame) - CGRectGetWidth(worldFrame)) {
+            worldPosition.x = CGRectGetWidth(self.frame) - CGRectGetWidth(worldFrame);
+        }
+    }
+    self.world.position = worldPosition;
 }
 
 #if !TARGET_OS_IPHONE

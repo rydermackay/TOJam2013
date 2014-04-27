@@ -13,5 +13,6 @@
 @interface RGMScene : SKScene
 
 @property (nonatomic, weak) RGMGame *game;
+@property (nonatomic) SKNode *world;
 
 @end
