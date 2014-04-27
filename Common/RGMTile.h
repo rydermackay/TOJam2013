@@ -19,7 +19,7 @@ typedef NS_ENUM(NSUInteger, RGMTileType) {
     RGMTileSolidBottom      = 4,
     RGMTileSolidLeft        = 5,
     
-    RGMTilePlatformLeft = 10,
+    RGMTilePlatformLeft     = 10,
     RGMTilePlatformMiddle,
     RGMTilePlatformRight,
     
@@ -33,15 +33,15 @@ typedef NS_ENUM(NSUInteger, RGMTileType) {
 
 typedef NS_OPTIONS(NSUInteger, RGMObstacleMask) {
     RGMObstacleMaskNone             = 0,
-    RGMObstacleMaskSolidTop         = 1 << 1,
-    RGMObstacleMaskSolidBottom      = 1 << 2,
-    RGMObstacleMaskSolidLeft        = 1 << 3,
-    RGMObstacleMaskSolidRight       = 1 << 4,
+    RGMObstacleMaskSolidTop         = 1 << 0,
+    RGMObstacleMaskSolidBottom      = 1 << 1,
+    RGMObstacleMaskSolidLeft        = 1 << 2,
+    RGMObstacleMaskSolidRight       = 1 << 3,
     
     RGMObstacleMaskSolid = RGMObstacleMaskSolidBottom | RGMObstacleMaskSolidLeft | RGMObstacleMaskSolidRight | RGMObstacleMaskSolidTop,
     
-    RGMObstacleMaskSlopeLeft   = 1 << 5,
-    RGMObstacleMaskSlopeRight  = 1 << 6,
+    RGMObstacleMaskSlopeLeft   = 1 << 4,
+    RGMObstacleMaskSlopeRight  = 1 << 5,
 };
 
 @interface RGMTile : NSObject
