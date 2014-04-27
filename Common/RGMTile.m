@@ -30,15 +30,15 @@ static inline RGMObstacleMask RGMObstacleMaskForTileType(RGMTileType type) {
         case RGMTileWedgeTopRight:
             return RGMObstacleMaskSolid;
         case RGMTileSolidTopRight:
-        case RGMTileSolidBottomRight:
             return RGMObstacleMaskSlopeRight | RGMObstacleMaskSolidLeft;
-        case RGMTileSolidBottomLeft:
         case RGMTileSolidTopLeft:
             return RGMObstacleMaskSlopeLeft | RGMObstacleMaskSolidRight;
         case RGMTilePlatformLeft:
         case RGMTilePlatformMiddle:
         case RGMTilePlatformRight:
             return RGMObstacleMaskSolidTop;
+        case RGMTileSolidBottomRight:
+        case RGMTileSolidBottomLeft:
         case RGMTileClear:
         default:
             return RGMObstacleMaskNone;
@@ -165,6 +165,32 @@ static inline NSString *RGMTextureNameForTileType(RGMTileType type) {
     }
     
     return hit;
+}
+
+@end
+
+@implementation RGMTile (Editor)
+
++ (NSArray *)tileTypes {
+    return @[@(RGMTileClear),
+             @(RGMTileSolid),
+             @(RGMTileSolidTop),
+             @(RGMTileSolidRight),
+             @(RGMTileSolidBottom),
+             @(RGMTileSolidLeft),
+             @(RGMTilePlatformLeft),
+             @(RGMTilePlatformMiddle),
+             @(RGMTilePlatformRight),
+             @(RGMTileSolidTopLeft),
+             @(RGMTileWedgeTopLeft),
+             @(RGMTileSolidTopRight),
+             @(RGMTileWedgeTopRight),
+             @(RGMTileSolidBottomLeft),
+             @(RGMTileSolidBottomRight)];
+}
+
+- (NSImage *)image {
+    return [NSImage imageNamed:self.textureName];
 }
 
 @end

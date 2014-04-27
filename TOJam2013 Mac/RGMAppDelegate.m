@@ -10,6 +10,7 @@
 #import "RGMScene.h"
 #import "RGMGame.h"
 #import "RGMInput.h"
+#import "RGMEditorController.h"
 
 @interface RGMAppDelegate () <NSWindowDelegate>
 @property (nonatomic) RGMGame *game;
@@ -27,9 +28,8 @@
     scene.scaleMode = SKSceneScaleModeAspectFit;
 
     [self.skView presentScene:scene];
-    [self.window setContentSize:scene.size];
+    [self.window setContentSize:NSMakeSize(scene.size.width * 2, scene.size.height * 2)];
     self.window.contentAspectRatio = scene.size;
-    [self zoomWindowByFactor:2 animate:NO];
 }
 
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender {

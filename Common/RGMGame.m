@@ -94,8 +94,8 @@
         if ([entity isKindOfClass:[RGMPrey class]] && [(RGMPrey *)entity isCaptured]) {
             return;
         }
-        NSInteger dx = entity.velocity.x * duration;
-        NSInteger dy = entity.velocity.y * duration;
+        NSInteger dx = round(entity.velocity.x * duration);
+        NSInteger dy = round(entity.velocity.y * duration);
         [self stepEntity:entity axis:RGMAxisHorizontal amount:dx];
         [self stepEntity:entity axis:RGMAxisVertical amount:dy];
     }];

@@ -9,5 +9,9 @@
 #import <Cocoa/Cocoa.h>
 
 @interface RGMEditorController : NSWindowController
+@property (nonatomic, copy, readonly) NSArray *tiles;
+@end
+
+@interface RGMTileCollectionViewItem : NSCollectionViewItem
 
 @end

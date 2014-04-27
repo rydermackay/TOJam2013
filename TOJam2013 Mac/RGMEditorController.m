@@ -7,27 +7,30 @@
 //
 
 #import "RGMEditorController.h"
+#import "RGMTile.h"
 
-@interface RGMEditorController ()
-
+@interface RGMEditorController () <NSCollectionViewDelegate>
+@property (nonatomic, copy) NSArray *tiles;
 @end
 
 @implementation RGMEditorController
 
-- (id)initWithWindow:(NSWindow *)window
-{
-    self = [super initWithWindow:window];
-    if (self) {
-        // Initialization code here.
-    }
-    return self;
+- (NSString *)windowNibName {
+    return @"Editor";
 }
 
-- (void)windowDidLoad
-{
-    [super windowDidLoad];
-    
-    // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
+- (NSArray *)tiles {
+    if (!_tiles) {
+        NSMutableArray *tiles = [NSMutableArray array];
+        for (NSNumber *number in [RGMTile tileTypes]) {
+            RGMTile *tile = [[RGMTile alloc] initWithTileType:number.unsignedIntegerValue];
+            if (tile) {
+                [tiles addObject:tile];
+            }
+        }
+        _tiles = tiles;
+    }
+    return _tiles;
 }
 
 - (IBAction)reload:(id)sender {

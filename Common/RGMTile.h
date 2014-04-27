@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "RGMTileMap.h"
 
 @class RGMEntity;
 
@@ -54,5 +53,12 @@ typedef NS_OPTIONS(NSUInteger, RGMObstacleMask) {
 
 - (BOOL)hitTestEntity:(RGMEntity *)entity;
 - (NSString *)textureName;
+
+@end
+
+@interface RGMTile (Editor)
+
++ (NSArray *)tileTypes;
+@property (nonatomic, readonly) NSImage *image;
 
 @end
