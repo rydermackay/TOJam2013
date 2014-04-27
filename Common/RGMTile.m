@@ -97,6 +97,7 @@ static inline NSString *RGMTextureNameForTileType(RGMTileType type) {
     if (!CGRectIntersectsRect(obstacleRect, entityRect)) {
         return NO;
     }
+    BOOL hit = NO;
     
     if (mask & RGMObstacleMaskSolidBottom) {
         if (CGRectGetMaxY(entity.frameBeforeStepping) <= CGRectGetMinY(obstacleRect) &&
@@ -104,7 +105,7 @@ static inline NSString *RGMTextureNameForTileType(RGMTileType type) {
             entity.velocity = CGPointMake(entity.velocity.x, 0);
             entity.y = CGRectGetMinY(obstacleRect) - entity.size.height;
             [entity endJump];
-            return YES;
+            hit = YES;
         }
     }
     if (mask & RGMObstacleMaskSolidTop) {
@@ -113,37 +114,37 @@ static inline NSString *RGMTextureNameForTileType(RGMTileType type) {
             entity.velocity = CGPointMake(entity.velocity.x, 0);
             entity.y = CGRectGetMaxY(obstacleRect);
             entity.canJump = YES;
-            return YES;
+            hit = YES;
         }
     }
     if (mask & RGMObstacleMaskSlopeLeft) {
-        CGFloat yForMinX = 1;
+        CGFloat yForMinX = 0;
         CGFloat yForMaxX = RGMTileSize;
         CGFloat slope = (yForMaxX - yForMinX) / CGRectGetWidth(obstacleRect);
         CGFloat x = CGRectGetMidX(entityRect) - CGRectGetMinX(obstacleRect);
-        CGFloat height = floorf(x * slope);
-        CGFloat maxY = MIN(CGRectGetMinY(obstacleRect) + height, CGRectGetMaxY(obstacleRect));
+        CGFloat height = x * slope;
+        CGFloat maxY = MIN(MAX(CGRectGetMinY(obstacleRect), (CGRectGetMinY(obstacleRect) + height)), CGRectGetMaxY(obstacleRect));
         if (CGRectGetMinY(entityRect) < maxY) {
             entity.velocity = CGPointMake(entity.velocity.x, 0);
             entity.y = maxY;
             entity.canJump = YES;
-            return YES;
+            hit = YES;
         }
     }
     if (mask & RGMObstacleMaskSlopeRight) {
         CGFloat yForMinX = RGMTileSize;
-        CGFloat yForMaxX = 1;
+        CGFloat yForMaxX = 0;
         CGFloat slope = (yForMaxX - yForMinX) / CGRectGetWidth(obstacleRect);
         //y = mx + b
         //m = y2 - y1 / x2 - x1
         CGFloat x = CGRectGetMidX(entityRect) - CGRectGetMinX(obstacleRect);
-        CGFloat height = floorf(x * slope + yForMinX);
-        CGFloat maxY = MIN(CGRectGetMinY(obstacleRect) + height, CGRectGetMaxY(obstacleRect));
+        CGFloat height = x * slope + yForMinX;
+        CGFloat maxY = MIN(MAX(CGRectGetMinY(obstacleRect), (CGRectGetMinY(obstacleRect) + height)), CGRectGetMaxY(obstacleRect));
         if (CGRectGetMinY(entityRect) < maxY) {
             entity.velocity = CGPointMake(entity.velocity.x, 0);
             entity.y = maxY;
             entity.canJump = YES;
-            return YES;
+            hit = YES;
         }
     }
     if (mask & RGMObstacleMaskSolidLeft) {
@@ -151,7 +152,7 @@ static inline NSString *RGMTextureNameForTileType(RGMTileType type) {
             CGRectGetMaxX(entityRect) > CGRectGetMinX(obstacleRect)) {
             entity.velocity = CGPointMake(0, entity.velocity.y);
             entity.x = CGRectGetMinX(obstacleRect) - entity.size.width;
-            return YES;
+            hit = YES;
         }
     }
     if (mask & RGMObstacleMaskSolidRight) {
@@ -159,11 +160,11 @@ static inline NSString *RGMTextureNameForTileType(RGMTileType type) {
             CGRectGetMinX(entityRect) < CGRectGetMaxX(obstacleRect)) {
             entity.velocity = CGPointMake(0, entity.velocity.y);
             entity.x = CGRectGetMaxX(obstacleRect);
-            return YES;
+            hit = YES;
         }
     }
     
-    return NO;
+    return hit;
 }
 
 @end
