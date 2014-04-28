@@ -9,8 +9,11 @@
 #import <Cocoa/Cocoa.h>
 #import "RGMTileMap.h"
 
+@class RGMEditorController;
+
 @interface RGMTileView : NSView
 
 @property (nonatomic) RGMTileMap *tileMap;
+@property (weak) RGMEditorController *editor;
 
 @end

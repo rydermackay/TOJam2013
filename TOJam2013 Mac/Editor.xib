@@ -6,6 +6,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="RGMEditorController">
             <connections>
+                <outlet property="arrayController" destination="Wrg-QZ-Xui" id="agR-9F-k5D"/>
                 <outlet property="tileView" destination="bcb-2T-Pht" id="ScZ-O9-WSD"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="ZQT-vJ-1mR"/>
             </connections>
@@ -26,10 +27,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="SLb-Oo-DKW">
-                                <rect key="frame" x="0.0" y="0.0" width="555.5" height="480"/>
+                                <rect key="frame" x="0.0" y="0.0" width="556" height="480"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="JDi-dk-WJd">
-                                    <rect key="frame" x="0.0" y="0.0" width="555.5" height="480"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="556" height="480"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <view id="bcb-2T-Pht" customClass="RGMTileView">
@@ -49,14 +50,14 @@
                                 </scroller>
                             </scrollView>
                             <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="R7g-uz-VoJ">
-                                <rect key="frame" x="565.5" y="0.0" width="271.5" height="480"/>
+                                <rect key="frame" x="566" y="0.0" width="271" height="480"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="DuG-zN-k6u">
-                                    <rect key="frame" x="0.0" y="0.0" width="271.5" height="480"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="271" height="480"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <collectionView selectable="YES" id="mQR-Au-2b2">
-                                            <rect key="frame" x="0.0" y="0.0" width="271.5" height="480"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="271" height="480"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <color key="primaryBackgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <color key="secondaryBackgroundColor" name="controlAlternatingRowColor" catalog="System" colorSpace="catalog"/>

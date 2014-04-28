@@ -8,6 +8,7 @@
 
 #import "RGMTileView.h"
 #import "RGMDefines.h"
+#import "RGMEditorController.h"
 
 @implementation RGMTileView
 
@@ -37,16 +38,39 @@
 }
 
 - (void)mouseDown:(NSEvent *)theEvent {
+    [self.undoManager beginUndoGrouping];
+    [self handleEvent:theEvent];
+}
+
+- (void)mouseDragged:(NSEvent *)theEvent {
+    [self handleEvent:theEvent];
+}
+
+- (void)mouseUp:(NSEvent *)theEvent {
+    [self.undoManager endUndoGrouping];
+}
+
+- (void)handleEvent:(NSEvent *)theEvent {
     NSPoint point = [self convertPoint:theEvent.locationInWindow fromView:nil];
     RGMTilePosition position = [self tilePositionForPoint:point];
+    if (position.x < self.tileMap.size.width && position.y < self.tileMap.size.height) {
+        [self setTileType:self.editor.currentType position:position];
+    }
+}
+
+- (void)setTileType:(RGMTileType)type position:(RGMTilePosition)position {
+    RGMTileType oldType = [self.tileMap tileTypeAtPosition:position];
+    if (oldType != type) {
+        NSRect rect = [self frameForTilePosition:position];
+        [[self.undoManager prepareWithInvocationTarget:self] setTileType:oldType position:position];
+        [self.tileMap setTileType:type position:position];
+        [self setNeedsDisplayInRect:rect];
+    }
 }
 
 - (RGMTilePosition)tilePositionForPoint:(NSPoint)point {
     CGFloat x = floor(self.tileMap.size.width / NSWidth(self.bounds) * point.x);
     CGFloat y = floor(self.tileMap.size.height / NSHeight(self.bounds) * point.y);
-    if (self.isFlipped) {
-        y = self.tileMap.size.height - 1 - y;
-    }
     return (RGMTilePosition){x,y};
 }
 

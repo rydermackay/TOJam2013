@@ -65,7 +65,6 @@
 }
 
 - (void)setTileType:(RGMTileType)type position:(RGMTilePosition)position {
-    [[[NSApp undoManager] prepareWithInvocationTarget:self] setTileType:[self tileTypeAtPosition:position] position:position];
     _tiles[[self indexForPosition:position]] = [[RGMTile alloc] initWithTileType:type];
 }
 

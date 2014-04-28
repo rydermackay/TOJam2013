@@ -16,6 +16,8 @@
 @property (nonatomic) RGMTileMap *tileMap;
 @property (nonatomic, strong) NSMutableArray *map;
 @property (weak) IBOutlet RGMTileView *tileView;
+@property (weak) IBOutlet NSArrayController *arrayController;
+@property (nonatomic, readwrite) NSUndoManager *undoManager;
 @end
 
 @implementation RGMEditorController
@@ -26,7 +28,9 @@
 
 - (void)windowDidLoad {
     self.tileView.tileMap = self.tileMap;
+    self.tileView.editor = self;
     [self.tileView setNeedsDisplay:YES];
+    self.undoManager = [[NSUndoManager alloc] init];
 }
 
 - (NSArray *)tiles {
@@ -41,6 +45,10 @@
         _tiles = tiles;
     }
     return _tiles;
+}
+
+- (RGMTileType)currentType {
+    return [(RGMTile *)[self.arrayController selectedObjects].firstObject type];
 }
 
 - (IBAction)reload:(id)sender {

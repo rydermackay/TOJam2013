@@ -7,9 +7,11 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "RGMTile.h"
 
 @interface RGMEditorController : NSWindowController
 @property (nonatomic, copy, readonly) NSArray *tiles;
+@property (nonatomic) RGMTileType currentType;
 @end
 
 @interface RGMTileCollectionViewItem : NSCollectionViewItem
