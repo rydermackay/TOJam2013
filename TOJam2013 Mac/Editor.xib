@@ -16,21 +16,21 @@
         <window title="Editor" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" animationBehavior="default" id="QvC-M9-y7g">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="367" y="240" width="837" height="480"/>
+            <rect key="contentRect" x="336" y="310" width="837" height="480"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1440" height="900"/>
             <view key="contentView" wantsLayer="YES" id="EiT-Mj-1SZ">
                 <rect key="frame" x="0.0" y="0.0" width="837" height="480"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <splitView dividerStyle="paneSplitter" vertical="YES" id="jSg-Sz-VCI">
+                    <splitView dividerStyle="thin" vertical="YES" id="jSg-Sz-VCI">
                         <rect key="frame" x="0.0" y="0.0" width="837" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="SLb-Oo-DKW">
-                                <rect key="frame" x="0.0" y="0.0" width="556" height="480"/>
+                                <rect key="frame" x="0.0" y="0.0" width="708" height="480"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="JDi-dk-WJd">
-                                    <rect key="frame" x="0.0" y="0.0" width="556" height="480"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="708" height="480"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <view id="bcb-2T-Pht" customClass="RGMTileView">
@@ -41,23 +41,23 @@
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </clipView>
                                 <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="hGY-CB-3CR">
-                                    <rect key="frame" x="0.0" y="464" width="336" height="16"/>
+                                    <rect key="frame" x="0.0" y="464" width="0.0" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="4Fd-jp-7L0">
-                                    <rect key="frame" x="321" y="0.0" width="15" height="480"/>
+                                    <rect key="frame" x="821" y="0.0" width="16" height="0.0"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
                             <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="R7g-uz-VoJ">
-                                <rect key="frame" x="566" y="0.0" width="271" height="480"/>
+                                <rect key="frame" x="709" y="0.0" width="128" height="480"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="DuG-zN-k6u">
-                                    <rect key="frame" x="0.0" y="0.0" width="271" height="480"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="128" height="480"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <collectionView selectable="YES" id="mQR-Au-2b2">
-                                            <rect key="frame" x="0.0" y="0.0" width="271" height="480"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="128" height="480"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <color key="primaryBackgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <color key="secondaryBackgroundColor" name="controlAlternatingRowColor" catalog="System" colorSpace="catalog"/>
@@ -70,18 +70,18 @@
                                     </subviews>
                                 </clipView>
                                 <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="2F4-dC-o4b">
-                                    <rect key="frame" x="1" y="144" width="233" height="15"/>
+                                    <rect key="frame" x="0.0" y="464" width="271" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
-                                <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="zVz-oE-J0e">
-                                    <rect key="frame" x="234" y="1" width="15" height="143"/>
+                                <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="zVz-oE-J0e">
+                                    <rect key="frame" x="821" y="0.0" width="16" height="479"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
                         </subviews>
                         <holdingPriorities>
                             <real value="250"/>
-                            <real value="250"/>
+                            <real value="490"/>
                         </holdingPriorities>
                     </splitView>
                 </subviews>
@@ -100,7 +100,7 @@
             <rect key="frame" x="0.0" y="0.0" width="32" height="32"/>
             <autoresizingMask key="autoresizingMask"/>
             <subviews>
-                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" id="C2C-Lv-6kK">
+                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" id="C2C-Lv-6kK" customClass="RGMImageView">
                     <rect key="frame" x="0.0" y="0.0" width="32" height="32"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="NSActionTemplate" id="xhD-oN-U4C"/>
@@ -109,6 +109,9 @@
                     </connections>
                 </imageView>
             </subviews>
+            <connections>
+                <outlet property="imageView" destination="C2C-Lv-6kK" id="a8J-ln-DCk"/>
+            </connections>
         </view>
         <arrayController objectClassName="RGMTile" editable="NO" id="Wrg-QZ-Xui">
             <connections>

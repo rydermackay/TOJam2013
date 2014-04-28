@@ -11,6 +11,19 @@
 #import "RGMTileMap.h"
 #import "RGMTileView.h"
 
+@interface RGMImageView : NSImageView
+
+@end
+
+@implementation RGMImageView
+
+- (void)setLayer:(CALayer *)newLayer {
+    newLayer.magnificationFilter = kCAFilterNearest;
+    [super setLayer:newLayer];
+}
+
+@end
+
 @interface RGMEditorController () <NSCollectionViewDelegate>
 @property (nonatomic, copy) NSArray *tiles;
 @property (nonatomic) RGMTileMap *tileMap;
