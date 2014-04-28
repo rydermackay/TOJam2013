@@ -141,7 +141,7 @@
         </window>
         <customObject id="494" customClass="RGMAppDelegate">
             <connections>
-                <outlet property="editorController" destination="tdf-Ox-LmB" id="dZl-21-V0w"/>
+                <outlet property="editorController" destination="tdf-Ox-LmB" id="5OI-Pu-9Av"/>
                 <outlet property="skView" destination="539" id="540"/>
                 <outlet property="window" destination="371" id="532"/>
             </connections>

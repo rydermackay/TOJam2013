@@ -8,11 +8,10 @@
 
 #import "RGMDefines.h"
 
-CGFloat  RGMTileSize     = 16;
-CGSize   RGMFieldSize    = (CGSize){40, 15};
+NSUInteger  RGMTileSize     = 16;
 
-CGRect RGMFrameForTile(CGPoint tile) {
-    return CGRectMake(tile.x * RGMTileSize, tile.y * RGMTileSize, RGMTileSize, RGMTileSize);
+CGRect RGMFrameForTilePosition(RGMTilePosition position) {
+    return CGRectMake(position.x * RGMTileSize, position.y * RGMTileSize, RGMTileSize, RGMTileSize);
 }
 
 CGRect RGMFrameFromTile(CGPoint from, CGPoint to) {

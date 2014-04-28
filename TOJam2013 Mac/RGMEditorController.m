@@ -8,15 +8,25 @@
 
 #import "RGMEditorController.h"
 #import "RGMTile.h"
+#import "RGMTileMap.h"
+#import "RGMTileView.h"
 
 @interface RGMEditorController () <NSCollectionViewDelegate>
 @property (nonatomic, copy) NSArray *tiles;
+@property (nonatomic) RGMTileMap *tileMap;
+@property (nonatomic, strong) NSMutableArray *map;
+@property (weak) IBOutlet RGMTileView *tileView;
 @end
 
 @implementation RGMEditorController
 
 - (NSString *)windowNibName {
     return @"Editor";
+}
+
+- (void)windowDidLoad {
+    self.tileView.tileMap = self.tileMap;
+    [self.tileView setNeedsDisplay:YES];
 }
 
 - (NSArray *)tiles {

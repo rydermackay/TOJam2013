@@ -8,13 +8,22 @@
 
 #import <CoreGraphics/CoreGraphics.h>
 
-extern CGFloat  RGMTileSize;
-extern CGSize   RGMFieldSize;
-
-extern CGRect RGMFrameFromTile(CGPoint from, CGPoint to);
-extern CGRect RGMFrameForTile(CGPoint tile);
-
 typedef NS_ENUM(NSUInteger, RGMAxis) {
     RGMAxisHorizontal,
     RGMAxisVertical,
 };
+
+typedef struct {
+    NSUInteger x;
+    NSUInteger y;
+} RGMTilePosition;
+
+typedef struct {
+    NSUInteger width;
+    NSUInteger height;
+} RGMSize;
+
+extern NSUInteger   RGMTileSize;
+
+extern CGRect RGMFrameForTilePosition(RGMTilePosition position);
+extern CGRect RGMFrameFromTile(CGPoint from, CGPoint to);

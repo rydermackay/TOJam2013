@@ -14,6 +14,7 @@
 
 @interface RGMAppDelegate () <NSWindowDelegate>
 @property (nonatomic) RGMGame *game;
+@property (nonatomic) IBOutlet RGMEditorController *editorController;
 @end
 
 @implementation RGMAppDelegate
@@ -30,6 +31,7 @@
     [self.skView presentScene:scene];
     [self.window setContentSize:NSMakeSize(scene.size.width * 2, scene.size.height * 2)];
     self.window.contentAspectRatio = scene.size;
+    [self.editorController setValue:self.game.tileMap forKey:@"tileMap"];
 }
 
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender {

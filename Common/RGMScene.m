@@ -42,7 +42,7 @@
     _obstacleNodes = [NSMutableArray new];
     SKTextureAtlas *atlas = [SKTextureAtlas atlasNamed:@"Textures"];
     [atlas preloadWithCompletionHandler:^{}];
-    [self.game.tileMap.obstacles enumerateObjectsUsingBlock:^(RGMTile *obstacle, NSUInteger idx, BOOL *stop) {
+    [self.game.tileMap.tiles enumerateObjectsUsingBlock:^(RGMTile *obstacle, NSUInteger idx, BOOL *stop) {
         SKSpriteNode *node = [SKSpriteNode node];
         node.size = obstacle.frame.size;
         node.anchorPoint = CGPointZero;
@@ -77,7 +77,7 @@
         node.size = entity.frame.size;
         node.position = CGPointMake(entity.x + floorf(CGRectGetWidth(node.frame) * 0.5),
                                     entity.y + floorf(CGRectGetHeight(node.frame) * 0.5));
-//        node.texture = entity.image ? [SKTexture textureWithCGImage:entity.image.CGImage] : nil;
+        node.texture = entity.image ? [SKTexture textureWithImage:entity.image] : nil;
         node.color = [entity color] ?: [SKColor yellowColor];
         if (entity.isInvincible && ((NSInteger)((currentTime) * 5) % 2 == 0)) {
             node.hidden = YES;

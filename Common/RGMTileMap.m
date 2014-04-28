@@ -9,44 +9,70 @@
 #import "RGMTileMap.h"
 #import "RGMTile.h"
 
-@interface RGMTileMap ()
-
-@property (nonatomic, copy) NSArray *obstacles;
-
-@end
-
-
-
-@implementation RGMTileMap
+@implementation RGMTileMap {
+    NSMutableArray *_tiles;
+}
 
 - (id)initWithName:(NSString *)name
 {
     if (self = [super init]) {
         NSData *mapData = [[NSData alloc] initWithContentsOfURL:[[NSBundle mainBundle] URLForResource:name withExtension:@"json"]];
         NSError *error;
-        NSArray *map = [NSJSONSerialization JSONObjectWithData:mapData options:0 error:&error];
+        NSDictionary *map = [NSJSONSerialization JSONObjectWithData:mapData options:0 error:&error];
         if (!map) {
             NSLog(@"error loading map: %@", error);
             return nil;
         }
+        NSParameterAssert([map isKindOfClass:[NSDictionary class]]);
+        NSUInteger width = [map[@"size"][@"width"] unsignedIntegerValue];
+        NSUInteger height = [map[@"size"][@"height"] unsignedIntegerValue];
+        _size = (RGMSize){width, height};
         
-        NSMutableArray *obstacles = [NSMutableArray new];
-        
-        for (int y = 0; y < map.count; y++) {
-            for (int x = 0; x < [map[y] count]; x++) {
-                const CGPoint tile = CGPointMake(x, map.count - 1 - y);
-                RGMTileType tileType = [map[y][x] unsignedIntegerValue];
-                
-                RGMTile *obstacle = [[RGMTile alloc] initWithTileType:tileType];
-                obstacle.frame = RGMFrameForTile(tile);
-                [obstacles addObject:obstacle];
+        NSMutableArray *tiles = [NSMutableArray new];
+        NSArray *array = map[@"tiles"];
+        NSParameterAssert(array.count == _size.height);
+        for (NSUInteger y = 0; y < array.count; y++) {
+            NSParameterAssert([array[y] count] == _size.width);
+            for (NSUInteger x = 0; x < [array[y] count]; x++) {
+                const RGMTilePosition position = (RGMTilePosition){x, array.count - 1 - y};
+                RGMTileType tileType = [array[y][x] unsignedIntegerValue];
+                RGMTile *tile = [[RGMTile alloc] initWithTileType:tileType];
+                tile.frame = RGMFrameForTilePosition(position);
+                [tiles addObject:tile];
             }
         }
         
-        _obstacles = [obstacles copy];
+        _tiles = tiles;
     }
     
     return self;
+}
+
+- (NSArray *)tiles {
+    return [_tiles copy];
+}
+
+- (RGMTilePosition)positionForIndex:(NSUInteger)idx {
+    return (RGMTilePosition){idx % self.size.width, idx / self.size.width};
+}
+
+- (NSUInteger)indexForPosition:(RGMTilePosition)position {
+    return position.y * self.size.width + position.x;
+}
+
+- (RGMTileType)tileTypeAtPosition:(RGMTilePosition)position {
+    return [(RGMTile *)_tiles[[self indexForPosition:position]] type];
+}
+
+- (void)setTileType:(RGMTileType)type position:(RGMTilePosition)position {
+    [[[NSApp undoManager] prepareWithInvocationTarget:self] setTileType:[self tileTypeAtPosition:position] position:position];
+    _tiles[[self indexForPosition:position]] = [[RGMTile alloc] initWithTileType:type];
+}
+
+- (void)enumerateTilesWithBlock:(void (^)(RGMTile *, RGMTilePosition))block {
+    [self.tiles enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        block(obj, [self positionForIndex:idx]);
+    }];
 }
 
 @end

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5053" systemVersion="13C1021" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5053" systemVersion="13C1021" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5053"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="RGMEditorController">
             <connections>
+                <outlet property="tileView" destination="bcb-2T-Pht" id="ScZ-O9-WSD"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="ZQT-vJ-1mR"/>
             </connections>
         </customObject>
@@ -14,47 +15,48 @@
         <window title="Editor" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" animationBehavior="default" id="QvC-M9-y7g">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="367" y="240" width="510" height="480"/>
+            <rect key="contentRect" x="367" y="240" width="837" height="480"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1440" height="900"/>
-            <view key="contentView" id="EiT-Mj-1SZ">
-                <rect key="frame" x="0.0" y="0.0" width="510" height="480"/>
+            <view key="contentView" wantsLayer="YES" id="EiT-Mj-1SZ">
+                <rect key="frame" x="0.0" y="0.0" width="837" height="480"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <splitView dividerStyle="paneSplitter" vertical="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jSg-Sz-VCI">
-                        <rect key="frame" x="0.0" y="0.0" width="510" height="480"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <splitView dividerStyle="paneSplitter" vertical="YES" id="jSg-Sz-VCI">
+                        <rect key="frame" x="0.0" y="0.0" width="837" height="480"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView fixedFrame="YES" borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="SLb-Oo-DKW">
-                                <rect key="frame" x="0.0" y="0.0" width="336" height="480"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="SLb-Oo-DKW">
+                                <rect key="frame" x="0.0" y="0.0" width="555.5" height="480"/>
+                                <autoresizingMask key="autoresizingMask"/>
                                 <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="JDi-dk-WJd">
-                                    <rect key="frame" x="0.0" y="0.0" width="336" height="480"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="555.5" height="480"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <view fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bcb-2T-Pht">
-                                            <rect key="frame" x="0.0" y="0.0" width="81" height="226"/>
-                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        <view id="bcb-2T-Pht" customClass="RGMTileView">
+                                            <rect key="frame" x="0.0" y="0.0" width="336" height="480"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         </view>
                                     </subviews>
+                                    <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </clipView>
-                                <scroller key="horizontalScroller" verticalHuggingPriority="750" horizontal="YES" id="hGY-CB-3CR">
+                                <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="hGY-CB-3CR">
                                     <rect key="frame" x="0.0" y="464" width="336" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
-                                <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="4Fd-jp-7L0">
-                                    <rect key="frame" x="320" y="0.0" width="16" height="480"/>
+                                <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="4Fd-jp-7L0">
+                                    <rect key="frame" x="321" y="0.0" width="15" height="480"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
-                            <scrollView fixedFrame="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="R7g-uz-VoJ">
-                                <rect key="frame" x="346" y="0.0" width="164" height="480"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="R7g-uz-VoJ">
+                                <rect key="frame" x="565.5" y="0.0" width="271.5" height="480"/>
+                                <autoresizingMask key="autoresizingMask"/>
                                 <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="DuG-zN-k6u">
-                                    <rect key="frame" x="0.0" y="0.0" width="164" height="480"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="271.5" height="480"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <collectionView selectable="YES" id="mQR-Au-2b2">
-                                            <rect key="frame" x="0.0" y="0.0" width="164" height="480"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="271.5" height="480"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <color key="primaryBackgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <color key="secondaryBackgroundColor" name="controlAlternatingRowColor" catalog="System" colorSpace="catalog"/>
@@ -82,12 +84,6 @@
                         </holdingPriorities>
                     </splitView>
                 </subviews>
-                <constraints>
-                    <constraint firstItem="jSg-Sz-VCI" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" id="7MD-rg-VSP"/>
-                    <constraint firstAttribute="trailing" secondItem="jSg-Sz-VCI" secondAttribute="trailing" id="J2h-Q1-whK"/>
-                    <constraint firstAttribute="bottom" secondItem="jSg-Sz-VCI" secondAttribute="bottom" id="WMk-QW-ct1"/>
-                    <constraint firstItem="jSg-Sz-VCI" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" id="yWt-gp-Rby"/>
-                </constraints>
             </view>
             <connections>
                 <outlet property="delegate" destination="-2" id="FFj-c4-ZVr"/>
@@ -99,11 +95,11 @@
                 <outlet property="view" destination="vQ5-nc-jr9" id="yCm-v3-nKl"/>
             </connections>
         </collectionViewItem>
-        <view translatesAutoresizingMaskIntoConstraints="NO" id="vQ5-nc-jr9">
+        <view id="vQ5-nc-jr9">
             <rect key="frame" x="0.0" y="0.0" width="32" height="32"/>
             <autoresizingMask key="autoresizingMask"/>
             <subviews>
-                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="C2C-Lv-6kK">
+                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" id="C2C-Lv-6kK">
                     <rect key="frame" x="0.0" y="0.0" width="32" height="32"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="NSActionTemplate" id="xhD-oN-U4C"/>
@@ -112,12 +108,6 @@
                     </connections>
                 </imageView>
             </subviews>
-            <constraints>
-                <constraint firstItem="C2C-Lv-6kK" firstAttribute="top" secondItem="vQ5-nc-jr9" secondAttribute="top" id="AqK-Ll-Ubt"/>
-                <constraint firstAttribute="bottom" secondItem="C2C-Lv-6kK" secondAttribute="bottom" id="Bla-Ku-tlv"/>
-                <constraint firstAttribute="trailing" secondItem="C2C-Lv-6kK" secondAttribute="trailing" id="sDx-SQ-828"/>
-                <constraint firstItem="C2C-Lv-6kK" firstAttribute="leading" secondItem="vQ5-nc-jr9" secondAttribute="leading" id="uoH-nr-FJ5"/>
-            </constraints>
         </view>
         <arrayController objectClassName="RGMTile" editable="NO" id="Wrg-QZ-Xui">
             <connections>

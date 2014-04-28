@@ -7,7 +7,10 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "RGMTileMap.h"
 
 @interface RGMTileView : NSView
+
+@property (nonatomic) RGMTileMap *tileMap;
 
 @end

@@ -135,7 +135,7 @@
 }
 
 - (NSArray *)tilesIntersectingEntityRect:(CGRect)entityRect edge:(CGRectEdge)edge {
-    return [self.tileMap.obstacles objectsAtIndexes:[self.tileMap.obstacles indexesOfObjectsPassingTest:^BOOL(RGMTile *tile, NSUInteger idx, BOOL *stop) {
+    return [self.tileMap.tiles objectsAtIndexes:[self.tileMap.tiles indexesOfObjectsPassingTest:^BOOL(RGMTile *tile, NSUInteger idx, BOOL *stop) {
         CGRect tileRect = tile.frame;
         if (CGRectIntersectsRect(tile.frame, entityRect)) {
             switch (edge) {
@@ -156,7 +156,7 @@
 - (void)hitTestEntity:(RGMEntity *)entity
 {
     CGRect frame = entity.frame;
-    CGRect bounds = RGMFrameFromTile(CGPointMake(0, 0), CGPointMake(RGMFieldSize.width - 1, RGMFieldSize.height - 1));
+    CGRect bounds = RGMFrameFromTile(CGPointMake(0, 0), CGPointMake(self.tileMap.size.width - 1, self.tileMap.size.height - 1));
     
     if (CGRectGetMinX(frame) < CGRectGetMinX(bounds)) {
         entity.x = CGRectGetMinX(bounds);
