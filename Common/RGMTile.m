@@ -11,9 +11,10 @@
 
 @implementation RGMTile
 
-- (instancetype)initWithTileType:(RGMTileType)type {
+- (instancetype)initWithTileType:(RGMTileType)type position:(RGMTilePosition)position {
     if (self = [super init]) {
         _type = type;
+        _position = position;
         _mask = RGMObstacleMaskForTileType(type);
     }
     return self;
@@ -84,6 +85,10 @@ static inline NSString *RGMTextureNameForTileType(RGMTileType type) {
         default:
             return @"unknown";
     }
+}
+
+- (CGRect)frame {
+    return RGMFrameForTilePosition(self.position);
 }
 
 - (BOOL)hitTestEntity:(RGMEntity *)entity {

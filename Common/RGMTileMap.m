@@ -31,13 +31,12 @@
         NSMutableArray *tiles = [NSMutableArray new];
         NSArray *array = map[@"tiles"];
         NSParameterAssert(array.count == _size.height);
-        for (NSUInteger y = 0; y < array.count; y++) {
+        for (NSInteger y = array.count - 1; y >= 0; y--) {
             NSParameterAssert([array[y] count] == _size.width);
-            for (NSUInteger x = 0; x < [array[y] count]; x++) {
+            for (NSInteger x = 0; x < [array[y] count]; x++) {
                 const RGMTilePosition position = (RGMTilePosition){x, array.count - 1 - y};
                 RGMTileType tileType = [array[y][x] unsignedIntegerValue];
-                RGMTile *tile = [[RGMTile alloc] initWithTileType:tileType];
-                tile.frame = RGMFrameForTilePosition(position);
+                RGMTile *tile = [[RGMTile alloc] initWithTileType:tileType position:position];
                 [tiles addObject:tile];
             }
         }
@@ -65,13 +64,7 @@
 }
 
 - (void)setTileType:(RGMTileType)type position:(RGMTilePosition)position {
-    _tiles[[self indexForPosition:position]] = [[RGMTile alloc] initWithTileType:type];
-}
-
-- (void)enumerateTilesWithBlock:(void (^)(RGMTile *, RGMTilePosition))block {
-    [self.tiles enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        block(obj, [self positionForIndex:idx]);
-    }];
+    _tiles[[self indexForPosition:position]] = [[RGMTile alloc] initWithTileType:type position:position];
 }
 
 @end

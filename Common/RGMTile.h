@@ -45,11 +45,12 @@ typedef NS_OPTIONS(NSUInteger, RGMObstacleMask) {
 
 @interface RGMTile : NSObject
 
-- (instancetype)initWithTileType:(RGMTileType)type;
+- (instancetype)initWithTileType:(RGMTileType)type position:(RGMTilePosition)position;
 
-@property (nonatomic) RGMTileType type;
-@property (nonatomic) RGMObstacleMask mask;
-@property (nonatomic) CGRect frame;
+@property (nonatomic, readonly) RGMTileType type;
+@property (nonatomic, readonly) RGMTilePosition position;
+@property (nonatomic, readonly) RGMObstacleMask mask;
+@property (nonatomic, readonly) CGRect frame;
 
 - (BOOL)hitTestEntity:(RGMEntity *)entity;
 - (NSString *)textureName;

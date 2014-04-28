@@ -19,6 +19,4 @@
 - (RGMTileType)tileTypeAtPosition:(RGMTilePosition)position;
 - (void)setTileType:(RGMTileType)type position:(RGMTilePosition)position;
 
-- (void)enumerateTilesWithBlock:(void(^)(RGMTile *tile, RGMTilePosition position))block;
-
 @end

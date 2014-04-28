@@ -23,7 +23,7 @@ typedef struct {
     NSUInteger height;
 } RGMSize;
 
-extern NSUInteger   RGMTileSize;
+extern NSUInteger RGMTileSize;
 
 extern CGRect RGMFrameForTilePosition(RGMTilePosition position);
 extern CGRect RGMFrameFromTile(CGPoint from, CGPoint to);

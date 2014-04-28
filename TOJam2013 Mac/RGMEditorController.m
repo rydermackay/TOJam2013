@@ -14,7 +14,6 @@
 @interface RGMEditorController () <NSCollectionViewDelegate>
 @property (nonatomic, copy) NSArray *tiles;
 @property (nonatomic) RGMTileMap *tileMap;
-@property (nonatomic, strong) NSMutableArray *map;
 @property (weak) IBOutlet RGMTileView *tileView;
 @property (weak) IBOutlet NSArrayController *arrayController;
 @property (nonatomic, readwrite) NSUndoManager *undoManager;
@@ -37,7 +36,7 @@
     if (!_tiles) {
         NSMutableArray *tiles = [NSMutableArray array];
         for (NSNumber *number in [RGMTile tileTypes]) {
-            RGMTile *tile = [[RGMTile alloc] initWithTileType:number.unsignedIntegerValue];
+            RGMTile *tile = [[RGMTile alloc] initWithTileType:number.unsignedIntegerValue position:(RGMTilePosition){0,0}];
             if (tile) {
                 [tiles addObject:tile];
             }
