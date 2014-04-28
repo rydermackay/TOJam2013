@@ -16,4 +16,7 @@
 @property (nonatomic) RGMTileMap *tileMap;
 @property (weak) RGMEditorController *editor;
 
+- (RGMTilePosition)tilePositionForPoint:(NSPoint)point;
+- (NSRect)frameForTilePosition:(RGMTilePosition)position;
+
 @end

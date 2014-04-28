@@ -62,17 +62,7 @@
     NSPoint point = [self convertPoint:theEvent.locationInWindow fromView:nil];
     RGMTilePosition position = [self tilePositionForPoint:point];
     if (position.x < self.tileMap.size.width && position.y < self.tileMap.size.height) {
-        [self setTileType:self.editor.currentType position:position];
-    }
-}
-
-- (void)setTileType:(RGMTileType)type position:(RGMTilePosition)position {
-    RGMTileType oldType = [self.tileMap tileTypeAtPosition:position];
-    if (oldType != type) {
-        NSRect rect = [self frameForTilePosition:position];
-        [[self.undoManager prepareWithInvocationTarget:self] setTileType:oldType position:position];
-        [self.tileMap setTileType:type position:position];
-        [self setNeedsDisplayInRect:rect];
+        [self.editor tileView:self clickedTileAtPosition:position];
     }
 }
 

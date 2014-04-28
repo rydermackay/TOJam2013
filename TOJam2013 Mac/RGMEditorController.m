@@ -25,11 +25,10 @@
 @end
 
 @interface RGMEditorController () <NSCollectionViewDelegate>
-@property (nonatomic, copy) NSArray *tiles;
-@property (nonatomic) RGMTileMap *tileMap;
+@property RGMTileMap *tileMap;
+@property (copy) NSArray *tiles;
 @property (weak) IBOutlet RGMTileView *tileView;
 @property (weak) IBOutlet NSArrayController *arrayController;
-@property (nonatomic, readwrite) NSUndoManager *undoManager;
 @end
 
 @implementation RGMEditorController
@@ -39,32 +38,32 @@
 }
 
 - (void)windowDidLoad {
+    NSMutableArray *tiles = [NSMutableArray array];
+    for (NSNumber *number in [RGMTile tileTypes]) {
+        [tiles addObject:[[RGMTile alloc] initWithTileType:number.unsignedIntegerValue position:(RGMTilePosition){0,0}]];
+    }
+    self.tiles = tiles;
     self.tileView.tileMap = self.tileMap;
     self.tileView.editor = self;
-    [self.tileView setNeedsDisplay:YES];
-    self.undoManager = [[NSUndoManager alloc] init];
-}
-
-- (NSArray *)tiles {
-    if (!_tiles) {
-        NSMutableArray *tiles = [NSMutableArray array];
-        for (NSNumber *number in [RGMTile tileTypes]) {
-            RGMTile *tile = [[RGMTile alloc] initWithTileType:number.unsignedIntegerValue position:(RGMTilePosition){0,0}];
-            if (tile) {
-                [tiles addObject:tile];
-            }
-        }
-        _tiles = tiles;
-    }
-    return _tiles;
 }
 
 - (RGMTileType)currentType {
     return [(RGMTile *)[self.arrayController selectedObjects].firstObject type];
 }
 
-- (IBAction)reload:(id)sender {
-    
+#pragma mark - Tile View
+
+- (void)tileView:(RGMTileView *)tileView clickedTileAtPosition:(RGMTilePosition)position {
+    [self setTileType:self.currentType atPosition:position];
+}
+
+- (void)setTileType:(RGMTileType)type atPosition:(RGMTilePosition)position {
+    RGMTileType oldType = [self.tileMap tileTypeAtPosition:position];
+    if (oldType != type) {
+        [[self.window.undoManager prepareWithInvocationTarget:self] setTileType:oldType atPosition:position];
+        [self.tileMap setTileType:type position:position];
+        [self.tileView setNeedsDisplayInRect:[self.tileView frameForTilePosition:position]];
+    }
 }
 
 @end

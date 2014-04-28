@@ -9,11 +9,10 @@
 #import <Cocoa/Cocoa.h>
 #import "RGMTile.h"
 
-@interface RGMEditorController : NSWindowController
-@property (nonatomic, copy, readonly) NSArray *tiles;
-@property (nonatomic) RGMTileType currentType;
-@end
+@class RGMTileView;
 
-@interface RGMTileCollectionViewItem : NSCollectionViewItem
+@interface RGMEditorController : NSWindowController
+
+- (void)tileView:(RGMTileView *)tileView clickedTileAtPosition:(RGMTilePosition)position;
 
 @end
