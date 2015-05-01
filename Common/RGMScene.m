@@ -22,12 +22,10 @@
     RGMInputMask _inputMask;
     
     NSMutableArray *_obstacleNodes;
-    NSMutableDictionary *_entityNodes;
 }
 
 - (id)initWithSize:(CGSize)size {
     if (self = [super initWithSize:size]) {
-        _entityNodes = [NSMutableDictionary new];
         _world = [SKNode node];
         _world.name = @"world";
         [self insertChild:_world atIndex:0];
@@ -67,10 +65,9 @@
     
     for (NSString *identifier in self.game.identifiers) {
         RGMEntity *entity = [self.game entityForIdentifier:identifier];
-        SKSpriteNode *node = [_entityNodes objectForKey:identifier];
+        SKSpriteNode *node = self.world[identifier].firstObject;
         if (node == nil) {
             node = [SKSpriteNode new];
-            _entityNodes[identifier] = node;
             [self.world addChild:node];
             node.texture = entity.texture ?: entity.image ? [SKTexture textureWithImage:entity.image] : nil;    // this is so dumb
             node.texture.filteringMode = SKTextureFilteringNearest;
@@ -106,7 +103,7 @@
     }
     [nodesToKill makeObjectsPerformSelector:@selector(removeFromParent)];
     
-    SKSpriteNode *node = _entityNodes[@"me"];
+    SKSpriteNode *node = self[@"me"].firstObject;
     const CGFloat minDistance = RGMTileSize * 8;
     CGPoint playerPosition = [self convertPoint:node.position fromNode:self.world];
     CGPoint worldPosition = self.world.position;
