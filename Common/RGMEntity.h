@@ -11,7 +11,7 @@
 
 extern NSTimeInterval invincibilityDuration;
 
-@class RGMGame;
+@class RGMGame, RGMTile;
 
 @interface RGMEntity : NSObject <NSCoding>
 
@@ -44,7 +44,7 @@ extern NSTimeInterval invincibilityDuration;
 - (void)jump;
 - (void)endJump;
 
-
+- (BOOL)hitTestWithTile:(RGMTile *)tile;
 - (BOOL)hitTestWithEntity:(RGMEntity *)entity;
 
 @property (nonatomic, weak) RGMGame *game;

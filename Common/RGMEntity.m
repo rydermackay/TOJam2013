@@ -7,6 +7,7 @@
 //
 
 #import "RGMEntity.h"
+#import "RGMTile.h"
 
 NSTimeInterval invincibilityDuration = 3;
 
@@ -135,6 +136,92 @@ NSTimeInterval invincibilityDuration = 3;
 - (void)reset
 {
     self.invincible = NO;
+}
+
+- (BOOL)hitTestWithTile:(RGMTile *)tile {
+    RGMObstacleMask mask = tile.mask;
+    if (mask == RGMObstacleMaskNone) {
+        return NO;
+    }
+    
+    CGRect obstacleRect = tile.frame;
+    CGRect entityRect = self.frame;
+    if (!CGRectIntersectsRect(obstacleRect, entityRect)) {
+        return NO;
+    }
+    BOOL hit = NO;
+    
+    if (mask & RGMObstacleMaskSolidBottom) {
+        if (CGRectGetMaxY(self.frameBeforeStepping) <= CGRectGetMinY(obstacleRect) &&
+            CGRectGetMaxY(entityRect) > CGRectGetMinY(obstacleRect)) {
+            self.velocity = CGPointMake(self.velocity.x, 0);
+            self.y = CGRectGetMinY(obstacleRect) - self.size.height;
+            [self endJump];
+            hit = YES;
+        }
+    }
+    if (mask & RGMObstacleMaskSolidTop) {
+        if (CGRectGetMinY(self.frameBeforeStepping) >= CGRectGetMaxY(obstacleRect) &&
+            CGRectGetMinY(entityRect) < CGRectGetMaxY(obstacleRect)) {
+#warning Never do this
+            if ([self.identifier isEqualToString:@"fire"]) {
+                self.velocity = CGPointMake(self.velocity.x, self.velocity.y * -0.8);
+            } else {
+                self.velocity = CGPointMake(self.velocity.x, 0);
+            }
+            self.y = CGRectGetMaxY(obstacleRect);
+            self.canJump = YES;
+            hit = YES;
+        }
+    }
+    if (mask & RGMObstacleMaskSlopeLeft) {
+        CGFloat yForMinX = 0;
+        CGFloat yForMaxX = RGMTileSize;
+        CGFloat slope = (yForMaxX - yForMinX) / CGRectGetWidth(obstacleRect);
+        CGFloat x = CGRectGetMidX(entityRect) - CGRectGetMinX(obstacleRect);
+        CGFloat height = x * slope;
+        CGFloat maxY = MIN(MAX(CGRectGetMinY(obstacleRect), (CGRectGetMinY(obstacleRect) + height)), CGRectGetMaxY(obstacleRect));
+        if (CGRectGetMinY(entityRect) < maxY) {
+            self.velocity = CGPointMake(self.velocity.x, 0);
+            self.y = maxY;
+            self.canJump = YES;
+            hit = YES;
+        }
+    }
+    if (mask & RGMObstacleMaskSlopeRight) {
+        CGFloat yForMinX = RGMTileSize;
+        CGFloat yForMaxX = 0;
+        CGFloat slope = (yForMaxX - yForMinX) / CGRectGetWidth(obstacleRect);
+        //y = mx + b
+        //m = y2 - y1 / x2 - x1
+        CGFloat x = CGRectGetMidX(entityRect) - CGRectGetMinX(obstacleRect);
+        CGFloat height = x * slope + yForMinX;
+        CGFloat maxY = MIN(MAX(CGRectGetMinY(obstacleRect), (CGRectGetMinY(obstacleRect) + height)), CGRectGetMaxY(obstacleRect));
+        if (CGRectGetMinY(entityRect) < maxY) {
+            self.velocity = CGPointMake(self.velocity.x, 0);
+            self.y = maxY;
+            self.canJump = YES;
+            hit = YES;
+        }
+    }
+    if (mask & RGMObstacleMaskSolidLeft) {
+        if (CGRectGetMaxX(self.frameBeforeStepping) <= CGRectGetMinX(obstacleRect) &&
+            CGRectGetMaxX(entityRect) > CGRectGetMinX(obstacleRect)) {
+            self.velocity = CGPointMake(0, self.velocity.y);
+            self.x = CGRectGetMinX(obstacleRect) - self.size.width;
+            hit = YES;
+        }
+    }
+    if (mask & RGMObstacleMaskSolidRight) {
+        if (CGRectGetMinX(self.frameBeforeStepping) >= CGRectGetMaxX(obstacleRect) &&
+            CGRectGetMinX(entityRect) < CGRectGetMaxX(obstacleRect)) {
+            self.velocity = CGPointMake(0, self.velocity.y);
+            self.x = CGRectGetMaxX(obstacleRect);
+            hit = YES;
+        }
+    }
+    
+    return hit;
 }
 
 - (BOOL)hitTestWithEntity:(RGMEntity *)entity

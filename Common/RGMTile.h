@@ -52,7 +52,6 @@ typedef NS_OPTIONS(NSUInteger, RGMObstacleMask) {
 @property (nonatomic, readonly) RGMObstacleMask mask;
 @property (nonatomic, readonly) CGRect frame;
 
-- (BOOL)hitTestEntity:(RGMEntity *)entity;
 - (NSString *)textureName;
 
 @end

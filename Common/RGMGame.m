@@ -129,10 +129,10 @@
         }
     }
     if (hitTestTile) {
-        [hitTestTile hitTestEntity:entity];
+        [entity hitTestWithTile:hitTestTile];
     } else {
         for (RGMTile *tile in tiles) {
-            [tile hitTestEntity:entity];
+            [entity hitTestWithTile:tile];
         }
     }
 }
