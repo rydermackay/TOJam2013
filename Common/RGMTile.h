@@ -57,9 +57,15 @@ typedef NS_OPTIONS(NSUInteger, RGMObstacleMask) {
 
 @end
 
+
+
+#if !TARGET_OS_IPHONE
+
 @interface RGMTile (Editor)
 
 + (NSArray *)tileTypes;
 @property (nonatomic, readonly) NSImage *image;
 
 @end
+
+#endif // !TARGET_OS_IPHONE

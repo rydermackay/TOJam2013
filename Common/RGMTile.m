@@ -174,6 +174,8 @@ static inline NSString *RGMTextureNameForTileType(RGMTileType type) {
 
 @end
 
+#if !TARGET_OS_IPHONE
+
 @implementation RGMTile (Editor)
 
 + (NSArray *)tileTypes {
@@ -199,3 +201,5 @@ static inline NSString *RGMTextureNameForTileType(RGMTileType type) {
 }
 
 @end
+
+#endif // !TARGET_OS_IPHONE
