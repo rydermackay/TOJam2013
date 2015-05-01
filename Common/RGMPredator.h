@@ -16,5 +16,6 @@
 - (void)dropPrey;
 
 - (void)fire;
+- (void)resetFire;
 
 @end
