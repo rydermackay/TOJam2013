@@ -8,13 +8,15 @@
 
 #import "RGMBall.h"
 #import "RGMTile.h"
+#import "RGMGame.h"
+#import "RGMBug.h"
 
 @implementation RGMBall
 
 - (id)initWithIdentifier:(NSString *)identifier {
     if (self = [super initWithIdentifier:identifier]) {
         self.texture = [[SKTextureAtlas atlasNamed:@"Textures"] textureNamed:@"ball"];
-        self.size = self.texture.size;
+        self.size = CGSizeMake(8, 8);
         self.velocity = CGPointMake(120, 500);
     }
     return self;
@@ -31,6 +33,13 @@
     }
     self.velocity = v;
     return mask;
+}
+
+- (void)didHitEntity:(RGMEntity *)entity mask:(RGMHitTestMask)mask {
+    if ([entity isKindOfClass:[RGMBug class]]) {
+        [self.game destroyEntity:entity.identifier];
+        [self.game destroyEntity:self.identifier];
+    }
 }
 
 @end

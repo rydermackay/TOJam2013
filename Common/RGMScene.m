@@ -12,6 +12,7 @@
 #import "RGMTileMap.h"
 #import "RGMTile.h"
 #import "RGMEntity.h"
+#import "RGMBug.h"
 
 #if !TARGET_OS_IPHONE
 #import <Carbon/Carbon.h>
@@ -79,7 +80,7 @@
                                     entity.y + floorf(CGRectGetHeight(node.frame) * 0.5));
         
 #warning wat
-        if ([entity.identifier isEqualToString:@"bug"]) {
+        if ([entity isKindOfClass:[RGMBug class]]) {
             NSString *key = @"bug-walk";
             if (![node actionForKey:key]) {
                 SKTextureAtlas *atlas = [SKTextureAtlas atlasNamed:@"Textures"];

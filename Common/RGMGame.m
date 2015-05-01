@@ -16,7 +16,9 @@
 #import "RGMTile.h"
 #import "RGMBug.h"
 
-@implementation RGMGame
+@implementation RGMGame {
+    long long _bugSpawnCounter;
+}
 
 - (id)initWithMapName:(NSString *)mapName
 {
@@ -38,9 +40,13 @@
     [self createEntity:[RGMPrey class] identifier:@"prey1"];
     [self createEntity:[RGMPrey class] identifier:@"prey2"];
     
-    RGMEntity *bug = [self createEntity:[RGMBug class] identifier:@"bug"];
-    bug.x += 100;
-    bug.y += 25;
+    [self spawnBug];
+}
+
+- (void)spawnBug {
+    RGMEntity *bug = [self createEntity:[RGMBug class] identifier:[NSUUID UUID].UUIDString];
+    bug.x = self.localPlayer.x + arc4random_uniform(100) - 50;
+    bug.y += 25 + arc4random_uniform(100);
 }
 
 - (void)end
@@ -82,7 +88,7 @@
             }
         }
         
-        const CGFloat maxHorizontalVelocity = 200;
+        const CGFloat maxHorizontalVelocity = 120;
         CGPoint velocity = entity.velocity;
         CGFloat xComponent = 0;
         
@@ -112,6 +118,12 @@
         [self stepEntity:entity axis:RGMAxisHorizontal amount:round(dx)];
         [self stepEntity:entity axis:RGMAxisVertical   amount:round(dy)];
     }];
+    
+    _bugSpawnCounter++;
+    if (_bugSpawnCounter > 60*1.5) {
+        [self spawnBug];
+        _bugSpawnCounter = 0;
+    }
     
     [self didUpdate];
 }
@@ -175,30 +187,26 @@
     }]];
 }
 
-- (void)hitTestEntity:(RGMEntity *)entity
-{
+- (void)hitTestEntity:(RGMEntity *)entity {
+    
     CGRect frame = entity.frame;
     CGRect bounds = RGMFrameFromTile(CGPointMake(0, 0), CGPointMake(self.tileMap.size.width - 1, self.tileMap.size.height - 1));
     
-    if (CGRectGetMinX(frame) < CGRectGetMinX(bounds)) {
-        entity.x = CGRectGetMinX(bounds);
-#warning ugh
-        if ([entity.identifier isEqualToString:@"bug"]) {
-            entity.velocity = CGPointMake(-entity.velocity.x, entity.velocity.y);
-        } else {
+    // prevent player from escaping along x-axis
+    if (entity == self.localPlayer) {
+        if (CGRectGetMinX(frame) < CGRectGetMinX(bounds)) {
+            entity.x = CGRectGetMinX(bounds);
+            entity.velocity = CGPointMake(0, entity.velocity.y);
+        }
+        if (CGRectGetMaxX(frame) > CGRectGetMaxX(bounds)) {
+            entity.x = CGRectGetMaxX(bounds) - CGRectGetWidth(frame);
             entity.velocity = CGPointMake(0, entity.velocity.y);
         }
     }
     
-    if (CGRectGetMaxX(frame) > CGRectGetMaxX(bounds)) {
-        entity.x = CGRectGetMaxX(bounds) - CGRectGetWidth(frame);
-        entity.velocity = CGPointMake(0, entity.velocity.y);
-    }
-    
-    if (CGRectGetMinY(frame) < CGRectGetMinY(bounds)) {
-        entity.y = CGRectGetMinY(bounds);
-        entity.velocity = CGPointMake(entity.velocity.x, 0);
-        entity.canJump = YES;
+    // kill everyone else
+    if (!CGRectIntersectsRect(frame, bounds)) {
+        [self destroyEntity:entity.identifier];
     }
 }
 
@@ -228,7 +236,7 @@
 - (void)destroyEntity:(NSString *)identifier
 {
     NSParameterAssert(identifier.length > 0);
-    [self.entities removeObjectForKey:identifier];
+    [self.entities removeObjectForKey:identifier];  
 }
 
 - (RGMEntity *)entityForIdentifier:(NSString *)identifier

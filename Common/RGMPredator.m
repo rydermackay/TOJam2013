@@ -11,6 +11,7 @@
 #import "RGMMultiplayerGame.h"
 #import "RGMEvent.h"
 #import "RGMBall.h"
+#import "RGMBug.h"
 
 static NSTimeInterval captivePreyDuration = 5;
 
@@ -107,7 +108,7 @@ static NSTimeInterval captivePreyDuration = 5;
 }
 
 - (void)didHitEntity:(RGMEntity *)entity mask:(RGMHitTestMask)mask {
-    if ([entity.identifier isEqualToString:@"bug"] && mask & RGMHitTestTop) {
+    if ([entity isKindOfClass:[RGMBug class]] && mask & RGMHitTestTop) {
         [self.game destroyEntity:entity.identifier];
     }
 }
