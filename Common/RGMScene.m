@@ -129,7 +129,9 @@
 
 static inline RGMInputMask RGMInputMaskFromKeyCode(unsigned short keyCode) {
     switch (keyCode) {
-        case kVK_Space:
+        case kVK_ANSI_Z:
+            return RGMInputMaskFire;
+        case kVK_ANSI_X:
             return RGMInputMaskJump;
         case kVK_LeftArrow:
             return RGMInputMaskLeft;
@@ -139,8 +141,6 @@ static inline RGMInputMask RGMInputMaskFromKeyCode(unsigned short keyCode) {
             return RGMInputMaskDown;
         case kVK_UpArrow:
             return RGMInputMaskUp;
-        case kVK_ANSI_X:
-            return RGMInputMaskFire;
         default:
             return 0;
     }
