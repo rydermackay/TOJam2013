@@ -148,35 +148,37 @@ NSTimeInterval invincibilityDuration = 3;
     self.invincible = NO;
 }
 
-- (BOOL)hitTestWithTile:(RGMTile *)tile {
+- (RGMHitTestMask)hitTestWithTile:(RGMTile *)tile fromRect:(CGRect)fromRect proposedRect:(CGRect)proposedRect {
+    
+    RGMHitTestMask hitTestMask = RGMHitTestNone;
+    
     RGMObstacleMask mask = tile.mask;
     if (mask == RGMObstacleMaskNone) {
-        return NO;
+        return hitTestMask;
     }
     
     CGRect obstacleRect = tile.frame;
-    CGRect entityRect = self.frame;
+    CGRect entityRect = proposedRect;
     if (!CGRectIntersectsRect(obstacleRect, entityRect)) {
-        return NO;
+        return hitTestMask;
     }
-    BOOL hit = NO;
     
     if (mask & RGMObstacleMaskSolidBottom) {
-        if (CGRectGetMaxY(self.frameBeforeStepping) <= CGRectGetMinY(obstacleRect) &&
+        if (CGRectGetMaxY(fromRect) <= CGRectGetMinY(obstacleRect) &&
             CGRectGetMaxY(entityRect) > CGRectGetMinY(obstacleRect)) {
             self.velocity = CGPointMake(self.velocity.x, 0);
             self.y = CGRectGetMinY(obstacleRect) - self.size.height;
             [self endJump];
-            hit = YES;
+            hitTestMask |= RGMHitTestBottom;
         }
     }
     if (mask & RGMObstacleMaskSolidTop) {
-        if (CGRectGetMinY(self.frameBeforeStepping) >= CGRectGetMaxY(obstacleRect) &&
+        if (CGRectGetMinY(fromRect) >= CGRectGetMaxY(obstacleRect) &&
             CGRectGetMinY(entityRect) < CGRectGetMaxY(obstacleRect)) {
             self.velocity = CGPointMake(self.velocity.x, 0);
             self.y = CGRectGetMaxY(obstacleRect);
             self.canJump = YES;
-            hit = YES;
+            hitTestMask |= RGMHitTestTop;
         }
     }
     if (mask & RGMObstacleMaskSlopeLeft) {
@@ -190,7 +192,7 @@ NSTimeInterval invincibilityDuration = 3;
             self.velocity = CGPointMake(self.velocity.x, 0);
             self.y = maxY;
             self.canJump = YES;
-            hit = YES;
+            hitTestMask |= RGMHitTestTop;   // counts as walking on ground
         }
     }
     if (mask & RGMObstacleMaskSlopeRight) {
@@ -206,32 +208,58 @@ NSTimeInterval invincibilityDuration = 3;
             self.velocity = CGPointMake(self.velocity.x, 0);
             self.y = maxY;
             self.canJump = YES;
-            hit = YES;
+            hitTestMask |= RGMHitTestTop;
         }
     }
     if (mask & RGMObstacleMaskSolidLeft) {
-        if (CGRectGetMaxX(self.frameBeforeStepping) <= CGRectGetMinX(obstacleRect) &&
+        if (CGRectGetMaxX(fromRect) <= CGRectGetMinX(obstacleRect) &&
             CGRectGetMaxX(entityRect) > CGRectGetMinX(obstacleRect)) {
             self.velocity = CGPointMake(0, self.velocity.y);
             self.x = CGRectGetMinX(obstacleRect) - self.size.width;
-            hit = YES;
+            hitTestMask |= RGMHitTestLeft;
         }
     }
     if (mask & RGMObstacleMaskSolidRight) {
-        if (CGRectGetMinX(self.frameBeforeStepping) >= CGRectGetMaxX(obstacleRect) &&
+        if (CGRectGetMinX(fromRect) >= CGRectGetMaxX(obstacleRect) &&
             CGRectGetMinX(entityRect) < CGRectGetMaxX(obstacleRect)) {
             self.velocity = CGPointMake(0, self.velocity.y);
             self.x = CGRectGetMaxX(obstacleRect);
-            hit = YES;
+            hitTestMask |= RGMHitTestRight;
         }
     }
     
-    return hit;
+    return hitTestMask;
 }
 
-- (BOOL)hitTestWithEntity:(RGMEntity *)entity
-{
-    return NO;
+- (RGMHitTestMask)hitTestWithEntity:(RGMEntity *)entity fromRect:(CGRect)fromRect proposedRect:(CGRect)proposedRect {
+    RGMHitTestMask hitTestMask = RGMHitTestNone;
+    
+    
+    CGRect entityFrame = entity.frame;
+    if (CGRectIntersectsRect(entityFrame, proposedRect)) {
+        if (CGRectGetMaxY(fromRect) <= CGRectGetMinY(entityFrame) &&
+            CGRectGetMaxY(proposedRect) > CGRectGetMinY(entityFrame)) {
+            hitTestMask |= RGMHitTestBottom;
+        }
+        if (CGRectGetMinY(fromRect) >= CGRectGetMaxY(entityFrame) &&
+            CGRectGetMinY(proposedRect) < CGRectGetMaxY(entityFrame)) {
+            hitTestMask |= RGMHitTestTop;
+        }
+        if (CGRectGetMaxX(fromRect) <= CGRectGetMinX(entityFrame) &&
+            CGRectGetMaxX(proposedRect) > CGRectGetMinX(entityFrame)) {
+            hitTestMask |= RGMHitTestLeft;
+        }
+        if (CGRectGetMinX(fromRect) >= CGRectGetMaxX(entityFrame) &&
+            CGRectGetMinX(proposedRect) < CGRectGetMaxX(entityFrame)) {
+            hitTestMask |= RGMHitTestRight;
+        }
+    }
+    
+    return hitTestMask;
+}
+
+- (void)didHitEntity:(RGMEntity *)entity mask:(RGMHitTestMask)mask {
+    
 }
 
 - (CGPoint)distanceFrom:(RGMEntity *)entity {

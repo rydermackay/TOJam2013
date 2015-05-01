@@ -99,4 +99,10 @@ static NSTimeInterval captivePreyDuration = 5;
     return NO;
 }
 
+- (void)didHitEntity:(RGMEntity *)entity mask:(RGMHitTestMask)mask {
+    if ([entity.identifier isEqualToString:@"bug"] && mask & RGMHitTestTop) {
+        [self.game destroyEntity:entity.identifier];
+    }
+}
+
 @end

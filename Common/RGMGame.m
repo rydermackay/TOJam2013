@@ -116,7 +116,7 @@
     if (amount == 0) {
         return;
     }
-    entity.frameBeforeStepping = entity.frame;
+    CGRect fromRect = entity.frame;
     CGRectEdge edge;
     if (axis == RGMAxisHorizontal) {
         edge = amount > 0 ? CGRectMaxXEdge : CGRectMinXEdge;
@@ -137,8 +137,19 @@
         }
     }
     for (RGMTile *tile in tiles) {
-        [entity hitTestWithTile:tile];
+        [entity hitTestWithTile:tile fromRect:fromRect proposedRect:entity.frame];
     }
+    
+    [self.entities enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        if ([entity.identifier isEqual:key]) {
+            return;
+        }
+        
+        RGMHitTestMask mask = [entity hitTestWithEntity:obj fromRect:fromRect proposedRect:entity.frame];
+        if (mask != RGMHitTestNone) {
+            [entity didHitEntity:obj mask:mask];
+        }
+    }];
 }
 
 - (NSArray *)tilesIntersectingEntityRect:(CGRect)entityRect edge:(CGRectEdge)edge {
@@ -185,19 +196,6 @@
         entity.velocity = CGPointMake(entity.velocity.x, 0);
         entity.canJump = YES;
     }
-    
-    [self hitTestAgainstOtherEntities:entity];
-}
-
-- (void)hitTestAgainstOtherEntities:(RGMEntity *)entity
-{
-    [self.entities enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-        if ([entity.identifier isEqual:key]) {
-            return;
-        }
-        
-        [entity hitTestWithEntity:obj];
-    }];
 }
 
 - (void)didUpdate

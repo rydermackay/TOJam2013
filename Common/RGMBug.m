@@ -21,14 +21,14 @@
     return self;
 }
 
-- (BOOL)hitTestWithTile:(RGMTile *)tile {
+- (RGMHitTestMask)hitTestWithTile:(RGMTile *)tile fromRect:(CGRect)fromRect proposedRect:(CGRect)proposedRect {
     CGPoint v = self.velocity;
-    BOOL result = [super hitTestWithTile:tile];
-    if (result && self.velocity.x != v.x) {
+    RGMHitTestMask mask = [super hitTestWithTile:tile fromRect:fromRect proposedRect:proposedRect];
+    if (mask & (RGMHitTestLeft | RGMHitTestRight)) {
         v.x = -v.x;
         self.velocity = v;
     }
-    return result;
+    return mask;
 }
 
 - (void)updateForDuration:(NSTimeInterval)interval {
@@ -39,17 +39,6 @@
         if ([self isMovingTowards:player axis:RGMAxisHorizontal]) {
             self.velocity = CGPointMake(-self.velocity.x, self.velocity.y);
         }
-    }
-}
-
-- (BOOL)hitTestWithEntity:(RGMEntity *)entity {
-    if (CGRectIntersectsRect(entity.frame, self.frame) &&
-        CGRectGetMinY(entity.frameBeforeStepping) >= CGRectGetMaxY(self.frame) &&
-        CGRectGetMinY(entity.frame) < CGRectGetMaxY(self.frame)) {
-        [self.game destroyEntity:self.identifier];
-        return YES;
-    } else {
-        return [super hitTestWithEntity:entity];
     }
 }
 

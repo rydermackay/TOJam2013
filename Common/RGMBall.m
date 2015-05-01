@@ -20,19 +20,17 @@
     return self;
 }
 
-- (BOOL)hitTestWithTile:(RGMTile *)tile {
+- (RGMHitTestMask)hitTestWithTile:(RGMTile *)tile fromRect:(CGRect)fromRect proposedRect:(CGRect)proposedRect {
     CGPoint v = self.velocity;
-    BOOL result = [super hitTestWithTile:tile];
-    if (result) {
-        if (v.y != self.velocity.y) {
-            v.y *= -0.7;
-        }
-        if (v.x != self.velocity.x) {
-            v.x *= -1;
-        }
-        self.velocity = v;
+    RGMHitTestMask mask = [super hitTestWithTile:tile fromRect:fromRect proposedRect:proposedRect];
+    if (mask & (RGMHitTestTop | RGMHitTestBottom)) {
+        v.y *= -0.7;
     }
-    return result;
+    if (mask & (RGMHitTestLeft | RGMHitTestRight)) {
+        v.x *= -1;
+    }
+    self.velocity = v;
+    return mask;
 }
 
 @end

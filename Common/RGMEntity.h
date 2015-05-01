@@ -13,6 +13,19 @@ extern NSTimeInterval invincibilityDuration;
 
 @class RGMGame, RGMTile;
 
+// which side a collision occurred on wrt the static obstacle being tested
+// i.e. a character moving right hitting the left side of a solid wall returns RGMHitTestLeft
+// can be combined for some reason
+typedef NS_OPTIONS(NSUInteger, RGMHitTestMask) {
+    
+    RGMHitTestNone        = 0,  // all zeros; no collision
+    
+    RGMHitTestTop         = 1 << 0,
+    RGMHitTestBottom      = 1 << 1,
+    RGMHitTestLeft        = 1 << 2,
+    RGMHitTestRight       = 1 << 3,
+};
+
 @interface RGMEntity : NSObject <NSCoding>
 
 - (id)initWithIdentifier:(NSString *)identifier;
@@ -20,7 +33,6 @@ extern NSTimeInterval invincibilityDuration;
 @property (nonatomic, copy, readonly) NSString *identifier;
 @property (nonatomic, assign) NSInteger x;
 @property (nonatomic, assign) NSInteger y;
-@property (nonatomic, assign) CGRect frameBeforeStepping;
 @property (nonatomic, assign) CGSize size;
 - (CGRect)frame;
 
@@ -45,11 +57,11 @@ extern NSTimeInterval invincibilityDuration;
 - (void)jump;
 - (void)endJump;
 
-- (BOOL)hitTestWithTile:(RGMTile *)tile;
-- (BOOL)hitTestWithEntity:(RGMEntity *)entity;
+- (RGMHitTestMask)hitTestWithTile:(RGMTile *)tile fromRect:(CGRect)fromRect proposedRect:(CGRect)proposedRect;
+- (RGMHitTestMask)hitTestWithEntity:(RGMEntity *)entity fromRect:(CGRect)fromRect proposedRect:(CGRect)proposedRect;
+- (void)didHitEntity:(RGMEntity *)entity mask:(RGMHitTestMask)mask;
 
 @property (nonatomic, weak) RGMGame *game;
-
 
 // helpers
 - (CGPoint)distanceFrom:(RGMEntity *)entity;
