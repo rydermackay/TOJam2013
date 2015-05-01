@@ -58,6 +58,7 @@ typedef NS_OPTIONS(NSUInteger, RGMHitTestMask) {
 - (void)endJump;
 
 - (RGMHitTestMask)hitTestWithTile:(RGMTile *)tile fromRect:(CGRect)fromRect proposedRect:(CGRect)proposedRect;
+- (void)didHitTile:(RGMTile *)tile mask:(RGMHitTestMask)mask;
 - (RGMHitTestMask)hitTestWithEntity:(RGMEntity *)entity fromRect:(CGRect)fromRect proposedRect:(CGRect)proposedRect;
 - (void)didHitEntity:(RGMEntity *)entity mask:(RGMHitTestMask)mask;
 

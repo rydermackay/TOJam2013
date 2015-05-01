@@ -231,30 +231,34 @@ NSTimeInterval invincibilityDuration = 3;
     return hitTestMask;
 }
 
+- (void)didHitTile:(RGMTile *)tile mask:(RGMHitTestMask)mask {
+    
+}
+
 - (RGMHitTestMask)hitTestWithEntity:(RGMEntity *)entity fromRect:(CGRect)fromRect proposedRect:(CGRect)proposedRect {
+    return RGMHitTestFromToRect(fromRect, proposedRect, entity.frame);
+}
+
+static inline RGMHitTestMask RGMHitTestFromToRect(CGRect from, CGRect to, CGRect testRect) {
     RGMHitTestMask hitTestMask = RGMHitTestNone;
-    
-    
-    CGRect entityFrame = entity.frame;
-    if (CGRectIntersectsRect(entityFrame, proposedRect)) {
-        if (CGRectGetMaxY(fromRect) <= CGRectGetMinY(entityFrame) &&
-            CGRectGetMaxY(proposedRect) > CGRectGetMinY(entityFrame)) {
+    if (CGRectIntersectsRect(testRect, to)) {
+        if (CGRectGetMaxY(from) <= CGRectGetMinY(testRect) &&
+            CGRectGetMaxY(to) > CGRectGetMinY(testRect)) {
             hitTestMask |= RGMHitTestBottom;
         }
-        if (CGRectGetMinY(fromRect) >= CGRectGetMaxY(entityFrame) &&
-            CGRectGetMinY(proposedRect) < CGRectGetMaxY(entityFrame)) {
+        if (CGRectGetMinY(from) >= CGRectGetMaxY(testRect) &&
+            CGRectGetMinY(to) < CGRectGetMaxY(testRect)) {
             hitTestMask |= RGMHitTestTop;
         }
-        if (CGRectGetMaxX(fromRect) <= CGRectGetMinX(entityFrame) &&
-            CGRectGetMaxX(proposedRect) > CGRectGetMinX(entityFrame)) {
+        if (CGRectGetMaxX(from) <= CGRectGetMinX(testRect) &&
+            CGRectGetMaxX(to) > CGRectGetMinX(testRect)) {
             hitTestMask |= RGMHitTestLeft;
         }
-        if (CGRectGetMinX(fromRect) >= CGRectGetMaxX(entityFrame) &&
-            CGRectGetMinX(proposedRect) < CGRectGetMaxX(entityFrame)) {
+        if (CGRectGetMinX(from) >= CGRectGetMaxX(testRect) &&
+            CGRectGetMinX(to) < CGRectGetMaxX(testRect)) {
             hitTestMask |= RGMHitTestRight;
         }
     }
-    
     return hitTestMask;
 }
 
