@@ -25,10 +25,12 @@ static NSTimeInterval captivePreyDuration = 5;
 }
 
 - (void)fire {
-    if (_canFire && !_fireball) {
+    if (!_fireball) {
         _canFire = NO;
         // spawn entity
         _fireball = [self.game createEntity:[RGMEntity class] identifier:@"fire"];
+        _fireball.texture = [[SKTextureAtlas atlasNamed:@"Textures"] textureNamed:@"ball"];
+        _fireball.size = _fireball.texture.size;
         _fireball.x = self.x;
         _fireball.y = self.y;
         _fireball.velocity = CGPointMake(120, 500);

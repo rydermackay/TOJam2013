@@ -116,7 +116,12 @@ static inline NSString *RGMTextureNameForTileType(RGMTileType type) {
     if (mask & RGMObstacleMaskSolidTop) {
         if (CGRectGetMinY(entity.frameBeforeStepping) >= CGRectGetMaxY(obstacleRect) &&
             CGRectGetMinY(entityRect) < CGRectGetMaxY(obstacleRect)) {
-            entity.velocity = CGPointMake(entity.velocity.x, 0);
+#warning Never do this
+            if ([entity.identifier isEqualToString:@"fire"]) {
+                entity.velocity = CGPointMake(entity.velocity.x, entity.velocity.y * -0.8);
+            } else {
+                entity.velocity = CGPointMake(entity.velocity.x, 0);
+            }
             entity.y = CGRectGetMaxY(obstacleRect);
             entity.canJump = YES;
             hit = YES;

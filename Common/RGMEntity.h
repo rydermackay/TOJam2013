@@ -32,6 +32,7 @@ extern NSTimeInterval invincibilityDuration;
 @property (nonatomic, strong) NSImage *image;
 #endif
 
+@property (nonatomic, strong) SKTexture *texture;
 @property (nonatomic, strong) SKColor *color;
 
 - (void)updateForDuration:(NSTimeInterval)interval;

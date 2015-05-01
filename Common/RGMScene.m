@@ -8,7 +8,6 @@
 
 #import "RGMScene.h"
 #import "RGMInput.h"
-#import <TargetConditionals.h>
 #import "RGMGame.h"
 #import "RGMTileMap.h"
 #import "RGMTile.h"
@@ -77,7 +76,8 @@
         node.size = entity.frame.size;
         node.position = CGPointMake(entity.x + floorf(CGRectGetWidth(node.frame) * 0.5),
                                     entity.y + floorf(CGRectGetHeight(node.frame) * 0.5));
-        node.texture = entity.image ? [SKTexture textureWithImage:entity.image] : nil;
+        node.texture = entity.texture ?: entity.image ? [SKTexture textureWithImage:entity.image] : nil;    // this is so dumb
+        node.texture.filteringMode = SKTextureFilteringNearest;
         node.color = [entity color] ?: [SKColor yellowColor];
         if (entity.isInvincible && ((NSInteger)((currentTime) * 5) % 2 == 0)) {
             node.hidden = YES;
