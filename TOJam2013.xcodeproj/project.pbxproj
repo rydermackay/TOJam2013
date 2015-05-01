@@ -33,7 +33,6 @@
 		0D93EA15187F940800D24D6B /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 0D93EA13187F940800D24D6B /* Credits.rtf */; };
 		0D93EA17187F940800D24D6B /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0D93EA16187F940800D24D6B /* MainMenu.xib */; };
 		0D93EA1C187F940800D24D6B /* RGMAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D93EA1B187F940800D24D6B /* RGMAppDelegate.m */; };
-		0D93EA40187FA25900D24D6B /* SpriteKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D93EA3F187FA25900D24D6B /* SpriteKit.framework */; };
 		0D93EA65187FBB1400D24D6B /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D93EA52187FBB1400D24D6B /* Default-568h@2x.png */; };
 		0D93EA66187FBB1400D24D6B /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D93EA53187FBB1400D24D6B /* Default.png */; };
 		0D93EA67187FBB1400D24D6B /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D93EA54187FBB1400D24D6B /* Default@2x.png */; };
@@ -69,15 +68,6 @@
 		0D93EAB9187FBB2100D24D6B /* RGMTileMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D93EA92187FBB2100D24D6B /* RGMTileMap.m */; };
 		0D93EABD187FBBEB00D24D6B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0D93EABC187FBBEB00D24D6B /* Images.xcassets */; };
 		0D93EABE187FBBEB00D24D6B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0D93EABC187FBBEB00D24D6B /* Images.xcassets */; };
-		0D93EAC1187FBE4B00D24D6B /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D93EAC0187FBE4B00D24D6B /* GameKit.framework */; };
-		0D93EAC3187FBE5400D24D6B /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D93EAC2187FBE5400D24D6B /* Cocoa.framework */; };
-		0D93EAC5187FBE5700D24D6B /* SpriteKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D93EAC4187FBE5700D24D6B /* SpriteKit.framework */; };
-		0DFFC7191733937300A37A1B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DFFC7181733937300A37A1B /* UIKit.framework */; };
-		0DFFC71B1733937300A37A1B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DFFC71A1733937300A37A1B /* Foundation.framework */; };
-		0DFFC71D1733937300A37A1B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DFFC71C1733937300A37A1B /* CoreGraphics.framework */; };
-		0DFFC736173393DC00A37A1B /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DFFC735173393DB00A37A1B /* GameKit.framework */; };
-		0DFFC7401733946B00A37A1B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DFFC73F1733946B00A37A1B /* QuartzCore.framework */; };
-		0DFFC74717343DD000A37A1B /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DFFC74617343DCE00A37A1B /* CoreMotion.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -104,11 +94,6 @@
 		0D8A6375190C419D00B3C74C /* RGMEditorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RGMEditorController.h; sourceTree = "<group>"; };
 		0D8A6376190C419D00B3C74C /* RGMEditorController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RGMEditorController.m; sourceTree = "<group>"; };
 		0D93EA01187F940800D24D6B /* TOJam2013 Mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TOJam2013 Mac.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		0D93EA02187F940800D24D6B /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
-		0D93EA04187F940800D24D6B /* SpriteKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SpriteKit.framework; path = Library/Frameworks/SpriteKit.framework; sourceTree = DEVELOPER_DIR; };
-		0D93EA07187F940800D24D6B /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
-		0D93EA08187F940800D24D6B /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		0D93EA09187F940800D24D6B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		0D93EA0C187F940800D24D6B /* TOJam2013 Mac-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TOJam2013 Mac-Info.plist"; sourceTree = "<group>"; };
 		0D93EA0E187F940800D24D6B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		0D93EA10187F940800D24D6B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -117,8 +102,6 @@
 		0D93EA16187F940800D24D6B /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
 		0D93EA1B187F940800D24D6B /* RGMAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RGMAppDelegate.m; sourceTree = "<group>"; };
 		0D93EA1D187F940800D24D6B /* RGMAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RGMAppDelegate.h; sourceTree = "<group>"; };
-		0D93EA27187F940800D24D6B /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		0D93EA3F187FA25900D24D6B /* SpriteKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SpriteKit.framework; path = System/Library/Frameworks/SpriteKit.framework; sourceTree = SDKROOT; };
 		0D93EA52187FBB1400D24D6B /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		0D93EA53187FBB1400D24D6B /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		0D93EA54187FBB1400D24D6B /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
@@ -161,18 +144,7 @@
 		0D93EA91187FBB2100D24D6B /* RGMTileMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RGMTileMap.h; sourceTree = "<group>"; };
 		0D93EA92187FBB2100D24D6B /* RGMTileMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RGMTileMap.m; sourceTree = "<group>"; };
 		0D93EABC187FBBEB00D24D6B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		0D93EAC0187FBE4B00D24D6B /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/System/Library/Frameworks/GameKit.framework; sourceTree = DEVELOPER_DIR; };
-		0D93EAC2187FBE5400D24D6B /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
-		0D93EAC4187FBE5700D24D6B /* SpriteKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SpriteKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/System/Library/Frameworks/SpriteKit.framework; sourceTree = DEVELOPER_DIR; };
 		0DFFC7151733937300A37A1B /* TOJam2013 iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TOJam2013 iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		0DFFC7181733937300A37A1B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		0DFFC71A1733937300A37A1B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		0DFFC71C1733937300A37A1B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		0DFFC735173393DB00A37A1B /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
-		0DFFC73D1733946600A37A1B /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
-		0DFFC73F1733946B00A37A1B /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		0DFFC741173394AF00A37A1B /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
-		0DFFC74617343DCE00A37A1B /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -180,9 +152,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0D93EAC3187FBE5400D24D6B /* Cocoa.framework in Frameworks */,
-				0D93EAC1187FBE4B00D24D6B /* GameKit.framework in Frameworks */,
-				0D93EAC5187FBE5700D24D6B /* SpriteKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -190,13 +159,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0D93EA40187FA25900D24D6B /* SpriteKit.framework in Frameworks */,
-				0DFFC74717343DD000A37A1B /* CoreMotion.framework in Frameworks */,
-				0DFFC7401733946B00A37A1B /* QuartzCore.framework in Frameworks */,
-				0DFFC736173393DC00A37A1B /* GameKit.framework in Frameworks */,
-				0DFFC7191733937300A37A1B /* UIKit.framework in Frameworks */,
-				0DFFC71B1733937300A37A1B /* Foundation.framework in Frameworks */,
-				0DFFC71D1733937300A37A1B /* CoreGraphics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -270,16 +232,6 @@
 				0D8A6372190C40B700B3C74C /* RGMTileView.m */,
 			);
 			name = Editor;
-			sourceTree = "<group>";
-		};
-		0D93EA06187F940800D24D6B /* Other Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				0D93EA07187F940800D24D6B /* AppKit.framework */,
-				0D93EA08187F940800D24D6B /* CoreData.framework */,
-				0D93EA09187F940800D24D6B /* Foundation.framework */,
-			);
-			name = "Other Frameworks";
 			sourceTree = "<group>";
 		};
 		0D93EA0A187F940800D24D6B /* TOJam2013 Mac */ = {
@@ -393,22 +345,6 @@
 		0DFFC7171733937300A37A1B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				0D93EAC4187FBE5700D24D6B /* SpriteKit.framework */,
-				0D93EAC2187FBE5400D24D6B /* Cocoa.framework */,
-				0D93EAC0187FBE4B00D24D6B /* GameKit.framework */,
-				0D93EA3F187FA25900D24D6B /* SpriteKit.framework */,
-				0DFFC71C1733937300A37A1B /* CoreGraphics.framework */,
-				0DFFC74617343DCE00A37A1B /* CoreMotion.framework */,
-				0DFFC71A1733937300A37A1B /* Foundation.framework */,
-				0DFFC735173393DB00A37A1B /* GameKit.framework */,
-				0DFFC73D1733946600A37A1B /* GLKit.framework */,
-				0DFFC741173394AF00A37A1B /* OpenGLES.framework */,
-				0DFFC73F1733946B00A37A1B /* QuartzCore.framework */,
-				0DFFC7181733937300A37A1B /* UIKit.framework */,
-				0D93EA02187F940800D24D6B /* Cocoa.framework */,
-				0D93EA04187F940800D24D6B /* SpriteKit.framework */,
-				0D93EA27187F940800D24D6B /* XCTest.framework */,
-				0D93EA06187F940800D24D6B /* Other Frameworks */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
