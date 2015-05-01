@@ -50,4 +50,9 @@ extern NSTimeInterval invincibilityDuration;
 
 @property (nonatomic, weak) RGMGame *game;
 
+
+// helpers
+- (CGPoint)distanceFrom:(RGMEntity *)entity;
+- (BOOL)isMovingTowards:(RGMEntity *)entity axis:(RGMAxis)axis;
+
 @end

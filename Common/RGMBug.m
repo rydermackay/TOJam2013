@@ -8,6 +8,7 @@
 
 #import "RGMBug.h"
 #import "RGMTile.h"
+#import "RGMGame.h"
 
 @implementation RGMBug
 
@@ -28,6 +29,17 @@
         self.velocity = v;
     }
     return result;
+}
+
+- (void)updateForDuration:(NSTimeInterval)interval {
+    [super updateForDuration:interval];
+    
+    RGMEntity *player = self.game.localPlayer;
+    if (fabs([self distanceFrom:player].x) >= RGMTileSize * 2) {
+        if ([self isMovingTowards:player axis:RGMAxisHorizontal]) {
+            self.velocity = CGPointMake(-self.velocity.x, self.velocity.y);
+        }
+    }
 }
 
 @end

@@ -234,4 +234,15 @@ NSTimeInterval invincibilityDuration = 3;
     return NO;
 }
 
+- (CGPoint)distanceFrom:(RGMEntity *)entity {
+    return CGPointMake(self.x - entity.x, self.y - entity.y);
+}
+
+- (BOOL)isMovingTowards:(RGMEntity *)entity axis:(RGMAxis)axis {
+    switch (axis) {
+        case RGMAxisHorizontal: return signbit([self distanceFrom:entity].x) == signbit(self.velocity.x);
+        case RGMAxisVertical:   return signbit([self distanceFrom:entity].y) == signbit(self.velocity.y);
+    }
+}
+
 @end
