@@ -226,6 +226,41 @@
 			path = Tiles;
 			sourceTree = "<group>";
 		};
+		0D7FF3C51AF3E5A00007897B /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				0D93EA7D187FBB2100D24D6B /* RGMEntity.h */,
+				0D93EA7E187FBB2100D24D6B /* RGMEntity.m */,
+				0D93EA89187FBB2100D24D6B /* RGMPredator.h */,
+				0D93EA8A187FBB2100D24D6B /* RGMPredator.m */,
+				0D93EA8B187FBB2100D24D6B /* RGMPrey.h */,
+				0D93EA8C187FBB2100D24D6B /* RGMPrey.m */,
+			);
+			name = Entities;
+			sourceTree = "<group>";
+		};
+		0D7FF3C61AF3E5B20007897B /* Tiles */ = {
+			isa = PBXGroup;
+			children = (
+				0D93EA87187FBB2100D24D6B /* RGMTile.h */,
+				0D93EA88187FBB2100D24D6B /* RGMTile.m */,
+				0D93EA91187FBB2100D24D6B /* RGMTileMap.h */,
+				0D93EA92187FBB2100D24D6B /* RGMTileMap.m */,
+			);
+			name = Tiles;
+			sourceTree = "<group>";
+		};
+		0D7FF3C71AF3E5D70007897B /* Multiplayer */ = {
+			isa = PBXGroup;
+			children = (
+				0D93EA7F187FBB2100D24D6B /* RGMEvent.h */,
+				0D93EA80187FBB2100D24D6B /* RGMEvent.m */,
+				0D93EA85187FBB2100D24D6B /* RGMMultiplayerGame.h */,
+				0D93EA86187FBB2100D24D6B /* RGMMultiplayerGame.m */,
+			);
+			name = Multiplayer;
+			sourceTree = "<group>";
+		};
 		0D8A6374190C415200B3C74C /* Editor */ = {
 			isa = PBXGroup;
 			children = (
@@ -293,29 +328,18 @@
 		0D93EA71187FBB2100D24D6B /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				0D93EA72187FBB2100D24D6B /* Art */,
 				0D93EA7B187FBB2100D24D6B /* RGMDefines.h */,
 				0D93EA7C187FBB2100D24D6B /* RGMDefines.m */,
-				0D93EA7D187FBB2100D24D6B /* RGMEntity.h */,
-				0D93EA7E187FBB2100D24D6B /* RGMEntity.m */,
-				0D93EA7F187FBB2100D24D6B /* RGMEvent.h */,
-				0D93EA80187FBB2100D24D6B /* RGMEvent.m */,
 				0D93EA81187FBB2100D24D6B /* RGMGame.h */,
 				0D93EA82187FBB2100D24D6B /* RGMGame.m */,
 				0D93EA83187FBB2100D24D6B /* RGMGame_Private.h */,
 				0D93EA84187FBB2100D24D6B /* RGMInput.h */,
-				0D93EA85187FBB2100D24D6B /* RGMMultiplayerGame.h */,
-				0D93EA86187FBB2100D24D6B /* RGMMultiplayerGame.m */,
-				0D93EA87187FBB2100D24D6B /* RGMTile.h */,
-				0D93EA88187FBB2100D24D6B /* RGMTile.m */,
-				0D93EA89187FBB2100D24D6B /* RGMPredator.h */,
-				0D93EA8A187FBB2100D24D6B /* RGMPredator.m */,
-				0D93EA8B187FBB2100D24D6B /* RGMPrey.h */,
-				0D93EA8C187FBB2100D24D6B /* RGMPrey.m */,
 				0D93EA8D187FBB2100D24D6B /* RGMScene.h */,
 				0D93EA8E187FBB2100D24D6B /* RGMScene.m */,
-				0D93EA91187FBB2100D24D6B /* RGMTileMap.h */,
-				0D93EA92187FBB2100D24D6B /* RGMTileMap.m */,
+				0D93EA72187FBB2100D24D6B /* Art */,
+				0D7FF3C51AF3E5A00007897B /* Entities */,
+				0D7FF3C71AF3E5D70007897B /* Multiplayer */,
+				0D7FF3C61AF3E5B20007897B /* Tiles */,
 			);
 			path = Common;
 			sourceTree = "<group>";
