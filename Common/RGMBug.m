@@ -42,4 +42,15 @@
     }
 }
 
+- (BOOL)hitTestWithEntity:(RGMEntity *)entity {
+    if (CGRectIntersectsRect(entity.frame, self.frame) &&
+        CGRectGetMinY(entity.frameBeforeStepping) >= CGRectGetMaxY(self.frame) &&
+        CGRectGetMinY(entity.frame) < CGRectGetMaxY(self.frame)) {
+        [self.game destroyEntity:self.identifier];
+        return YES;
+    } else {
+        return [super hitTestWithEntity:entity];
+    }
+}
+
 @end

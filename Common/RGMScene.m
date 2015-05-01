@@ -76,10 +76,12 @@
             node.texture.filteringMode = SKTextureFilteringNearest;
             node.hidden = NO;
             node.size = entity.frame.size;  // setting size & xScale at the same time doesn't work
+            node.name = identifier;
         }
         node.position = CGPointMake(entity.x + floorf(CGRectGetWidth(node.frame) * 0.5),
                                     entity.y + floorf(CGRectGetHeight(node.frame) * 0.5));
         
+#warning wat
         if ([entity.identifier isEqualToString:@"bug"]) {
             NSString *key = @"bug-walk";
             if (![node actionForKey:key]) {
@@ -95,6 +97,14 @@
             node.hidden = YES;
         }
     }
+    
+    NSMutableSet *nodesToKill = [NSMutableSet set];
+    for (SKNode *node in _world.children) {
+        if (node.name != nil && ![self.game.identifiers containsObject:node.name]) {
+            [nodesToKill addObject:node];
+        }
+    }
+    [nodesToKill makeObjectsPerformSelector:@selector(removeFromParent)];
     
     SKSpriteNode *node = _entityNodes[@"me"];
     const CGFloat minDistance = RGMTileSize * 8;
