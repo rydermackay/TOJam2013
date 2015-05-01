@@ -103,7 +103,7 @@
     }
     [nodesToKill makeObjectsPerformSelector:@selector(removeFromParent)];
     
-    SKSpriteNode *node = self[@"me"].firstObject;
+    SKSpriteNode *node = self.world[@"me"].firstObject;
     const CGFloat minDistance = RGMTileSize * 8;
     CGPoint playerPosition = [self convertPoint:node.position fromNode:self.world];
     CGPoint worldPosition = self.world.position;
