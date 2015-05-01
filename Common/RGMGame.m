@@ -69,6 +69,9 @@
         } else {
             [entity endJump];
         }
+        if (inputMask & RGMInputMaskFire && [entity isKindOfClass:[RGMPredator class]]) {
+            [(RGMPredator *)entity fire];
+        }
         
         const CGFloat maxHorizontalVelocity = 200;
         CGPoint velocity = entity.velocity;

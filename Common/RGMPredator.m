@@ -15,11 +15,24 @@ static NSTimeInterval captivePreyDuration = 5;
 
 @implementation RGMPredator {
     __weak RGMPrey *_captivePrey;
+    BOOL _canFire;
+    __weak RGMEntity *_fireball;
 }
 
 - (CGSize)size
 {
     return CGSizeMake(RGMTileSize, RGMTileSize * 1.5);
+}
+
+- (void)fire {
+    if (_canFire && !_fireball) {
+        _canFire = NO;
+        // spawn entity
+        _fireball = [self.game createEntity:[RGMEntity class] identifier:@"fire"];
+        _fireball.x = self.x;
+        _fireball.y = self.y;
+        _fireball.velocity = CGPointMake(120, 500);
+    }
 }
 
 - (void)capturePrey:(RGMPrey *)prey

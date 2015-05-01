@@ -119,6 +119,8 @@ static inline RGMInputMask RGMInputMaskFromKeyCode(unsigned short keyCode) {
             return RGMInputMaskDown;
         case kVK_UpArrow:
             return RGMInputMaskUp;
+        case kVK_ANSI_X:
+            return RGMInputMaskFire;
         default:
             return 0;
     }

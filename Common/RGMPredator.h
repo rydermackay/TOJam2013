@@ -15,4 +15,6 @@
 - (void)capturePrey:(RGMPrey *)prey;
 - (void)dropPrey;
 
+- (void)fire;
+
 @end
