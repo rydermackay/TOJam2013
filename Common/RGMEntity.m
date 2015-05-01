@@ -74,6 +74,16 @@ NSTimeInterval invincibilityDuration = 3;
     return self;
 }
 
+- (void)setX:(NSInteger)x {
+    _x = x;
+    self.remainderPosition = CGPointMake(0, self.remainderPosition.y);
+}
+
+- (void)setY:(NSInteger)y {
+    _y = y;
+    self.remainderPosition = CGPointMake(self.remainderPosition.x, 0);
+}
+
 - (NSString *)description
 {
     NSMutableString *description = [[super description] mutableCopy];

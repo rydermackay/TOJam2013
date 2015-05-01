@@ -14,6 +14,7 @@
 #import "RGMInput.h"
 #import "RGMTileMap.h"
 #import "RGMTile.h"
+#import "RGMBug.h"
 
 @implementation RGMGame
 
@@ -36,6 +37,10 @@
     
     [self createEntity:[RGMPrey class] identifier:@"prey1"];
     [self createEntity:[RGMPrey class] identifier:@"prey2"];
+    
+    RGMEntity *bug = [self createEntity:[RGMBug class] identifier:@"bug"];
+    bug.x += 100;
+    bug.y += 25;
 }
 
 - (void)end
@@ -97,16 +102,20 @@
         if ([entity isKindOfClass:[RGMPrey class]] && [(RGMPrey *)entity isCaptured]) {
             return;
         }
-        NSInteger dx = round(entity.velocity.x * duration);
-        NSInteger dy = round(entity.velocity.y * duration);
-        [self stepEntity:entity axis:RGMAxisHorizontal amount:dx];
-        [self stepEntity:entity axis:RGMAxisVertical amount:dy];
+        CGFloat dx = entity.remainderPosition.x + entity.velocity.x * duration;
+        CGFloat dy = entity.remainderPosition.y + entity.velocity.y * duration;
+        entity.remainderPosition = CGPointMake(dx - round(dx), dy - round(dy));
+        [self stepEntity:entity axis:RGMAxisHorizontal amount:round(dx)];
+        [self stepEntity:entity axis:RGMAxisVertical   amount:round(dy)];
     }];
     
     [self didUpdate];
 }
 
 - (void)stepEntity:(RGMEntity *)entity axis:(RGMAxis)axis amount:(NSInteger)amount {
+    if (amount == 0) {
+        return;
+    }
     entity.frameBeforeStepping = entity.frame;
     CGRectEdge edge;
     if (axis == RGMAxisHorizontal) {
@@ -118,22 +127,17 @@
     }
     [self hitTestEntity:entity];
     
-    NSArray *tiles = [self tilesIntersectingEntityRect:entity.frame edge:edge];
-    RGMTile *hitTestTile;
-    for (RGMTile *tile in tiles) {
+    NSArray *tiles = [[self tilesIntersectingEntityRect:entity.frame edge:edge] copy];
+    for (RGMTile *tile in [tiles copy]) {
         if (tile.mask & (RGMObstacleMaskSlopeLeft | RGMObstacleMaskSlopeRight) &&
             CGRectGetMidX(entity.frame) <= CGRectGetMaxX(tile.frame) &&
             CGRectGetMidX(entity.frame) > CGRectGetMinX(tile.frame)) {
-            hitTestTile = tile;
+            tiles = @[tile];
             break;
         }
     }
-    if (hitTestTile) {
-        [entity hitTestWithTile:hitTestTile];
-    } else {
-        for (RGMTile *tile in tiles) {
-            [entity hitTestWithTile:tile];
-        }
+    for (RGMTile *tile in tiles) {
+        [entity hitTestWithTile:tile];
     }
 }
 
@@ -163,7 +167,12 @@
     
     if (CGRectGetMinX(frame) < CGRectGetMinX(bounds)) {
         entity.x = CGRectGetMinX(bounds);
-        entity.velocity = CGPointMake(0, entity.velocity.y);
+#warning ugh
+        if ([entity.identifier isEqualToString:@"bug"]) {
+            entity.velocity = CGPointMake(-entity.velocity.x, entity.velocity.y);
+        } else {
+            entity.velocity = CGPointMake(0, entity.velocity.y);
+        }
     }
     
     if (CGRectGetMaxX(frame) > CGRectGetMaxX(bounds)) {

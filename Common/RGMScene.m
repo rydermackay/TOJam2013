@@ -48,6 +48,7 @@
         node.position = CGPointMake(CGRectGetMinX(obstacle.frame), CGRectGetMinY(obstacle.frame));
         node.texture = [SKTexture textureWithImageNamed:[obstacle textureName]];
         node.texture.filteringMode = SKTextureFilteringNearest;
+        node.blendMode = SKBlendModeReplace;
         
         [_obstacleNodes addObject:node];
         [_world insertChild:node atIndex:0];
@@ -71,13 +72,14 @@
             node = [SKSpriteNode new];
             _entityNodes[identifier] = node;
             [self.world addChild:node];
+            node.texture = entity.texture ?: entity.image ? [SKTexture textureWithImage:entity.image] : nil;    // this is so dumb
+            node.texture.filteringMode = SKTextureFilteringNearest;
+            node.hidden = NO;
+            node.size = entity.frame.size;  // setting size & xScale at the same time doesn't work
         }
-        node.hidden = NO;
-        node.size = entity.frame.size;
         node.position = CGPointMake(entity.x + floorf(CGRectGetWidth(node.frame) * 0.5),
                                     entity.y + floorf(CGRectGetHeight(node.frame) * 0.5));
-        node.texture = entity.texture ?: entity.image ? [SKTexture textureWithImage:entity.image] : nil;    // this is so dumb
-        node.texture.filteringMode = SKTextureFilteringNearest;
+        node.xScale = entity.velocity.x >= 0 ? -1.0 : 1.0;
         node.color = [entity color] ?: [SKColor yellowColor];
         if (entity.isInvincible && ((NSInteger)((currentTime) * 5) % 2 == 0)) {
             node.hidden = YES;

@@ -25,6 +25,7 @@ extern NSTimeInterval invincibilityDuration;
 - (CGRect)frame;
 
 @property (nonatomic, assign) CGPoint velocity;
+@property (nonatomic, assign) CGPoint remainderPosition; // non-integral position from last frame
 
 #if TARGET_OS_IPHONE
 @property (nonatomic, strong) UIImage *image;
