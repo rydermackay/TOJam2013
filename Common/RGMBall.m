@@ -26,7 +26,7 @@
     CGPoint v = self.velocity;
     RGMHitTestMask mask = [super hitTestWithTile:tile fromRect:fromRect proposedRect:proposedRect];
     if (mask & (RGMHitTestTop | RGMHitTestBottom)) {
-        v.y *= -0.7;
+        v.y *= -0.9;
     }
     if (mask & (RGMHitTestLeft | RGMHitTestRight)) {
         v.x *= -1;

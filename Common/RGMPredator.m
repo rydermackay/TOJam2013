@@ -29,10 +29,11 @@ static NSTimeInterval captivePreyDuration = 5;
 - (void)fire {
     if (_canFire) {
         NSString *identifier = [NSUUID UUID].UUIDString;
+        BOOL facingRight = self.velocity.x > 0;
         RGMEntity *fireball = [self.game createEntity:[RGMBall class] identifier:identifier];
-        fireball.x = self.x;
-        fireball.y = self.y;
-        fireball.velocity = CGPointMake((CGFloat)(100 + arc4random_uniform(200)) * (self.velocity.x > 0 ? 1 : -1), 200 + arc4random_uniform(300));
+        fireball.x = (facingRight ? CGRectGetMaxX(self.frame) : CGRectGetMinX(self.frame)) - fireball.size.width * 0.5;
+        fireball.y = CGRectGetMidY(self.frame);
+        fireball.velocity = CGPointMake(facingRight ? 100 : -100, 300);
         _canFire = NO;
         [self.game performSelector:@selector(destroyEntity:) withObject:identifier afterDelay:3];
     }
@@ -109,6 +110,7 @@ static NSTimeInterval captivePreyDuration = 5;
 
 - (void)didHitEntity:(RGMEntity *)entity mask:(RGMHitTestMask)mask {
     if ([entity isKindOfClass:[RGMBug class]] && mask & RGMHitTestTop) {
+        self.velocity = CGPointMake(self.velocity.x, 200);
         [self.game destroyEntity:entity.identifier];
     }
 }
