@@ -25,6 +25,8 @@
 		0D1D3F9D190CCBA1009AABD8 /* wedge-top-right.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D1D3F8D190CCBA1009AABD8 /* wedge-top-right.png */; };
 		0D62B4F21895FB6F00708704 /* Textures.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 0D62B4F11895FB6F00708704 /* Textures.atlas */; };
 		0D62B4F31895FB6F00708704 /* Textures.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 0D62B4F11895FB6F00708704 /* Textures.atlas */; };
+		0D7FF3CE1AF3F4830007897B /* RGMBall.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D7FF3CD1AF3F4830007897B /* RGMBall.m */; };
+		0D7FF3CF1AF3F4830007897B /* RGMBall.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D7FF3CD1AF3F4830007897B /* RGMBall.m */; };
 		0D8A6370190C3FF900B3C74C /* Editor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0D8A636F190C3FF900B3C74C /* Editor.xib */; };
 		0D8A6373190C40B700B3C74C /* RGMTileView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8A6372190C40B700B3C74C /* RGMTileView.m */; };
 		0D8A6377190C419D00B3C74C /* RGMEditorController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8A6376190C419D00B3C74C /* RGMEditorController.m */; };
@@ -88,6 +90,8 @@
 		0D1D3F8C190CCBA1009AABD8 /* wedge-top-left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "wedge-top-left.png"; sourceTree = "<group>"; };
 		0D1D3F8D190CCBA1009AABD8 /* wedge-top-right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "wedge-top-right.png"; sourceTree = "<group>"; };
 		0D62B4F11895FB6F00708704 /* Textures.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = Textures.atlas; sourceTree = "<group>"; };
+		0D7FF3CC1AF3F4830007897B /* RGMBall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RGMBall.h; sourceTree = "<group>"; };
+		0D7FF3CD1AF3F4830007897B /* RGMBall.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RGMBall.m; sourceTree = "<group>"; };
 		0D8A636F190C3FF900B3C74C /* Editor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Editor.xib; sourceTree = "<group>"; };
 		0D8A6371190C40B700B3C74C /* RGMTileView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RGMTileView.h; sourceTree = "<group>"; };
 		0D8A6372190C40B700B3C74C /* RGMTileView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RGMTileView.m; sourceTree = "<group>"; };
@@ -197,6 +201,8 @@
 				0D93EA8A187FBB2100D24D6B /* RGMPredator.m */,
 				0D93EA8B187FBB2100D24D6B /* RGMPrey.h */,
 				0D93EA8C187FBB2100D24D6B /* RGMPrey.m */,
+				0D7FF3CC1AF3F4830007897B /* RGMBall.h */,
+				0D7FF3CD1AF3F4830007897B /* RGMBall.m */,
 			);
 			name = Entities;
 			sourceTree = "<group>";
@@ -473,6 +479,7 @@
 				0D93EA11187F940800D24D6B /* main.m in Sources */,
 				0D93EAB5187FBB2100D24D6B /* RGMScene.m in Sources */,
 				0D93EAB9187FBB2100D24D6B /* RGMTileMap.m in Sources */,
+				0D7FF3CF1AF3F4830007897B /* RGMBall.m in Sources */,
 				0D93EAA9187FBB2100D24D6B /* RGMEvent.m in Sources */,
 				0D93EAAF187FBB2100D24D6B /* RGMTile.m in Sources */,
 				0D93EAB1187FBB2100D24D6B /* RGMPredator.m in Sources */,
@@ -490,6 +497,7 @@
 			files = (
 				0D93EA6D187FBB1400D24D6B /* RGMMainViewController.m in Sources */,
 				0D93EAA8187FBB2100D24D6B /* RGMEvent.m in Sources */,
+				0D7FF3CE1AF3F4830007897B /* RGMBall.m in Sources */,
 				0D93EAA6187FBB2100D24D6B /* RGMEntity.m in Sources */,
 				0D93EAA4187FBB2100D24D6B /* RGMDefines.m in Sources */,
 				0D93EA69187FBB1400D24D6B /* main.m in Sources */,

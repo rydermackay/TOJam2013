@@ -163,12 +163,7 @@ NSTimeInterval invincibilityDuration = 3;
     if (mask & RGMObstacleMaskSolidTop) {
         if (CGRectGetMinY(self.frameBeforeStepping) >= CGRectGetMaxY(obstacleRect) &&
             CGRectGetMinY(entityRect) < CGRectGetMaxY(obstacleRect)) {
-#warning Never do this
-            if ([self.identifier isEqualToString:@"fire"]) {
-                self.velocity = CGPointMake(self.velocity.x, self.velocity.y * -0.8);
-            } else {
-                self.velocity = CGPointMake(self.velocity.x, 0);
-            }
+            self.velocity = CGPointMake(self.velocity.x, 0);
             self.y = CGRectGetMaxY(obstacleRect);
             self.canJump = YES;
             hit = YES;
