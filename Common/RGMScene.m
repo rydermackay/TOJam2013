@@ -79,6 +79,16 @@
         }
         node.position = CGPointMake(entity.x + floorf(CGRectGetWidth(node.frame) * 0.5),
                                     entity.y + floorf(CGRectGetHeight(node.frame) * 0.5));
+        
+        if ([entity.identifier isEqualToString:@"bug"]) {
+            NSString *key = @"bug-walk";
+            if (![node actionForKey:key]) {
+                SKTextureAtlas *atlas = [SKTextureAtlas atlasNamed:@"Textures"];
+                NSArray *textures = @[[atlas textureNamed:@"bug"], [atlas textureNamed:@"bug2"]];
+                SKAction *action = [SKAction animateWithTextures:textures timePerFrame:1.0/10.0];
+                [node runAction:action withKey:key];
+            }
+        }
         node.xScale = entity.velocity.x >= 0 ? -1.0 : 1.0;
         node.color = [entity color] ?: [SKColor yellowColor];
         if (entity.isInvincible && ((NSInteger)((currentTime) * 5) % 2 == 0)) {

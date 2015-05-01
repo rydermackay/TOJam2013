@@ -21,10 +21,16 @@
 }
 
 - (BOOL)hitTestWithTile:(RGMTile *)tile {
-    const CGPoint v = self.velocity;
+    CGPoint v = self.velocity;
     BOOL result = [super hitTestWithTile:tile];
-    if (result && (tile.mask & RGMTileSolidTop)) {  // …but you don't actually know if it collided BECAUSE it hit the top!!
-        self.velocity = CGPointMake(v.x, v.y * -0.7);
+    if (result) {
+        if (v.y != self.velocity.y) {
+            v.y *= -0.7;
+        }
+        if (v.x != self.velocity.x) {
+            v.x *= -1;
+        }
+        self.velocity = v;
     }
     return result;
 }
