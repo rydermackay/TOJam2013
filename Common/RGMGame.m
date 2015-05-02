@@ -20,7 +20,7 @@
     long long _bugSpawnCounter;
 }
 
-- (id)initWithMapName:(NSString *)mapName
+- (instancetype)initWithMapName:(NSString *)mapName
 {
     RGMTileMap *tileMap = [[RGMTileMap alloc] initWithName:mapName];
     NSParameterAssert(tileMap);
@@ -215,7 +215,7 @@
     
 }
 
-- (void)addInput:(id)input toEntity:(RGMEntity *)entity
+- (void)addInput:(id <RGMInput>)input toEntity:(RGMEntity *)entity
 {
     NSParameterAssert(self.inputs[entity.identifier] == nil);
     [self.inputs setObject:input forKey:entity.identifier];

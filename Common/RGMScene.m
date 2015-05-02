@@ -25,7 +25,7 @@
     NSMutableArray *_obstacleNodes;
 }
 
-- (id)initWithSize:(CGSize)size {
+- (instancetype)initWithSize:(CGSize)size {
     if (self = [super initWithSize:size]) {
         _world = [SKNode node];
         _world.name = @"world";

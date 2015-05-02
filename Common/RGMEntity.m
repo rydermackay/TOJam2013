@@ -26,7 +26,7 @@ NSTimeInterval invincibilityDuration = 3;
 
 #pragma mark - NSCoding
 
-- (id)initWithCoder:(NSCoder *)aDecoder
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
     if (self = [super init]) {
         _identifier = [aDecoder decodeObjectForKey:@"identifier"];
@@ -58,7 +58,7 @@ NSTimeInterval invincibilityDuration = 3;
 #endif
 }
 
-- (id)initWithIdentifier:(NSString *)identifier
+- (instancetype)initWithIdentifier:(NSString *)identifier
 {
     NSParameterAssert(identifier.length > 0);
     

@@ -29,7 +29,7 @@ NSString * const RGMEventAttributesKey  = @"attributes";
     return [[self alloc] initWithType:type userInfo:userInfo];
 }
 
-- (id)initWithType:(RGMEventType)type userInfo:(NSDictionary *)userInfo
+- (instancetype)initWithType:(RGMEventType)type userInfo:(NSDictionary *)userInfo
 {
     if (self = [super init]) {
         _type = type;
@@ -57,7 +57,7 @@ NSString * const RGMEventAttributesKey  = @"attributes";
     return self;
 }
 
-- (id)initWithCoder:(NSCoder *)aDecoder
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
     if (self = [super init]) {
         _type = [aDecoder decodeIntegerForKey:@"type"];

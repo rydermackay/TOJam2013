@@ -13,7 +13,7 @@
 
 @implementation RGMBall
 
-- (id)initWithIdentifier:(NSString *)identifier {
+- (instancetype)initWithIdentifier:(NSString *)identifier {
     if (self = [super initWithIdentifier:identifier]) {
         self.texture = [[SKTextureAtlas atlasNamed:@"Textures"] textureNamed:@"ball"];
         self.size = CGSizeMake(8, 8);

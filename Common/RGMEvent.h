@@ -24,7 +24,7 @@ extern NSString * const RGMEventAttributesKey;  // attributes
 @interface RGMEvent : NSObject <NSCoding>
 
 + (instancetype)eventWithType:(RGMEventType)type userInfo:(NSDictionary *)userInfo;
-- (id)initWithType:(RGMEventType)type userInfo:(NSDictionary *)userInfo;
+- (instancetype)initWithType:(RGMEventType)type userInfo:(NSDictionary *)userInfo;
 
 @property (nonatomic, assign, readonly) RGMEventType type;
 @property (nonatomic, copy, readonly) NSDictionary *userInfo;

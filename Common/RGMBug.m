@@ -12,7 +12,7 @@
 
 @implementation RGMBug
 
-- (id)initWithIdentifier:(NSString *)identifier {
+- (instancetype)initWithIdentifier:(NSString *)identifier {
     if (self = [super initWithIdentifier:identifier]) {
         self.texture = [[SKTextureAtlas atlasNamed:@"Textures"] textureNamed:@"bug"];
         self.size = self.texture.size;

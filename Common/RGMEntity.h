@@ -28,7 +28,8 @@ typedef NS_OPTIONS(NSUInteger, RGMHitTestMask) {
 
 @interface RGMEntity : NSObject <NSCoding>
 
-- (id)initWithIdentifier:(NSString *)identifier;
+- (instancetype)initWithIdentifier:(NSString *)identifier NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithCoder:(NSCoder *)aDecoder NS_DESIGNATED_INITIALIZER;
 
 @property (nonatomic, copy, readonly) NSString *identifier;
 @property (nonatomic, assign) NSInteger x;

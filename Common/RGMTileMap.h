@@ -12,7 +12,7 @@
 
 @interface RGMTileMap : NSObject
 
-- (id)initWithName:(NSString *)name;
+- (instancetype)initWithName:(NSString *)name;
 @property (nonatomic, readonly) RGMSize size;
 @property (nonatomic, copy, readonly) NSArray *tiles;
 

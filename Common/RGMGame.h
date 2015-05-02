@@ -14,7 +14,7 @@
 
 @interface RGMGame : NSObject
 
-- (id)initWithMapName:(NSString *)mapName;
+- (instancetype)initWithMapName:(NSString *)mapName;
 @property (nonatomic, strong, readonly) RGMTileMap *tileMap;
 
 - (void)start;

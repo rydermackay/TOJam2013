@@ -32,7 +32,7 @@
 
 @implementation RGMMultiplayerGame
 
-- (id)initWithMapName:(NSString *)mapName match:(GKMatch *)match
+- (instancetype)initWithMapName:(NSString *)mapName match:(GKMatch *)match
 {
     NSParameterAssert(match);
     if (self = [super initWithMapName:mapName]) {

@@ -13,7 +13,7 @@
 
 @interface RGMMultiplayerGame : RGMGame
 
-- (id)initWithMapName:(NSString *)mapName match:(GKMatch *)match;
+- (instancetype)initWithMapName:(NSString *)mapName match:(GKMatch *)match;
 
 @property (nonatomic, strong, readonly) GKMatch *match;
 

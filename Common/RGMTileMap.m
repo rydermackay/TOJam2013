@@ -13,7 +13,7 @@
     NSMutableArray *_tiles;
 }
 
-- (id)initWithName:(NSString *)name
+- (instancetype)initWithName:(NSString *)name
 {
     if (self = [super init]) {
         NSData *mapData = [[NSData alloc] initWithContentsOfURL:[[NSBundle mainBundle] URLForResource:name withExtension:@"json"]];
