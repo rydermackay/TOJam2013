@@ -40,12 +40,12 @@
     _obstacleNodes = [NSMutableArray new];
     SKTextureAtlas *atlas = [SKTextureAtlas atlasNamed:@"Textures"];
     [atlas preloadWithCompletionHandler:^{}];
-    [self.game.tileMap.tiles enumerateObjectsUsingBlock:^(RGMTile *obstacle, NSUInteger idx, BOOL *stop) {
+    [self.game.tileMap.tiles enumerateObjectsUsingBlock:^(RGMTile *tile, NSUInteger idx, BOOL *stop) {
         SKSpriteNode *node = [SKSpriteNode node];
-        node.size = obstacle.frame.size;
+        node.size = tile.frame.size;
         node.anchorPoint = CGPointZero;
-        node.position = CGPointMake(CGRectGetMinX(obstacle.frame), CGRectGetMinY(obstacle.frame));
-        node.texture = [SKTexture textureWithImageNamed:[obstacle textureName]];
+        node.position = tile.frame.origin;
+        node.texture = [SKTexture textureWithImageNamed:[tile textureName]];
         node.texture.filteringMode = SKTextureFilteringNearest;
         node.blendMode = SKBlendModeReplace;
         
