@@ -19,4 +19,6 @@
 - (RGMTileType)tileTypeAtPosition:(RGMTilePosition)position;
 - (void)setTileType:(RGMTileType)type position:(RGMTilePosition)position;
 
+- (NSData *)JSONRepresentation;
+
 @end
