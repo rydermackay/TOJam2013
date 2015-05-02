@@ -16,7 +16,7 @@
     if (self = [super initWithIdentifier:identifier]) {
         self.texture = [[SKTextureAtlas atlasNamed:@"Textures"] textureNamed:@"bug"];
         self.size = self.texture.size;
-        self.velocity = CGPointMake(-20, self.velocity.y);
+        self.velocity = CGPointMake(-10, self.velocity.y);
     }
     return self;
 }

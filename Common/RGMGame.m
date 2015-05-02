@@ -164,6 +164,7 @@
         RGMHitTestMask mask = [entity hitTestWithEntity:obj fromRect:fromRect proposedRect:entity.frame];
         if (mask != RGMHitTestNone) {
             [entity didHitEntity:obj mask:mask];
+            *stop = YES; // can only interact w/ one entity per frame?!
         }
     }];
 }
