@@ -110,9 +110,6 @@
                     </connections>
                 </imageView>
             </subviews>
-            <connections>
-                <outlet property="imageView" destination="C2C-Lv-6kK" id="a8J-ln-DCk"/>
-            </connections>
         </view>
         <arrayController objectClassName="RGMTileType" editable="NO" id="Wrg-QZ-Xui">
             <connections>
