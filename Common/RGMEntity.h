@@ -56,7 +56,7 @@ typedef NS_OPTIONS(NSUInteger, RGMHitTestMask) {
 
 @property (nonatomic, assign) BOOL canJump;
 - (void)jump;
-- (void)endJump;
+- (void)resetJump;
 
 - (RGMHitTestMask)hitTestWithTile:(RGMTile *)tile fromRect:(CGRect)fromRect proposedRect:(CGRect)proposedRect;
 - (void)didHitTile:(RGMTile *)tile mask:(RGMHitTestMask)mask;

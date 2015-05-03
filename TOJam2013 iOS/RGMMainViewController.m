@@ -76,7 +76,7 @@
     
     RGMInputView *input = (RGMInputView *)self.view;
     [input addTarget:self action:@selector(jump) forControlEvents:UIControlEventTouchDown];
-    [input addTarget:self action:@selector(endJump) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside | UIControlEventTouchCancel];
+    [input addTarget:self action:@selector(resetJump) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside | UIControlEventTouchCancel];
     
     _sceneView = [[SKView alloc] initWithFrame:self.view.bounds];
     _sceneView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -113,7 +113,7 @@
     _inputMask |= RGMInputMaskJump;
 }
 
-- (void)endJump
+- (void)resetJump
 {
     _inputMask &= ~RGMInputMaskJump;
 }

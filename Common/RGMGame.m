@@ -78,7 +78,7 @@
         if (inputMask & RGMInputMaskJump) {
             [entity jump];
         } else {
-            [entity endJump];
+            [entity resetJump];
         }
         if ([entity isKindOfClass:[RGMPredator class]]) {
             if (inputMask & RGMInputMaskFire) {

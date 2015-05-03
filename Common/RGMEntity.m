@@ -21,7 +21,7 @@ NSTimeInterval invincibilityDuration = 3;
 
 @implementation RGMEntity {
     BOOL _isJumping;
-    NSDate *_jumpDate;
+    BOOL _isHoldingJump;
 }
 
 #pragma mark - NSCoding
@@ -111,21 +111,25 @@ NSTimeInterval invincibilityDuration = 3;
 
 - (void)jump
 {
-    if (!self.canJump) {
-        return;
+    if (!_isHoldingJump && self.canJump) {
+        _isJumping = YES;
+        self.velocity = CGPointMake(self.velocity.x, 250);
+        self.canJump = NO;
+        
+        const NSTimeInterval jumpDuration = 0.15f;
+        [self performSelector:@selector(stopJump) withObject:nil afterDelay:jumpDuration inModes:@[NSRunLoopCommonModes]];
     }
-    
-    self.velocity = CGPointMake(self.velocity.x, 250);
-    self.canJump = NO;
-    _isJumping = YES;
-    
-    const NSTimeInterval jumpDuration = 0.15f;
-    [self performSelector:@selector(endJump) withObject:nil afterDelay:jumpDuration inModes:@[NSRunLoopCommonModes]];
+    _isHoldingJump = YES;   
 }
 
-- (void)endJump
+- (void)stopJump {
+    _isJumping = NO;
+}
+
+- (void)resetJump
 {
     _isJumping = NO;
+    _isHoldingJump = NO;
 }
 
 - (CGRect)frame
@@ -168,7 +172,7 @@ NSTimeInterval invincibilityDuration = 3;
             CGRectGetMaxY(entityRect) > CGRectGetMinY(obstacleRect)) {
             self.velocity = CGPointMake(self.velocity.x, 0);
             self.y = CGRectGetMinY(obstacleRect) - self.size.height;
-            [self endJump];
+            [self resetJump];
             hitTestMask |= RGMHitTestBottom;
         }
     }
