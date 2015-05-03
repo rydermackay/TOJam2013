@@ -73,6 +73,18 @@
 
 @implementation RGMTileType (Editor)
 
++ (NSImage *)allImages {
+    NSMutableArray *images = [NSMutableArray new];
+    for (NSURL *URL in [[NSBundle mainBundle] URLsForResourcesWithExtension:@"png" subdirectory:nil]) {
+        NSImage *image = [NSImage imageNamed:URL.lastPathComponent];
+        CGSize size = image.size;
+        if (CGSizeEqualToSize(size, CGSizeMake(RGMTileSize, RGMTileSize))) {
+            [images addObject:image];
+        }
+    }
+    return [images copy];
+}
+
 - (NSImage *)image {
     return [NSImage imageNamed:self.imageName];
 }
