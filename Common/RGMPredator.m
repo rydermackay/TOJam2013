@@ -21,9 +21,16 @@ static NSTimeInterval captivePreyDuration = 5;
     __weak RGMEntity *_fireball;
 }
 
+- (instancetype)initWithIdentifier:(NSString *)identifier {
+    if (self = [super initWithIdentifier:identifier]) {
+        self.texture = [[SKTextureAtlas atlasNamed:@"Textures"] textureNamed:@"boot"];
+    }
+    return self;
+}
+
 - (CGSize)size
 {
-    return CGSizeMake(RGMTileSize, RGMTileSize * 1.5);
+    return self.texture.size;
 }
 
 - (void)fire {
@@ -33,7 +40,7 @@ static NSTimeInterval captivePreyDuration = 5;
         RGMEntity *fireball = [self.game createEntity:[RGMBall class] identifier:identifier];
         fireball.x = (facingRight ? CGRectGetMaxX(self.frame) : CGRectGetMinX(self.frame)) - fireball.size.width * 0.5;
         fireball.y = CGRectGetMidY(self.frame);
-        fireball.velocity = CGPointMake(facingRight ? 100 : -100, 300);
+        fireball.velocity = CGPointMake(facingRight ? 150 : -150, 300);
         _canFire = NO;
         [self.game performSelector:@selector(destroyEntity:) withObject:identifier afterDelay:3];
     }

@@ -16,8 +16,7 @@
 - (instancetype)initWithIdentifier:(NSString *)identifier {
     if (self = [super initWithIdentifier:identifier]) {
         self.texture = [[SKTextureAtlas atlasNamed:@"Textures"] textureNamed:@"ball"];
-        self.size = CGSizeMake(8, 8);
-        self.velocity = CGPointMake(120, 500);
+        self.size = self.texture.size;
     }
     return self;
 }
