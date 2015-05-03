@@ -73,10 +73,6 @@
 
 @implementation RGMTileType (Editor)
 
-+ (NSArray *)tileTypes {
-    return nil;
-}
-
 - (NSImage *)image {
     return [NSImage imageNamed:self.imageName];
 }

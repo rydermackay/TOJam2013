@@ -41,10 +41,7 @@ NS_ASSUME_NONNULL_BEGIN
 #if !TARGET_OS_IPHONE
 
 @interface RGMTileType (Editor)
-
-+ (NSArray *)tileTypes;
 @property (nonatomic, readonly) NSImage *image;
-
 @end
 
 @interface RGMTile (Editor)
