@@ -24,13 +24,13 @@ static NSTimeInterval captivePreyDuration = 5;
 - (instancetype)initWithIdentifier:(NSString *)identifier {
     if (self = [super initWithIdentifier:identifier]) {
         self.texture = [[SKTextureAtlas atlasNamed:@"Textures"] textureNamed:@"boot"];
+        self.size = self.texture.size;
     }
     return self;
 }
 
-- (CGSize)size
-{
-    return self.texture.size;
+- (CGRect)frame {
+    return CGRectInset([super frame], 3, 0);
 }
 
 - (void)fire {

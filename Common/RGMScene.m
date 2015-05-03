@@ -73,7 +73,7 @@
             node.texture = entity.texture ?: entity.image ? [SKTexture textureWithImage:entity.image] : nil;    // this is so dumb
             node.texture.filteringMode = SKTextureFilteringNearest;
             node.hidden = NO;
-            node.size = entity.frame.size;  // setting size & xScale at the same time doesn't work
+            node.size = entity.size;  // setting size & xScale at the same time doesn't work
             node.name = identifier;
         }
         node.position = CGPointMake(entity.x + floorf(CGRectGetWidth(node.frame) * 0.5),
