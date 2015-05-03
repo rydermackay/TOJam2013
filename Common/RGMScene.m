@@ -45,7 +45,7 @@
         node.size = tile.frame.size;
         node.anchorPoint = CGPointZero;
         node.position = tile.frame.origin;
-        node.texture = [SKTexture textureWithImageNamed:tile.imageName];
+        node.texture = [atlas textureNamed:tile.imageName];
         node.texture.filteringMode = SKTextureFilteringNearest;
         node.blendMode = SKBlendModeReplace;
         
