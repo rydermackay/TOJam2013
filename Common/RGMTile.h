@@ -6,53 +6,33 @@
 //  Copyright (c) 2013 Ryder Mackay. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 
-@class RGMEntity;
+@class RGMTileMap;
 
-typedef NS_ENUM(NSUInteger, RGMTileType) {
-    RGMTileClear            = 0,
-    RGMTileSolid            = 1,
-    RGMTileSolidTop         = 2,
-    RGMTileSolidRight       = 3,
-    RGMTileSolidBottom      = 4,
-    RGMTileSolidLeft        = 5,
-    
-    RGMTilePlatformLeft     = 10,
-    RGMTilePlatformMiddle,
-    RGMTilePlatformRight,
-    
-    RGMTileSolidTopLeft     = 20,
-    RGMTileWedgeTopLeft     = 21,
-    RGMTileSolidTopRight    = 22,
-    RGMTileWedgeTopRight    = 23,
-    RGMTileSolidBottomLeft  = 24,
-    RGMTileSolidBottomRight = 25,
-};
+NS_ASSUME_NONNULL_BEGIN
 
-typedef NS_OPTIONS(NSUInteger, RGMObstacleMask) {
-    RGMObstacleMaskNone             = 0,
-    RGMObstacleMaskSolidTop         = 1 << 0,
-    RGMObstacleMaskSolidBottom      = 1 << 1,
-    RGMObstacleMaskSolidLeft        = 1 << 2,
-    RGMObstacleMaskSolidRight       = 1 << 3,
-    
-    RGMObstacleMaskSolid = RGMObstacleMaskSolidBottom | RGMObstacleMaskSolidLeft | RGMObstacleMaskSolidRight | RGMObstacleMaskSolidTop,
-    
-    RGMObstacleMaskSlopeLeft   = 1 << 4,
-    RGMObstacleMaskSlopeRight  = 1 << 5,
-};
+@interface RGMTileType : NSObject <NSCopying>
 
-@interface RGMTile : NSObject
+- (instancetype)initWithJSONObject:(NSDictionary *)JSONObject;
+- (instancetype)initWithIdentifier:(id <NSCoding, NSCopying>)identifier mask:(RGMObstacleMask)mask imageName:(NSString *)imageName name:(NSString * __nullable)name NS_DESIGNATED_INITIALIZER;
 
-- (instancetype)initWithTileType:(RGMTileType)type position:(RGMTilePosition)position;
-
-@property (nonatomic, readonly) RGMTileType type;
-@property (nonatomic, readonly) RGMTilePosition position;
+@property (nonatomic, readonly) id <NSCoding, NSCopying> identifier; // key into tile map def
 @property (nonatomic, readonly) RGMObstacleMask mask;
-@property (nonatomic, readonly) CGRect frame;
+@property (nonatomic, copy, readonly) NSString *imageName;
+@property (nonatomic, copy, readonly) NSString *__nullable name;
 
-- (NSString *)textureName;
+@end
+
+@interface RGMTile : NSObject <NSCopying>
+- (instancetype)initWithType:(RGMTileType *)type position:(RGMTilePosition)position;
+@property (nonatomic, readonly) RGMTileType *type;
+@property (nonatomic, readonly) RGMObstacleMask mask;   // forwarded to type
+@property (nonatomic, readonly) NSString *imageName;    // forwarded to type
+
+// instance-specific
+@property (nonatomic, readonly) RGMTilePosition position;
+@property (nonatomic, readonly) CGRect frame;   // calculated from position
 
 @end
 
@@ -60,11 +40,17 @@ typedef NS_OPTIONS(NSUInteger, RGMObstacleMask) {
 
 #if !TARGET_OS_IPHONE
 
-@interface RGMTile (Editor)
+@interface RGMTileType (Editor)
 
 + (NSArray *)tileTypes;
 @property (nonatomic, readonly) NSImage *image;
 
 @end
 
+@interface RGMTile (Editor)
+@property (nonatomic, readonly) NSImage *image;
+@end
+
 #endif // !TARGET_OS_IPHONE
+
+NS_ASSUME_NONNULL_END

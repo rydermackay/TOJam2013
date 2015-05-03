@@ -8,16 +8,20 @@
 
 #import <Foundation/Foundation.h>
 #import "RGMDefines.h"
-#import "RGMTile.h"
+
+@class RGMTile, RGMTileType;
 
 @interface RGMTileMap : NSObject
 
 - (instancetype)initWithName:(NSString *)name;
 @property (nonatomic, readonly) RGMSize size;
 @property (nonatomic, copy, readonly) NSArray *tiles;
+@property (nonatomic, copy, readonly) NSDictionary *tileDefinitions;
 
-- (RGMTileType)tileTypeAtPosition:(RGMTilePosition)position;
-- (void)setTileType:(RGMTileType)type position:(RGMTilePosition)position;
+- (void)enumerateTiles:(void (^)(RGMTile *tile))block;
+
+- (RGMTile *)tileAtPosition:(RGMTilePosition)position;
+- (void)setTileType:(RGMTileType *)type position:(RGMTilePosition)position;
 
 - (NSData *)JSONRepresentation;
 

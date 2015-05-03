@@ -38,17 +38,18 @@
 }
 
 - (void)windowDidLoad {
-    NSMutableArray *tiles = [NSMutableArray array];
-    for (NSNumber *number in [RGMTile tileTypes]) {
-        [tiles addObject:[[RGMTile alloc] initWithTileType:number.unsignedIntegerValue position:(RGMTilePosition){0,0}]];
+    NSArray *sortedKeys = [self.tileMap.tileDefinitions.allKeys sortedArrayUsingSelector:@selector(compare:)];
+    NSMutableArray *tileTypes = [NSMutableArray new];
+    for (NSString *key in sortedKeys) {
+        [tileTypes addObject:self.tileMap.tileDefinitions[key]];
     }
-    self.tiles = tiles;
+    self.tiles = tileTypes;
     self.tileView.tileMap = self.tileMap;
     self.tileView.editor = self;
 }
 
-- (RGMTileType)currentType {
-    return [(RGMTile *)[self.arrayController selectedObjects].firstObject type];
+- (RGMTileType *)currentType {
+    return [self.arrayController selectedObjects].firstObject;
 }
 
 #pragma mark - Tile View
@@ -57,8 +58,8 @@
     [self setTileType:self.currentType atPosition:position];
 }
 
-- (void)setTileType:(RGMTileType)type atPosition:(RGMTilePosition)position {
-    RGMTileType oldType = [self.tileMap tileTypeAtPosition:position];
+- (void)setTileType:(RGMTileType *)type atPosition:(RGMTilePosition)position {
+    RGMTileType *oldType = [self.tileMap tileAtPosition:position].type;
     if (oldType != type) {
         [[self.window.undoManager prepareWithInvocationTarget:self] setTileType:oldType atPosition:position];
         [self.tileMap setTileType:type position:position];

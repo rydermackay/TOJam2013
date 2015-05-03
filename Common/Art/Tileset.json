@@ -1,0 +1,96 @@
+{
+    "version": 1,
+    "tiles": [
+              {
+              "id": 0,
+              "name": "Clear",
+              "imageName": "clear",
+              "mask": 0,
+              },
+              {
+              "id": 1,
+              "name": "Solid",
+              "imageName": "solid",
+              "mask": 15,
+              },
+              {
+              "id": 2,
+              "name": "Solid Top",
+              "imageName": "solid-top",
+              "mask": 15,
+              },
+              {
+              "id": 3,
+              "name": "Solid Right",
+              "imageName": "solid-right",
+              "mask": 15,
+              },
+              {
+              "id": 4,
+              "name": "Solid Bottom",
+              "imageName": "solid-bottom",
+              "mask": 15,
+              },
+              {
+              "id": 5,
+              "name": "Solid Left",
+              "imageName": "solid-left",
+              "mask": 15,
+              },
+              {
+              "id": 10,
+              "name": "Platform Left",
+              "imageName": "platform-left",
+              "mask": 1,
+              },
+              {
+              "id": 11,
+              "name": "Platform Middle",
+              "imageName": "platform-middle",
+              "mask": 1,
+              },
+              {
+              "id": 12,
+              "name": "Platform Right",
+              "imageName": "platform-right",
+              "mask": 1,
+              },
+              {
+              "id": 20,
+              "name": "Solid Top Left",
+              "imageName": "solid-top-left",
+              "mask": 24,
+              },
+              {
+              "id": 21,
+              "name": "Wedge Top Left",
+              "imageName": "wedge-top-left",
+              "mask": 15,
+              },
+              {
+              "id": 22,
+              "name": "Solid Top Right",
+              "imageName": "solid-top-right",
+              "mask": 36,
+              },
+              {
+              "id": 23,
+              "name": "Wedge Top Right",
+              "imageName": "wedge-top-right",
+              "mask": 15,
+              },
+              {
+              "id": 24,
+              "name": "Solid Bottom Left",
+              "imageName": "solid-bottom-left",
+              "mask": 0,
+              },
+              {
+              "id": 25,
+              "name": "Solid Bottom Right",
+              "imageName": "solid-bottom-right",
+              "mask": 0,
+              },
+              ]
+}
+

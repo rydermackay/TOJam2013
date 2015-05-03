@@ -11,11 +11,22 @@
 
 @implementation RGMTileMap {
     NSMutableArray *_tiles;
+    NSDictionary *_tileDefinitions;
 }
 
 - (instancetype)initWithName:(NSString *)name
 {
     if (self = [super init]) {
+        NSData *tileData = [[NSData alloc] initWithContentsOfURL:[[NSBundle mainBundle] URLForResource:@"Tileset" withExtension:@"json"]];
+        NSError *tileError;
+        NSArray *allTiles = [NSJSONSerialization JSONObjectWithData:tileData options:NSJSONReadingAllowFragments error:&tileError][@"tiles"];
+        NSMutableDictionary *tileDefintions = [NSMutableDictionary dictionary];
+        for (NSDictionary *info in allTiles) {
+            tileDefintions[info[@"id"]] = [[RGMTileType alloc] initWithJSONObject:info];
+        }
+        _tileDefinitions = [tileDefintions copy];
+        
+        
         NSData *mapData = [[NSData alloc] initWithContentsOfURL:[[NSBundle mainBundle] URLForResource:name withExtension:@"json"]];
         NSError *error;
         NSDictionary *map = [NSJSONSerialization JSONObjectWithData:mapData options:0 error:&error];
@@ -35,8 +46,8 @@
             NSParameterAssert([array[y] count] == _size.width);
             for (NSInteger x = 0; x < [array[y] count]; x++) {
                 const RGMTilePosition position = (RGMTilePosition){x, array.count - 1 - y};
-                RGMTileType tileType = [array[y][x] unsignedIntegerValue];
-                RGMTile *tile = [[RGMTile alloc] initWithTileType:tileType position:position];
+                RGMTileType *tileType = self.tileDefinitions[array[y][x]];
+                RGMTile *tile = [[RGMTile alloc] initWithType:tileType position:position];
                 [tiles addObject:tile];
             }
         }
@@ -61,12 +72,18 @@
     return position.y * self.size.width + position.x;
 }
 
-- (RGMTileType)tileTypeAtPosition:(RGMTilePosition)position {
-    return [(RGMTile *)_tiles[[self indexForPosition:position]] type];
+- (RGMTile *)tileAtPosition:(RGMTilePosition)position {
+    return _tiles[[self indexForPosition:position]];
 }
 
-- (void)setTileType:(RGMTileType)type position:(RGMTilePosition)position {
-    _tiles[[self indexForPosition:position]] = [[RGMTile alloc] initWithTileType:type position:position];
+- (void)setTileType:(RGMTileType *)type position:(RGMTilePosition)position {
+    _tiles[[self indexForPosition:position]] = [[RGMTile alloc] initWithType:type position:position];
+}
+
+- (void)enumerateTiles:(void (^)(RGMTile *))block {
+    for (RGMTile *tile in self.tiles) {
+        block(tile);
+    }
 }
 
 - (NSData *)JSONRepresentation {
@@ -78,7 +95,7 @@
     for (NSInteger y = height - 1; y >= 0; y--) {
         NSMutableArray *row = [NSMutableArray arrayWithCapacity:width];
         for (NSInteger x = 0; x < width; x++) {
-            [row addObject:@([self tileTypeAtPosition:(RGMTilePosition){x, y}])];
+            [row addObject:[self tileAtPosition:(RGMTilePosition){x, y}].type.identifier];
         }
         [tiles addObject:row];
     }

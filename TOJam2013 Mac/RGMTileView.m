@@ -37,12 +37,12 @@
 
 - (void)drawRect:(NSRect)dirtyRect {
     [[NSGraphicsContext currentContext] setImageInterpolation:NSImageInterpolationNone];
-    for (RGMTile *tile in self.tileMap.tiles) {
+    [self.tileMap enumerateTiles:^(RGMTile *tile) {
         NSRect rect = [self frameForTilePosition:tile.position];
         if (NSIntersectsRect(dirtyRect, rect)) {
             [tile.image drawInRect:rect];
         }
-    }
+    }];
 }
 
 - (void)mouseDown:(NSEvent *)theEvent {

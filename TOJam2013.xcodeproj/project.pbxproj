@@ -72,6 +72,8 @@
 		0D93EAB9187FBB2100D24D6B /* RGMTileMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D93EA92187FBB2100D24D6B /* RGMTileMap.m */; };
 		0D93EABD187FBBEB00D24D6B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0D93EABC187FBBEB00D24D6B /* Images.xcassets */; };
 		0D93EABE187FBBEB00D24D6B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0D93EABC187FBBEB00D24D6B /* Images.xcassets */; };
+		0D98ABBA1AF5678D002DF96B /* Tileset.json in Resources */ = {isa = PBXBuildFile; fileRef = 0D98ABB91AF5678D002DF96B /* Tileset.json */; };
+		0D98ABBB1AF5678D002DF96B /* Tileset.json in Resources */ = {isa = PBXBuildFile; fileRef = 0D98ABB91AF5678D002DF96B /* Tileset.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -152,6 +154,7 @@
 		0D93EA91187FBB2100D24D6B /* RGMTileMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RGMTileMap.h; sourceTree = "<group>"; };
 		0D93EA92187FBB2100D24D6B /* RGMTileMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RGMTileMap.m; sourceTree = "<group>"; };
 		0D93EABC187FBBEB00D24D6B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		0D98ABB91AF5678D002DF96B /* Tileset.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Tileset.json; sourceTree = "<group>"; };
 		0DFFC7151733937300A37A1B /* TOJam2013 iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TOJam2013 iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -315,6 +318,7 @@
 				0D1D3F7D190CCBA1009AABD8 /* Tiles */,
 				0D62B4F11895FB6F00708704 /* Textures.atlas */,
 				0D93EA73187FBB2100D24D6B /* Map.json */,
+				0D98ABB91AF5678D002DF96B /* Tileset.json */,
 			);
 			path = Art;
 			sourceTree = "<group>";
@@ -450,6 +454,7 @@
 				0D1D3F9B190CCBA1009AABD8 /* unknown.png in Resources */,
 				0D93EABE187FBBEB00D24D6B /* Images.xcassets in Resources */,
 				0D1D3F91190CCBA1009AABD8 /* platform-right.png in Resources */,
+				0D98ABBB1AF5678D002DF96B /* Tileset.json in Resources */,
 				0D93EA95187FBB2100D24D6B /* Map.json in Resources */,
 				0D1D3F9C190CCBA1009AABD8 /* wedge-top-left.png in Resources */,
 				0D93EA17187F940800D24D6B /* MainMenu.xib in Resources */,
@@ -465,6 +470,7 @@
 				0D93EA6A187FBB1400D24D6B /* MainStoryboard~iphone.storyboard in Resources */,
 				0D93EA94187FBB2100D24D6B /* Map.json in Resources */,
 				0D93EABD187FBBEB00D24D6B /* Images.xcassets in Resources */,
+				0D98ABBA1AF5678D002DF96B /* Tileset.json in Resources */,
 				0D93EA68187FBB1400D24D6B /* InfoPlist.strings in Resources */,
 				0D62B4F21895FB6F00708704 /* Textures.atlas in Resources */,
 				0D93EA65187FBB1400D24D6B /* Default-568h@2x.png in Resources */,
