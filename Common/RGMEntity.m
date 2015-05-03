@@ -192,7 +192,7 @@ NSTimeInterval invincibilityDuration = 3;
         CGFloat x = CGRectGetMidX(entityRect) - CGRectGetMinX(obstacleRect);
         CGFloat height = x * slope;
         CGFloat maxY = MIN(MAX(CGRectGetMinY(obstacleRect), (CGRectGetMinY(obstacleRect) + height)), CGRectGetMaxY(obstacleRect));
-        if (CGRectGetMinY(entityRect) < maxY) {
+        if (CGRectGetMinY(entityRect) < maxY && !_isJumping) {
             self.velocity = CGPointMake(self.velocity.x, 0);
             self.y = maxY;
             self.canJump = YES;
@@ -208,7 +208,7 @@ NSTimeInterval invincibilityDuration = 3;
         CGFloat x = CGRectGetMidX(entityRect) - CGRectGetMinX(obstacleRect);
         CGFloat height = x * slope + yForMinX;
         CGFloat maxY = MIN(MAX(CGRectGetMinY(obstacleRect), (CGRectGetMinY(obstacleRect) + height)), CGRectGetMaxY(obstacleRect));
-        if (CGRectGetMinY(entityRect) < maxY) {
+        if (CGRectGetMinY(entityRect) < maxY && !_isJumping) {
             self.velocity = CGPointMake(self.velocity.x, 0);
             self.y = maxY;
             self.canJump = YES;
