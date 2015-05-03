@@ -8,8 +8,6 @@
 
 @import Foundation;
 
-@class RGMTileMap;
-
 NS_ASSUME_NONNULL_BEGIN
 
 @interface RGMTileType : NSObject <NSCopying>
